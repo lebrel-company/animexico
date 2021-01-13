@@ -3,65 +3,63 @@ const { gql } = require('apollo-server')
 
 //Schema
 const typeDefs = gql`
-
-    type Usuario {
+    type User{
         id: ID
-        nombre: String
-        apellido: String
+        name: String
+        middleName: String
+        lastname: String
+        secondLastName: String
         email: String
-        creado: String
-    }
-
-    type Token {
-        token: String
-    }
-
-    type Producto{
-        id: ID
-        nombre: String
-        existencia: Int
-        precio: Float
-        creado: String
-    }
-
-    input UsuarioInput {
-        nombre: String!
-        apellido: String!
-        email: String!
-        password: String!
-    }
-
-    input AutenticarInput{
-        email:String!
-        password: String!
-    }
-
-    input ProductoInput{
-        nombre: String!
-        existencia: Int!
-        precio: Float!
+        birthday: String
+        cellphone: String
+        address: [Address]       
+        created: String
+        access: String
         
     }
 
+    type Address{
+        city: String
+        state: String
+        country: String
+        zipcode: Int
+        street: String
+        buildingNumber: String
+        apartmentNumber: String        
+    }
+
+    input UserInput{
+        name: String!
+        middleName: String
+        lastname: String!
+        secondLastName: String!
+        email: String!
+        password:String!
+        birthday: String!
+        cellphone: String!
+        address: [AddressInput]!
+        access: String!
+    }
+
+    input AddressInput{
+        city: String!
+        state: String!
+        country: String!
+        zipcode: Int!
+        street: String!
+        buildingNumber: String!
+        apartmentNumber: String  
+    }
+
+
     type Query{
-        #Usuarios
-        obtenerUsuario(token:String!) :Usuario
-
-        #Productos
-        obtenerProductos: [Producto]
-        obtenerProducto(id: ID) : Producto
+        obtenerCurso: String
     }
 
-    type Mutation {
-        # Usuarios
-        nuevoUsuario(input: UsuarioInput): Usuario
-        autenticarUsuario(input: AutenticarInput): Token
-
-        # Productos
-        nuevoProducto(input: ProductoInput) : Producto
-        actualizarProducto( id: ID!, input: ProductoInput ) : Producto
-        eliminarProducto( id: ID! ) : String
+    type Mutation{
+        newUser(input: UserInput) : String
     }
+  
 `;
 
 module.exports = typeDefs;
