@@ -1,18 +1,18 @@
+
 const mongoose = require('mongoose');
 
-const UsersSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     name:{
-        type: String,
+        type:String,
         required: true,
         trim: true
     },
     middleName:{
         type: String,
-        required: true,
         trim: true
     },
     lastname:{
-        type: String,
+        type:String,
         required: true,
         trim: true
     },
@@ -22,18 +22,18 @@ const UsersSchema = mongoose.Schema({
         trim: true
     },
     email:{
-        type: String,
+        type:String,
         required: true,
         trim: true,
         unique: true
     },
     password:{
-        type: String,
+        type:String,
         required: true,
         trim: true
     },
     birthday:{
-        type: String,
+        type: Date,
         required:true,
         trim: true,
     },
@@ -42,12 +42,12 @@ const UsersSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    address:{
+    adress: [{
         city:{
             type: String,
             required: true,
             trim: true
-        } ,
+        },
         state:{
             type: String,
             required:true,
@@ -57,8 +57,7 @@ const UsersSchema = mongoose.Schema({
             type: String,
             required: true,
             trim: true
-        },       
-        
+        },
         zipcode:{
             type: Number,
             required: true,
@@ -78,17 +77,22 @@ const UsersSchema = mongoose.Schema({
             type: String,
             required: true,
             trim: true
-        },
-    },
+        },    
+    }],
+
     created:{
         type: Date,
-        default: Date.now()
+        dafault: Date.now()
     },
+
     access:{
         type: String,
         required: true,
-        enum: String
+        enum: ['user','admin'],
     }
 });
 
-module.exports =  mongoose.model('User', UsersSchema)
+module.exports = mongoose.model('User', UserSchema);
+
+
+

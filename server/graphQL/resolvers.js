@@ -1,27 +1,36 @@
-const User = require('../models/User');
+const User = require('../models/User')
 
 
+//Resolvers
 const resolvers = {
     Query:{
         obtenerCurso:() => "something"
     },
     Mutation:{
-        newUser:(_, { input } ) => {
+        newUser: async(_, {input}) => {
 
-            console.log(input)
-            //deconstruct the email and password
-            //const { email, password } = input;
+            const{email, password} = input;
+           
+            //check if  user exist
+            const userExist = await User.findOne({email})
+            if (userExist){
+                throw new Error('The user is already registered')
+            }
 
-            //check if the user is already registered
-            //const userExist = await User.findOne({email});
-            //console.log(userExist)
-
-            //hash password
+            // Hashear password
 
 
             //save in the data base
-            return "creando"
+            try {
+                //save it in the database
+                const user = new User(input);
+                user.save(); //save user
+                return user
+            } catch (error) {
+                console.log(error)
+            }
         }
+             
     }
 }
 
