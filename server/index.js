@@ -1,8 +1,9 @@
+'use strict';
 const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./graphQL/schema');
-const resolvers = require('./graphQL/resolvers')
+const typeDefs = require('./graphQL/schema.js');
+const resolvers = require('./graphQL/resolvers.js')
 
-const mongoConection = require('./config/db');
+const mongoConection = require('./config/database.js');
 
 //Conect to data base
 mongoConection();

@@ -14,12 +14,12 @@ const typeDefs = gql`
         birthday: String
         cellphone: String
         city: String
-        adress:[Adress]
+        address:[Address]
         access: String!
         created: String
     }
 
-    type Adress{
+    type Address{
         city: String
         state: String
         country: String
@@ -38,12 +38,12 @@ const typeDefs = gql`
         password: String!
         birthday: String!
         cellphone: String!
-        adress: [AdressInput]!
+        adress: [AddressInput]!
         access: String!
         
     }
 
-    input AdressInput{
+    input AddressInput{
         city: String!
         state: String!
         country: String!
@@ -59,7 +59,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        newUser(input: UserInput) : User
+        createNewUser(input: UserInput) : User
     }
 `;
 

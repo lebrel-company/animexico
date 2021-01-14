@@ -7,30 +7,24 @@ const resolvers = {
         obtenerCurso:() => "something"
     },
     Mutation:{
-        newUser: async(_, {input}) => {
+        createNewUser: createNewUser              
+    }
+}
 
-            const{email, password} = input;
-           
-            //check if  user exist
-            const userExist = await User.findOne({email})
-            if (userExist){
-                throw new Error('The user is already registered')
-            }
-
-            // Hashear password
-
-
-            //save in the data base
-            try {
-                //save it in the database
-                const user = new User(input);
-                user.save(); //save user
-                return user
-            } catch (error) {
-                console.log(error)
-            }
-        }
-             
+async function createNewUser(parent, {input}, context, info){
+    const{email, password} = input;
+   
+    const userExists = await User.findOne({email})
+    if (userExists){
+        throw new Error('The user is already registered')
+    }
+    // TODO: Hash the password or any other data that require.
+    try {
+        const user = new User(input);
+        user.save();
+        return user
+    } catch (error) {
+        console.log(error)
     }
 }
 

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "nodemon index.js --legacy-watch"
   },
   "license": "MIT",
   "dependencies": {
