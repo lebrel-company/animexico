@@ -14,12 +14,12 @@ const typeDefs = gql`
         birthday: String
         cellphone: String
         city: String
-        address:[Address]
+        address: [Address] 
         access: String!
         created: String
     }
 
-    type Address{
+    type Address {
         city: String
         state: String
         country: String
@@ -27,6 +27,10 @@ const typeDefs = gql`
         street: String
         buildingNumber: String
         apartmentNumber: String
+    }
+
+    type Token {
+        token: String
     }
 
     input UserInput{
@@ -38,12 +42,12 @@ const typeDefs = gql`
         password: String!
         birthday: String!
         cellphone: String!
-        adress: [AddressInput]!
+        address: [AddressInput!] 
         access: String!
         
     }
 
-    input AddressInput{
+    input AddressInput {
         city: String!
         state: String!
         country: String!
@@ -54,12 +58,18 @@ const typeDefs = gql`
         
     }
 
+    input  authenticateInput{
+        email: String!
+        password: String!
+    }
+
     type Query {
-        obtenerCurso: String
+        getUser(token: String!) : User
     }
 
     type Mutation {
-        createNewUser(input: UserInput) : User
+        createNewUser(input: UserInput) : User        
+        authenticateUser(input: authenticateInput): Token
     }
 `;
 
