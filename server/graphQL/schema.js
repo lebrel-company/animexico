@@ -20,6 +20,7 @@ const typeDefs = gql`
     }
 
     type Address {
+        
         city: String
         state: String
         country: String
@@ -31,6 +32,10 @@ const typeDefs = gql`
 
     type Token {
         token: String
+    }
+
+    type Product{
+
     }
 
     input UserInput{
@@ -63,13 +68,24 @@ const typeDefs = gql`
         password: String!
     }
 
+    input ProductInput{
+        name: String!
+        price: Float!
+        stock: Int!
+        
+    }
+
     type Query {
         getUser(token: String!) : User
     }
 
     type Mutation {
+        #Users
         createNewUser(input: UserInput) : User        
         authenticateUser(input: authenticateInput): Token
+
+        #Products
+        newProduct(input: ProductInput) : Product
     }
 `;
 

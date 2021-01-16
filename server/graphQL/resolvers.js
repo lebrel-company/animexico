@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Product = require('../models/Product');
 const bcryptsjs = require ('bcryptjs');
 require('dotenv').config({ path: 'variables.env' });
 const jasonWebToken = require('jsonwebtoken')
