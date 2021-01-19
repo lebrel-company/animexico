@@ -16,6 +16,19 @@ const ProductSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    codes:[{
+        barcode:{
+            type: String,
+            required: true,
+            trim: true
+        },
+        jancode:{
+            type:String,
+            required: true,
+            trim: true
+        } 
+        
+    }],
     category:{
         type:String,
         required: true,
@@ -30,6 +43,15 @@ const ProductSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         trim: true
+    },
+    images:{
+        type: String,
+        required: true,
+        trim: true
+    },
+    created:{
+        type: Date,
+        dafault: Date.now()
     },
  
 });

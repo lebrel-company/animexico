@@ -8,15 +8,18 @@ const jasonWebToken = require('jsonwebtoken')
 //Resolvers
 const resolvers = {
         Query:{
-            getUser:getUser
+            getUser:getUser,
+            getProducts:getProducts,
+            getProduct:getProduct
     },
         Mutation:{
             createNewUser: createNewUser ,
-            authenticateUser:authenticateUser                              
+            authenticateUser:authenticateUser,
+            newProduct:newProduct,
+            updateProduct:updateProduct,
+            deleteProduct:deleteProduct                           
         
-    },          
-        
-    
+    },         
 }
 
 async function createNewUser(parent, {input}, context, info){
@@ -67,16 +70,89 @@ async function authenticateUser(parent, {input}, context, info){
 
 function createToken(user, secret, expiresIn){
     //console.log(user);
-    const {id, email, name, lastname} = user;
+    const {id, email, name, lastname, address} = user;
 
-    return jasonWebToken.sign({ id, email, name, lastname }, secret, {expiresIn})
+    return jasonWebToken.sign({ id, email, name, lastname, address }, secret, {expiresIn})
 }
 
-async function getUser(parent, {token}, context, info){
-    const userId = await jasonWebToken.verify(token, process.env.SECRET )
+async function getUser(_,{id}){
 
-    return userId
+      const user = await User.findById(id)
+
+      if(!user){
+        throw new Error('Product not found')
+    }
+
+    return user;
+    
 }
+
+//Products resolvers
+
+async function newProduct (_,{input}){
+    try {
+        const newProduct = new Product(input);
+
+
+        //save in data base
+        const product = await newProduct.save();
+
+        return product
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getProducts(){
+    try {
+        const products = await Product.find({})
+        return products
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getProduct(_, {id}){
+    //check if the product exist
+    const product = await Product.findById(id);
+
+    if(!product){
+        throw new Error('Product not found')
+    }
+
+    return product;
+}
+
+async function updateProduct(_, {id, input}){
+    //check if the product exist
+    let product = await Product.findById(id);
+
+    if(!product){
+        throw new Error('Product not found')
+    }
+
+    product = await Product.findOneAndUpdate({_id : id}, input, {new: true});
+
+    return product;
+
+}
+
+async function deleteProduct (_, { id }){
+
+    //check if the product exist
+    let product = await Product.findById(id);
+
+    if(!product){
+        throw new Error('Product not found');
+    }
+
+    //Remove product
+    await Product.findByIdAndDelete({_id: id});
+
+    return "Product deleted"
+}
+
+
 
 
 
