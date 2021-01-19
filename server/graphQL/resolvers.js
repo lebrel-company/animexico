@@ -152,9 +152,4 @@ async function deleteProduct (_, { id }){
     return "Product deleted"
 }
 
-
-
-
-
-
 module.exports = resolvers;

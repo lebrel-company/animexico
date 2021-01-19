@@ -37,7 +37,7 @@ const typeDefs = gql`
     type Product {
         id: ID
         name: String
-        price: Boolean
+        price: [Price]
         description: String
         codes:[Codes]
         category:String
@@ -50,6 +50,11 @@ const typeDefs = gql`
     type Codes{
         barcode: String
         jancode: String
+    }
+
+    type Price{
+        amount: Int
+        currency: String
     }
 
     
@@ -85,19 +90,24 @@ const typeDefs = gql`
     }
 
     input ProductInput{
-        name: String
-        price: Float
-        description: String
-        codes:[CodesInput]
-        category: String
-        stock: Int
-        available: Boolean
-        images: String
+        name: String!
+        price: [PriceInput]!
+        description: String!
+        codes:[CodesInput]!
+        category: String!
+        stock: Int!
+        available: Boolean!
+        images: String!
     }
 
     input CodesInput{
         barcode: String
         jancode: String
+    }
+
+    input PriceInput{
+        amount: Int
+        currency: String
     }
 
     

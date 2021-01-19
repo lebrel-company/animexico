@@ -6,11 +6,18 @@ const ProductSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    price:{
-        type: Number,
-        required: true,
-        trim: true
-    },
+    price:[{
+        amount:{
+            type:Number,
+            required: true,
+            trim: true
+        },
+        currency:{
+            type:String,
+            required: true,
+            trim: true
+        }
+    }],
     description:{
         type: String,
         required: true,
