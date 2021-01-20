@@ -17,7 +17,8 @@ const resolvers = {
             authenticateUser:authenticateUser,
             newProduct:newProduct,
             updateProduct:updateProduct,
-            deleteProduct:deleteProduct                           
+            deleteProduct:deleteProduct,
+            newOrder:newOrder                           
         
     },         
 }
@@ -150,6 +151,33 @@ async function deleteProduct (_, { id }){
     await Product.findByIdAndDelete({_id: id});
 
     return "Product deleted"
+}
+
+async function newOrder (_,{input}, context){
+
+    const {user} = input
+    
+    //check if the user exist
+
+    let userExist = await User.findById(user)
+    if(!userExist){
+        throw new Error ('User does not exist')
+    }
+
+    for await (const piece of input.order){
+        const { id } = piece;
+
+        const product = await Product.findById(id);
+
+        if(piece.amount > product.stock){
+            throw new Error(`El articulo: ${product.name} exceed the quantity available`)
+        }
+        
+    }
+
+    
+
+    
 }
 
 module.exports = resolvers;

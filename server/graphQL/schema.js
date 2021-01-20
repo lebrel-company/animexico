@@ -57,6 +57,20 @@ const typeDefs = gql`
         currency: String
     }
 
+    type Order{
+        id: ID
+        order: [OrderGroup]
+        total: Float
+        user: ID
+        date: String
+        status: OrderStatus
+    }
+
+    type OrderGroup{
+        id: ID
+        amount: Int        
+    }
+
     
 
     input UserInput{
@@ -110,7 +124,27 @@ const typeDefs = gql`
         currency: String
     }
 
-    
+    #order schema input
+
+    input OrderProductInput{
+        id: ID
+        amount: Int!
+        
+    }
+
+    input OrderInput {
+        order: [OrderProductInput]
+        total: Float!
+        user: ID!
+        status: String
+    }
+
+    enum OrderStatus{
+        PENDING
+        COMPLETED
+        CANCEL
+
+    }
 
     type Query {
         #Users
@@ -130,6 +164,9 @@ const typeDefs = gql`
         newProduct(input: ProductInput) : Product
         updateProduct( id: ID!, input: ProductInput ) : Product
         deleteProduct( id : ID! ): String
+
+        #Orders
+        newOrder(input: OrderInput): Order
        
     }
 `;
