@@ -14,12 +14,24 @@ const typeDefs = gql`
         birthday: String
         cellphone: String
         city: String
-        address: [Address] 
+        address: [Address]
+        secondaryAddress: [secondaryAddress] 
         access: String!
         created: String
     }
 
     type Address {
+        
+        city: String
+        state: String
+        country: String
+        zipcode: Int
+        street: String
+        buildingNumber: String
+        apartmentNumber: String
+    }
+
+    type secondaryAddress {
         
         city: String
         state: String
@@ -53,7 +65,7 @@ const typeDefs = gql`
     }
 
     type Price{
-        amount: Int
+        amount: Float
         currency: String
     }
 
@@ -62,7 +74,7 @@ const typeDefs = gql`
         order: [OrderGroup]
         total: Float
         user: ID
-        date: String
+        created: String
         status: OrderStatus
     }
 
@@ -82,7 +94,8 @@ const typeDefs = gql`
         password: String!
         birthday: String!
         cellphone: String!
-        address: [AddressInput!] 
+        address: [AddressInput!]
+        secondaryAddress: [SecondaryAddressInput]
         access: String!
         
     }
@@ -94,6 +107,17 @@ const typeDefs = gql`
         zipcode: Int!
         street: String!
         buildingNumber: String!
+        apartmentNumber: String
+        
+    }
+
+    input SecondaryAddressInput {
+        city: String
+        state: String
+        country: String
+        zipcode: Int
+        street: String
+        buildingNumber: String
         apartmentNumber: String
         
     }
@@ -120,7 +144,7 @@ const typeDefs = gql`
     }
 
     input PriceInput{
-        amount: Int
+        amount: Float
         currency: String
     }
 

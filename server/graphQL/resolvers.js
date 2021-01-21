@@ -1,5 +1,9 @@
 const User = require('../models/User');
 const Product = require('../models/Product');
+const Order = require('../models/Order');
+
+
+
 const bcryptsjs = require ('bcryptjs');
 require('dotenv').config({ path: 'variables.env' });
 const jasonWebToken = require('jsonwebtoken')
@@ -24,16 +28,22 @@ const resolvers = {
 }
 
 async function createNewUser(parent, {input}, context, info){
-    const{email, password} = input;
+    const{email, password, birthday} = input;
 
+    let age = getAge(birthday)
+
+    if(age < 18){
+        throw new Error('You are not of legal age')
+    }  
+
+    
     const userExists = await User.findOne({email})
     if(userExists){
         throw new Error('The user is already registered')
     }
     // TODO: Hash the password or any other data that require.
     const salt = await bcryptsjs.genSalt(10)
-    input.password = await bcryptsjs.hash(password, salt);
-
+    input.password = await bcryptsjs.hash(password, salt);    
 
     try {
         //save new user in database
@@ -171,13 +181,34 @@ async function newOrder (_,{input}, context){
 
         if(piece.amount > product.stock){
             throw new Error(`El articulo: ${product.name} exceed the quantity available`)
+        }else{
+            //subtract from available quantity
+            product.stock = product.stock - piece.amount;
+
+            await product.save()
         }
         
     }
-
+    //create new order
+    const newOrder = new Order(input);
     
-
+    //assign new order
+    newOrder.user = newOrder.user
     
+    const result = await newOrder.save()   
+
+    return result
+    
+}
+function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
 }
 
 module.exports = resolvers;

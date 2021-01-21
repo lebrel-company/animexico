@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const ProductSchema = mongoose.Schema({
     order:{
         type:Array,
@@ -7,7 +8,7 @@ const ProductSchema = mongoose.Schema({
     },
     total:{
         type: Number,
-        required
+        required: true
     },
     user:{
         type: mongoose.SchemaTypes.ObjectId,
@@ -21,8 +22,7 @@ const ProductSchema = mongoose.Schema({
     created:{
         type: Date,
         default: Date.now()
-    } 
+    }
 });
-
 
 module.exports = mongoose.model('Order', ProductSchema);
