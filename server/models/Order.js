@@ -15,6 +15,11 @@ const ProductSchema = mongoose.Schema({
         required: true,
         ref:'User'
     },
+    address:{
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true,
+        ref:'User'
+    },
     status:{
         type: String,
         default: "PRENDIENTE"

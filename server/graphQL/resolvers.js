@@ -14,7 +14,8 @@ const resolvers = {
         Query:{
             getUser:getUser,
             getProducts:getProducts,
-            getProduct:getProduct
+            getProduct:getProduct,
+            
     },
         Mutation:{
             createNewUser: createNewUser ,
@@ -22,7 +23,9 @@ const resolvers = {
             newProduct:newProduct,
             updateProduct:updateProduct,
             deleteProduct:deleteProduct,
-            newOrder:newOrder                           
+            newOrder:newOrder,
+            deleteUser:deleteUser,
+            updateUser:updateUser                          
         
     },         
 }
@@ -91,7 +94,7 @@ async function getUser(_,{id}){
       const user = await User.findById(id)
 
       if(!user){
-        throw new Error('Product not found')
+        throw new Error('User not found')
     }
 
     return user;
@@ -165,7 +168,8 @@ async function deleteProduct (_, { id }){
 
 async function newOrder (_,{input}, context){
 
-    const {user} = input
+    const {user, address} = input;
+    
     
     //check if the user exist
 
@@ -190,16 +194,53 @@ async function newOrder (_,{input}, context){
         
     }
     //create new order
-    const newOrder = new Order(input);
+    const newOrder = new Order(input);    
     
+
     //assign new order
-    newOrder.user = newOrder.user
+    newOrder.user = newOrder.user; 
+    
+    
     
     const result = await newOrder.save()   
 
     return result
     
 }
+async function deleteUser (_, { id }){
+
+    //check if the product exist
+    let user = await User.findById(id);
+
+    if(!user){
+        throw new Error('User not found');
+    }
+
+    //Remove product
+    await User.findByIdAndDelete({_id: id});
+
+    return "User deleted"
+}
+
+async function updateUser(_, {id,input}){
+    const{ password } = input;
+    
+
+    //check if the user exist
+    let user = await User.findById(id);
+    
+    if(!user){
+        throw new Error('User not found')
+    }
+    const salt = await bcryptsjs.genSalt(10)
+    input.password = await bcryptsjs.hash(password, salt); 
+    
+    user = await User.findOneAndUpdate({_id : id}, input, {new: true});
+
+    return user;
+
+}
+
 function getAge(dateString) {
     var today = new Date();
     var birthDate = new Date(dateString);

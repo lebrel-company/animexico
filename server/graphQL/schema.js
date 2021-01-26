@@ -13,15 +13,13 @@ const typeDefs = gql`
         email: String
         birthday: String
         cellphone: String
-        city: String
         address: [Address]
         secondaryAddress: [secondaryAddress] 
         access: String!
         created: String
     }
 
-    type Address {
-        
+    type Address {        
         city: String
         state: String
         country: String
@@ -74,6 +72,7 @@ const typeDefs = gql`
         order: [OrderGroup]
         total: Float
         user: ID
+        address: ID
         created: String
         status: OrderStatus
     }
@@ -160,6 +159,7 @@ const typeDefs = gql`
         order: [OrderProductInput]
         total: Float!
         user: ID!
+        address: ID!
         status: String
     }
 
@@ -177,17 +177,21 @@ const typeDefs = gql`
         #Products
         getProducts:[Product]
         getProduct(id : ID!) : Product
+        
     }
 
     type Mutation {
         #Users
         createNewUser(input: UserInput) : User        
         authenticateUser(input: authenticateInput): Token
+        deleteUser( id : ID!) : String
+        updateUser( id: ID!, input: UserInput ) : User
 
         #Productos
         newProduct(input: ProductInput) : Product
         updateProduct( id: ID!, input: ProductInput ) : Product
         deleteProduct( id : ID! ): String
+
 
         #Orders
         newOrder(input: OrderInput): Order
