@@ -222,8 +222,11 @@ async function deleteUser (_, { id }){
     return "User deleted"
 }
 
-async function updateUser(_, {id,input}){
-    const{ password } = input;
+async function updateUser(_, {email,input}){
+
+    console.log(email)
+
+    /*const { password } = input;
     
 
     //check if the user exist
@@ -237,9 +240,10 @@ async function updateUser(_, {id,input}){
     
     user = await User.findOneAndUpdate({_id : id}, input, {new: true});
 
-    return user;
+    return user;*/
 
 }
+
 
 function getAge(dateString) {
     var today = new Date();

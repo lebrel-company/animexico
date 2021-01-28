@@ -185,6 +185,8 @@ const typeDefs = gql`
         createNewUser(input: UserInput) : User        
         authenticateUser(input: authenticateInput): Token
         deleteUser( id : ID!) : String
+
+
         updateUser( id: ID!, input: UserInput ) : User
 
         #Productos
