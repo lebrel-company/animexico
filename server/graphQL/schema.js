@@ -82,6 +82,14 @@ const typeDefs = gql`
         amount: Int        
     }
 
+    type resetPassword{
+        email: String!
+        password: String!
+        confirmPassword: String!
+        
+        
+    }
+
     
 
     input UserInput{
@@ -163,6 +171,14 @@ const typeDefs = gql`
         status: String
     }
 
+    input resetPasswordInput{
+        email: String!
+        password: String!
+        confirmPassword: String!
+        
+        
+    }
+
     enum OrderStatus{
         PENDING
         COMPLETED
@@ -185,9 +201,8 @@ const typeDefs = gql`
         createNewUser(input: UserInput) : User        
         authenticateUser(input: authenticateInput): Token
         deleteUser( id : ID!) : String
-
-
         updateUser( id: ID!, input: UserInput ) : User
+        resetPassword(input: resetPasswordInput) : User
 
         #Productos
         newProduct(input: ProductInput) : Product

@@ -25,7 +25,8 @@ const resolvers = {
             deleteProduct:deleteProduct,
             newOrder:newOrder,
             deleteUser:deleteUser,
-            updateUser:updateUser                          
+            updateUser:updateUser,
+            resetPassword:resetPassword                          
         
     },         
 }
@@ -222,11 +223,11 @@ async function deleteUser (_, { id }){
     return "User deleted"
 }
 
-async function updateUser(_, {email,input}){
+async function updateUser(_, {id,input}){
 
-    console.log(email)
+    
 
-    /*const { password } = input;
+    const { password } = input;
     
 
     //check if the user exist
@@ -240,7 +241,31 @@ async function updateUser(_, {email,input}){
     
     user = await User.findOneAndUpdate({_id : id}, input, {new: true});
 
-    return user;*/
+    return user;
+
+}
+
+
+
+async function resetPassword(parent, {input}, context, info){ 
+    
+    const {email, password, confirmPassword} = input
+
+    let user = await User.findOne({email});
+    if(!user){
+        throw new Error('User not found')
+    }
+    if(password !== confirmPassword){
+        throw new Error ('The password is not the same')
+    }
+    const salt = await bcryptsjs.genSalt(10)
+    input.password = await bcryptsjs.hash(password, salt);
+
+    let  id = user.id;
+
+    user = await User.findByIdAndUpdate({_id : id }, input, {new: true})
+
+    return user;
 
 }
 
