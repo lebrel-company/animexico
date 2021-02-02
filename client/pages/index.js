@@ -1,12 +1,35 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
+import { gql, useQuery } from '@apollo/client';
 
-export default function index() {
-  return (
+
+const GET_USER = gql`
+query getUser($token:String!){
+  getUser(token:$token){
+    id
+    name
+    email
+    cellphone
+  }
+}
+`;
+
+
+
+function Index(){
+
+  //apollo 
+  const { data } = useQuery(GET_USER)
+
+  console.log(data)
+
+  
+
+  return(
     <div>
-      <Layout>
-          <h2>Desde Index</h2>          
-      </Layout>
+      <h1>Index</h1>
     </div>
   )
 }
+
+export default Index;

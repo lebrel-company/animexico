@@ -188,7 +188,8 @@ const typeDefs = gql`
 
     type Query {
         #Users
-        getUser(id: ID!) : User
+        getUser(token: String!) : User
+        getUserInfo: User
 
         #Products
         getProducts:[Product]

@@ -15,6 +15,7 @@ const resolvers = {
             getUser:getUser,
             getProducts:getProducts,
             getProduct:getProduct,
+            getUserInfo:getUserInfo
             
     },
         Mutation:{
@@ -85,21 +86,45 @@ async function authenticateUser(parent, {input}, context, info){
 
 function createToken(user, secret, expiresIn){
     //console.log(user);
-    const {id, email, name, lastname, address} = user;
+    const {id,
+        name, 
+        middleName,
+        lastname,
+        secondLastname,
+        email,
+        birthday,
+        cellphone,
+        address, 
+        secondAddress} = user;
 
-    return jasonWebToken.sign({ id, email, name, lastname, address }, secret, {expiresIn})
+    return jasonWebToken.sign({ id,
+                                name,
+                                middleName,
+                                lastname,
+                                secondLastname,
+                                email,
+                                birthday,
+                                cellphone,
+                                address,
+                                secondAddress}, secret, {expiresIn})
 }
 
-async function getUser(_,{id}){
+async function getUser(_,{token}){
 
-      const user = await User.findById(id)
+      const userId = await jasonWebToken.verify(token, process.env.SECRET)
 
-      if(!user){
-        throw new Error('User not found')
-    }
-
-    return user;
+      return userId;
     
+}
+
+async function getUserInfo(_,{},context){
+    try{
+        const user = await User.find({User: context.user.id.toString()});
+        return user
+        console.log(user)
+    } catch(error){
+        console.log(error);
+    }
 }
 
 //Products resolvers
