@@ -117,14 +117,16 @@ async function getUser(_,{token}){
     
 }
 
-async function getUserInfo(_,{},context){
-    try{
-        const user = await User.find({User: context.user.id.toString()});
-        return user
-        console.log(user)
-    } catch(error){
-        console.log(error);
-    }
+async function getUserInfo(parent,{},context,info){
+    //console.log('myContext',context);
+    
+    
+    //const user = await User.findOne({_id: context.user.id.toString()})
+    const user = await User.findById(context.user.id);
+    
+    return user
+
+    
 }
 
 //Products resolvers

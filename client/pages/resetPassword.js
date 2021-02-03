@@ -120,7 +120,7 @@ const RESET_PASSWORD = gql`
                                 <input
                                     className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="confirmPassword"
-                                    type="confirmPassword"
+                                    type="Password"
                                     placeholder="Confirma Contraseña"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleChange}
