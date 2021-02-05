@@ -250,11 +250,18 @@ async function deleteUser (_, { id }){
     return "User deleted"
 }
 
-async function updateUser(_, {id,input}){
-
+async function updateUser(_, {input}, context){
     
+    //console.log(context)
+    let user = await User.findById(context.user.id);
 
-    const { password } = input;
+    let id = user.id
+
+    user = await User.findOneAndUpdate({_id : id}, input, {new: true});
+    console.log(user)
+    return user
+    
+    /*const { password } = input;
     
 
     //check if the user exist
@@ -268,7 +275,7 @@ async function updateUser(_, {id,input}){
     
     user = await User.findOneAndUpdate({_id : id}, input, {new: true});
 
-    return user;
+    return user;*/
 
 }
 

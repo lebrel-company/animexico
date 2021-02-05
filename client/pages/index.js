@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import { gql, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 
 const GET_USER = gql`
@@ -37,7 +39,10 @@ query getUserInfo{
 
 
 
+
 function Index(){
+
+  const router = useRouter();
 
   //apollo 
   const { data, loading, error } = useQuery(GET_USER)
@@ -47,13 +52,25 @@ function Index(){
   console.log(error)
 
   
+
+  
   if(loading) return 'Cargando...';
+
+  /*if(!data.getUserInfo){
+    return router.push('/login')
+  }*/
+
+  
+
   
 
   return(
     <div>
       <Layout>
         <h1>Index</h1>
+        <Link href="/editUser">
+          <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Editar Usuario</a>
+        </Link>
 
         <table className="table-auto shadow-md mt-10 w-full w-lg">
           <thead className="bg-gray-800">
@@ -95,14 +112,12 @@ function Index(){
             </tr>
             <tr >
               <td className="border px-4 py-2">Numero {data.getUserInfo.address[0].buildingNumber}</td>              
-            </tr>
-            <tr >
-              <td className="border px-4 py-2">Interior {data.getUserInfo.address[0].apartmentNumber}</td>              
-            </tr>
-            <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.secondaryAddress[0].city}</td>              
-            </tr>
+            </tr>                  
+            
+            
           </tbody>
+          
+
         </table>
       </Layout>      
     </div>

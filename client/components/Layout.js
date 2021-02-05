@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Head from 'next/head';
+import Header from '../components/Header'
 import { Router, useRouter } from 'next/router';
 
 function Layout({children}){
@@ -25,6 +26,7 @@ function Layout({children}){
                 </div>
             ) : (
                 <div className="bg-white min-h-screen font-mono">
+                    <Header/>
                     { children }
                 </div>
             )}
