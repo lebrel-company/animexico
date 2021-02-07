@@ -5,7 +5,7 @@ services:
     container_name: 'mongo'
     restart: always
     volumes:
-      - ./mongoVolune:/data/db
+      - ./mongoVolume:/data/db
     ports: 
       - '27017:27017'
     logging:
