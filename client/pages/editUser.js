@@ -23,9 +23,6 @@ const EDIT_USER = gql`
 
 `;
 
-
-
-
 function editUser() {
 
     //Mutation to Edit User

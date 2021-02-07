@@ -57,7 +57,7 @@ const RESET_PASSWORD = gql`
 
 
     return(
-        <>
+        <div>
             <Layout>
                 <h1 className="text-center text-black">Reiniciar Contraseña</h1> 
 
@@ -151,7 +151,7 @@ const RESET_PASSWORD = gql`
                     
             </Layout>            
             
-        </>
+        </div>
             
         
         

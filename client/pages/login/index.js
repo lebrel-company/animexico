@@ -1,5 +1,5 @@
 import Ract, {useState} from 'react'
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { gql, useMutation } from '@apollo/client';
@@ -14,7 +14,7 @@ const AUTHENTICATE_USER = gql`
     }
 `;
 
-function Login(){
+function Index(){
     const router = useRouter();
     const [ message, saveMessage ] = useState(null);
     const [ authenticateUser ] = useMutation(AUTHENTICATE_USER);
@@ -69,7 +69,6 @@ function Login(){
         }      
     });
 
-
     function showMessage(){
         return(
             <div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
@@ -77,7 +76,6 @@ function Login(){
             </div>
         )
     }
-
 
     return(
         <>
@@ -151,4 +149,4 @@ function Login(){
     
 }
 
-export default Login
+export default Index
