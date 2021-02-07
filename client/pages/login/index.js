@@ -15,31 +15,22 @@ const AUTHENTICATE_USER = gql`
 `;
 
 function Login(){
-
-
-    //routing
     const router = useRouter();
-
-
     const [ message, saveMessage ] = useState(null);
-
     const [ authenticateUser ] = useMutation(AUTHENTICATE_USER);
-
-
     const formik = useFormik({
-
         initialValues: {
             email:'',
             password:'' 
         },
         validationSchema: Yup.object({
             email: Yup.string()
-                        .email('El email no es valido')
-                        .required('El email no puede ir vacio'),
+                        .email('Email no es valido')
+                        .required('Email es obligatorio.'),
             password: Yup.string()
-                        .required('El password es obligatorio')
+                        .required('Password es obligatorio.')
         }),
-        onSubmit: async values => {
+        onSubmit: async function submit_data(values){
             //console.log(values);
             const { email, password } = values;
 

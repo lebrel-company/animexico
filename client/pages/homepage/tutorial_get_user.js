@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import { gql, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -40,29 +40,29 @@ query getUserInfo{
 
 
 
-function Index(){
+function GetUser(){
 
   const router = useRouter();
 
-  //apollo 
+  //apollo
   const { data, loading, error } = useQuery(GET_USER)
 
   console.log(data)
   console.log(loading)
   console.log(error)
 
-  
 
-  
+
+
   if(loading) return 'Cargando...';
 
   /*if(!data.getUserInfo){
     return router.push('/login')
   }*/
 
-  
 
-  
+
+
 
   return(
     <div>
@@ -81,47 +81,43 @@ function Index(){
 
           <tbody className="bg-white">
             <tr key={data.getUserInfo.id}>
-              <td className="border px-4 py-2">{data.getUserInfo.name}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.name}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.lastname}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.lastname}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.secondLastname}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.secondLastname}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.email}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.email}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.cellphone}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.cellphone}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.address[0].city}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.address[0].city}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.address[0].state}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.address[0].state}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.address[0].country}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.address[0].country}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">C.P. {data.getUserInfo.address[0].zipcode}</td>              
+              <td className="border px-4 py-2">C.P. {data.getUserInfo.address[0].zipcode}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">{data.getUserInfo.address[0].street}</td>              
+              <td className="border px-4 py-2">{data.getUserInfo.address[0].street}</td>
             </tr>
             <tr >
-              <td className="border px-4 py-2">Numero {data.getUserInfo.address[0].buildingNumber}</td>              
-            </tr>                  
-            
-            
+              <td className="border px-4 py-2">Numero {data.getUserInfo.address[0].buildingNumber}</td>
+            </tr>
           </tbody>
-          
-
         </table>
-      </Layout>      
+      </Layout>
     </div>
   )
 }
 
-export default Index;
+export default GetUser;
