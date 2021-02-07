@@ -15,6 +15,7 @@ const resolvers = {
             getUser:getUser,
             getProducts:getProducts,
             getProduct:getProduct,
+            getUserInfo:getUserInfo
             
     },
         Mutation:{
@@ -25,7 +26,8 @@ const resolvers = {
             deleteProduct:deleteProduct,
             newOrder:newOrder,
             deleteUser:deleteUser,
-            updateUser:updateUser                          
+            updateUser:updateUser,
+            resetPassword:resetPassword                          
         
     },         
 }
@@ -84,20 +86,46 @@ async function authenticateUser(parent, {input}, context, info){
 
 function createToken(user, secret, expiresIn){
     //console.log(user);
-    const {id, email, name, lastname, address} = user;
+    const {id,
+        name, 
+        middleName,
+        lastname,
+        secondLastname,
+        email,
+        birthday,
+        cellphone,
+        address, 
+        secondAddress} = user;
 
-    return jasonWebToken.sign({ id, email, name, lastname, address }, secret, {expiresIn})
+    return jasonWebToken.sign({ id,
+                                name,
+                                middleName,
+                                lastname,
+                                secondLastname,
+                                email,
+                                birthday,
+                                cellphone,
+                                address,
+                                secondAddress}, secret, {expiresIn})
 }
 
-async function getUser(_,{id}){
+async function getUser(_,{token}){
 
-      const user = await User.findById(id)
+      const userId = await jasonWebToken.verify(token, process.env.SECRET)
 
-      if(!user){
-        throw new Error('User not found')
-    }
+      return userId;
+    
+}
 
-    return user;
+async function getUserInfo(parent,{},context,info){
+    //console.log('myContext',context);
+    
+    
+    //const user = await User.findOne({_id: context.user.id.toString()})
+    const user = await User.findById(context.user.id);
+    
+    return user
+
     
 }
 
@@ -222,8 +250,18 @@ async function deleteUser (_, { id }){
     return "User deleted"
 }
 
-async function updateUser(_, {id,input}){
-    const{ password } = input;
+async function updateUser(_, {input}, context){
+    
+    //console.log(context)
+    let user = await User.findById(context.user.id);
+
+    let id = user.id
+
+    user = await User.findOneAndUpdate({_id : id}, input, {new: true});
+    console.log(user)
+    return user
+    
+    /*const { password } = input;
     
 
     //check if the user exist
@@ -237,9 +275,34 @@ async function updateUser(_, {id,input}){
     
     user = await User.findOneAndUpdate({_id : id}, input, {new: true});
 
+    return user;*/
+
+}
+
+
+
+async function resetPassword(parent, {input}, context, info){ 
+    
+    const {email, password, confirmPassword} = input
+
+    let user = await User.findOne({email});
+    if(!user){
+        throw new Error('User not found')
+    }
+    if(password !== confirmPassword){
+        throw new Error ('The password is not the same')
+    }
+    const salt = await bcryptsjs.genSalt(10)
+    input.password = await bcryptsjs.hash(password, salt);
+
+    let  id = user.id;
+
+    user = await User.findByIdAndUpdate({_id : id }, input, {new: true})
+
     return user;
 
 }
+
 
 function getAge(dateString) {
     var today = new Date();

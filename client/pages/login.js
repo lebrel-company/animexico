@@ -1,9 +1,30 @@
-import Ract from 'react'
+import Ract, {useState} from 'react'
 import Layout from '../components/Layout';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+
+
+const AUTHENTICATE_USER = gql`
+    mutation authenticateUser($input: authenticateInput ){
+        authenticateUser(input: $input){
+            token
+        }
+    }
+`;
 
 function Login(){
+
+
+    //routing
+    const router = useRouter();
+
+
+    const [ message, saveMessage ] = useState(null);
+
+    const [ authenticateUser ] = useMutation(AUTHENTICATE_USER);
+
 
     const formik = useFormik({
 
@@ -18,16 +39,62 @@ function Login(){
             password: Yup.string()
                         .required('El password es obligatorio')
         }),
-        onSubmit: valores => {
-            console.log(valores);
+        onSubmit: async values => {
+            //console.log(values);
+            const { email, password } = values;
+
+            try {
+                const { data } = await authenticateUser({
+                    variables:{
+                        input:{
+                            email,
+                            password
+                        }
+                    }
+                });
+                console.log(data);
+                saveMessage('Autenticando...')
+
+                //save token in the storage
+                const { token } = data.authenticateUser;
+                localStorage.setItem('token', token);
+
+                //routing to index
+
+                setTimeout(() => {
+                    saveMessage(null);
+                    router.push('/');
+                },500);
+
+
+            } catch (error) {
+                saveMessage(error.message.replace('GraphQl error: ', ''))
+                //console.log(error)
+
+                setTimeout(() => {
+                    saveMessage(null)
+                },3000);
+            }
         }      
     });
+
+
+    function showMessage(){
+        return(
+            <div className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+                <p>{message}</p>
+            </div>
+        )
+    }
 
 
     return(
         <>
             <Layout>
-                <h1 className="text-center text-black">Login</h1> 
+                <h1 className="text-center text-black">Login</h1>
+
+                { message && showMessage()}
+
                 <div className="flex justify-center mt-5">
                     <div className="w-full max-w-sm">
                         <form
@@ -58,7 +125,7 @@ function Login(){
 
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                                    paswword
+                                    password
                                 </label>
                                 <input
                                     className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
