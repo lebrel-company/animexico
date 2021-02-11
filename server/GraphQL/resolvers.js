@@ -259,23 +259,8 @@ async function updateUser(_, {input}, context){
 
     user = await User.findOneAndUpdate({_id : id}, input, {new: true});
     console.log(user)
+    
     return user
-    
-    /*const { password } = input;
-    
-
-    //check if the user exist
-    let user = await User.findById(id);
-    
-    if(!user){
-        throw new Error('User not found')
-    }
-    const salt = await bcryptsjs.genSalt(10)
-    input.password = await bcryptsjs.hash(password, salt); 
-    
-    user = await User.findOneAndUpdate({_id : id}, input, {new: true});
-
-    return user;*/
 
 }
 

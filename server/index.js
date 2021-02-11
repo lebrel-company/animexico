@@ -2,14 +2,15 @@
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./graphQL/schema.js');
 const resolvers = require('./graphQL/resolvers.js')
-const jasonWebToken = require('jsonwebtoken')
-
+const jsonWebToken = require('jsonwebtoken')
 
 const mongoConection = require('./config/database.js');
 
 
 //Conect to data base
 mongoConection();
+
+
 
 //server
 const server = new ApolloServer({
@@ -22,7 +23,7 @@ const server = new ApolloServer({
         const token = req.headers['authorization'] || '';
         if(token){
             try {
-                const user = jasonWebToken.verify(token.replace('Bearer ', ''), process.env.SECRET);
+                const user = jsonWebToken.verify(token.replace('Bearer ', ''), process.env.SECRET);
                 //console.log(user)
                 return{
                     user

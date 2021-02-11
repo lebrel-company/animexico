@@ -6,26 +6,27 @@ const typeDefs = gql`
 
     type User{
         id: ID
-        name: String
+        name: String!
         middleName: String
-        lastname: String
+        lastname: String!
         secondLastname: String
         email: String
         birthday: String
         cellphone: String
         address: [Address]
         secondaryAddress: [secondaryAddress] 
-        access: String!
+        access: String
         created: String
     }
 
     type Address {        
-        city: String
-        state: String
-        country: String
-        zipcode: Int
-        street: String
-        buildingNumber: String
+        city: String!
+        state: String!
+        country: String!
+        zipcode: Int!
+        suburb: String!
+        street: String!
+        buildingNumber: String!
         apartmentNumber: String
     }
 
@@ -35,6 +36,7 @@ const typeDefs = gql`
         state: String
         country: String
         zipcode: Int
+        suburb: String
         street: String
         buildingNumber: String
         apartmentNumber: String
@@ -103,11 +105,16 @@ const typeDefs = gql`
         cellphone: String!
         address: [AddressInput!]
         secondaryAddress: [SecondaryAddressInput]
-        access: String!
+        access: String
         
     }
 
     input UpdateUserInput{
+        id: ID
+        name: String
+        middleName: String
+        lastname: String
+        secondLastname: String
         cellphone: String
         address: [AddressInput!]
     }
@@ -117,6 +124,7 @@ const typeDefs = gql`
         state: String!
         country: String!
         zipcode: Int!
+        suburb: String!
         street: String!
         buildingNumber: String!
         apartmentNumber: String
@@ -128,6 +136,7 @@ const typeDefs = gql`
         state: String
         country: String
         zipcode: Int
+        suburb: String
         street: String
         buildingNumber: String
         apartmentNumber: String
