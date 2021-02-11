@@ -3,9 +3,11 @@ import { setContext } from 'apollo-link-context';
 import fetch from 'node-fetch'
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:4000/',
+    uri: '/api',
     fetch
 });
+
+
 
 const authLink = setContext((_, { headers }) => {
 
@@ -21,6 +23,7 @@ const authLink = setContext((_, { headers }) => {
     }
 
 });
+
 
 const client = new ApolloClient({
     connectToDevTools: true,

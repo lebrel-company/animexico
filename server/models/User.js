@@ -64,11 +64,17 @@ const UserSchema = mongoose.Schema({
             required: true,
             trim: true
         },
+        suburb:{
+            type: String,
+            required: true,
+            trim: true
+        },
         street:{
             type: String,
             required: true,
             trim: true
         },
+        
         buildingNumber:{
             type: String,
             required: true,
@@ -100,6 +106,11 @@ const UserSchema = mongoose.Schema({
         },
         zipcode:{
             type: Number,
+            required: true,
+            trim: true
+        },
+        suburb:{
+            type: String,
             required: true,
             trim: true
         },

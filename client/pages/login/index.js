@@ -1,9 +1,9 @@
-import Ract, {useState} from 'react'
-import Layout from '../../components/Layout';
+import React, {useState} from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 
 const AUTHENTICATE_USER = gql`
@@ -78,22 +78,21 @@ function Index(){
     }
 
     return(
-        <>
-            <Layout>
+        <>  
+
+            
                 <h1 className="text-center text-black">Login</h1>
 
                 { message && showMessage()}
 
-                <div className="flex justify-center mt-5">
+                <div className="mt-5">
                     <div className="w-full max-w-sm">
                         <form
                             className="bg-gray-100 px-8 pt-6 pb-8 mb-4"
                             onSubmit={formik.handleSubmit}
                         >
                             <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                                    Email
-                                </label>
+                                
                                 <input
                                     className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="email"
@@ -112,10 +111,7 @@ function Index(){
                                 </div>
                             ): null }
 
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                                    password
-                                </label>
+                           
                                 <input
                                     className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="password"
@@ -125,7 +121,7 @@ function Index(){
                                     onBlur={formik.handleBlur}
                                     value={formik.values.password}
                                 />
-                            </div>
+                            
 
                             { formik.touched.password && formik.errors.password ? (
                                 <div className= "my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
@@ -134,16 +130,29 @@ function Index(){
                                 </div>
                             ): null }
 
-                            <input
-                                type="submit"
-                                className="bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
-                                value="Iniciar Sesión"
+                            <div>
+                                <input
+                                    type="submit"
+                                    className="bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
+                                    value="Login"
+                                
+                                />
+                            </div>
+                            <Link href="/signup">
+                                <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Crear Cuenta</a>
+                            </Link>
+                            <div>
+                                <Link href="/resetPassword">
+                                    <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Restaurar Contraseña</a>
+                                </Link>
+                            </div>
                             
-                            />
+                            
                         </form>
                     </div>
                 </div>
-            </Layout>            
+                        
+                          
         </>
     )
     
