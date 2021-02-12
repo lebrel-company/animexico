@@ -8,7 +8,7 @@ const host = keys.mongoHost;
 const database = keys.mongoDatabase;
 
 var connection_string = null;
-if (process.env.MODE == 'pro'){
+if (process.env.NODE_ENV == 'production'){
     connection_string = `mongodb://${username}:${password}@${host}/${database}`;
 }
 else{
