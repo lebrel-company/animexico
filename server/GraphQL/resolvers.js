@@ -95,7 +95,7 @@ function createToken(user, secret, expiresIn){
         birthday,
         cellphone,
         address, 
-        secondAddress} = user;
+        secondaryAddress} = user;
 
     return jasonWebToken.sign({ id,
                                 name,
@@ -106,7 +106,7 @@ function createToken(user, secret, expiresIn){
                                 birthday,
                                 cellphone,
                                 address,
-                                secondAddress}, secret, {expiresIn})
+                                secondaryAddress}, secret, {expiresIn})
 }
 
 async function getUser(_,{token}){

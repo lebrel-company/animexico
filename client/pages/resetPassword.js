@@ -152,4 +152,8 @@ const RESET_PASSWORD = gql`
     )
 };
 
+var data = {
+    title: 'Dirección Trabajo'
+}
+
 export default resetPassword;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFormik, ErrorMessage } from 'formik';
 import { gql, useMutation } from '@apollo/client';
+import * as Yup from 'yup';
 
 const NEW_USER = gql `
     mutation createNewUser($input: UserInput){
@@ -55,6 +56,28 @@ const NEW_USER = gql `
            apartmentNumber: '',
        }
      },
+     validationSchema: Yup.object({
+        name: Yup.string()
+                    .required('Espacio Obligatorio'),
+        lastName: Yup.string()
+                    .required('Espacio Obligatorio'),
+        secondLastname: Yup.string()
+                    .required('Espacio Obligatorio'),
+        email: Yup.string()
+                    .email('El correo no es valido')
+                    .required('Espacio Obligatorio'),
+        password: Yup.string()                    
+                    .required('Espacio Obligatorio'),
+        birthday: Yup.string()                    
+                    .required('Espacio Obligatorio'),
+        cellphone: Yup.string()                    
+                    .required('Espacio Obligatorio'), 
+        address: Yup.string()
+                    .required('Espacio Obligatorio'),         
+           
+        
+        
+     }),
      onSubmit: async values => {
       console.log(values)
         const {
@@ -124,6 +147,12 @@ const NEW_USER = gql `
                 value={formik.values.firstName}
             />
        </div>
+       {formik.touched.name && formik.errors.name ? (
+            <div>                   
+                <p>{formik.errors.name}</p>
+            </div>
+            ): null }
+
        <div>
             <input
                 id="middleName"
@@ -148,6 +177,12 @@ const NEW_USER = gql `
             />
        </div>
 
+       {formik.touched.lastName && formik.errors.lastName ? (
+            <div>                   
+                <p>{formik.errors.lastName}</p>
+            </div>
+            ): null }
+
        <div>
             <input
                 id="secondLastname"
@@ -159,6 +194,11 @@ const NEW_USER = gql `
                 value={formik.values.secondLastname}
             />
        </div>
+       {formik.touched.secondLastname && formik.errors.secondLastname ? (
+            <div>                   
+                <p>{formik.errors.secondLastname}</p>
+            </div>
+            ): null }
        
        <div>
             <input
@@ -171,6 +211,12 @@ const NEW_USER = gql `
                 value={formik.values.email}
             />
        </div>
+       {formik.touched.email && formik.errors.email ? (
+            <div>                   
+                <p>{formik.errors.email}</p>
+            </div>
+            ): null }
+
        <div>
             <input
                 id="password"
@@ -182,6 +228,13 @@ const NEW_USER = gql `
                 value={formik.values.password}
             />
        </div>
+       
+       {formik.touched.password && formik.errors.password ? (
+            <div>                   
+                <p>{formik.errors.password}</p>
+            </div>
+            ): null }
+
        <div>
             <input
                 id="birthday"
@@ -193,6 +246,11 @@ const NEW_USER = gql `
                 value={formik.values.birthday}
             />
        </div>
+       {formik.touched.birthday && formik.errors.birthday ? (
+            <div>                   
+                <p>{formik.errors.birthday}</p>
+            </div>
+            ): null }
        <div>
             <input
                 id="cellphone"
@@ -204,6 +262,11 @@ const NEW_USER = gql `
                 value={formik.values.cellphone}
             />
        </div>
+       {formik.touched.cellphone && formik.errors.cellphone ? (
+            <div>                   
+                <p>{formik.errors.cellphone}</p>
+            </div>
+            ): null }
        <div>
             <input
                 id="address.city"
@@ -215,6 +278,11 @@ const NEW_USER = gql `
                 value={formik.values.address.city}
             />
        </div>
+       {formik.touched.city && formik.errors.city ? (
+            <div>                   
+                <p>{formik.errors.city}</p>
+            </div>
+            ): null }
        <div>
             <input
                 id="address.state"

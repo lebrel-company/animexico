@@ -138,17 +138,18 @@ function Index(){
                                 
                                 />
                             </div>
-                            <Link href="/signup">
-                                <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Crear Cuenta</a>
-                            </Link>
-                            <div>
-                                <Link href="/resetPassword">
-                                    <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Restaurar Contraseña</a>
-                                </Link>
-                            </div>
+
                             
                             
                         </form>
+                        <Link href="/signup">
+                            <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Crear Cuenta</a>
+                        </Link>
+                        <div>
+                            <Link href="/resetPassword">
+                                <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Restaurar Contraseña</a>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                         
