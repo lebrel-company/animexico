@@ -20,6 +20,5 @@
     "yup": "^0.32.8"
   },
   "devDependencies": {
-    "lebrel-eslint-config": "https://github.com/lebrel-company/lebrel-eslint-config"
   }
 }
