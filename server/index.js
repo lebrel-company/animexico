@@ -6,20 +6,14 @@ const jsonWebToken = require('jsonwebtoken')
 
 const mongoConection = require('./config/database.js');
 
-
-//Conect to data base
 mongoConection();
 
 
-
-//server
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({req}) => {
-
-        //console.log(req.headers);
-
+        console.log(req.headers);
         const token = req.headers['authorization'] || '';
         if(token){
             try {
@@ -29,13 +23,12 @@ const server = new ApolloServer({
                     user
                 }
             } catch (error) {
-                console.log('Hubo un error');
+                console.log('There was an error');
                 console.log(error);
             }
         }
     }
 });
-
 
 
 //run server

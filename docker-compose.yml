@@ -1,6 +1,7 @@
 version: '3.1'
 services:
   nginx:
+    container_name: 'tamashii-nginx'
     restart: always
     build:
       dockerfile: Dockerfile.dev
@@ -10,6 +11,8 @@ services:
     depends_on:
       - api
       - client
+    logging:
+      driver: none
   tamashii-mongo:
     image: mongo:latest
     container_name: 'tamashii-mongo'
@@ -19,6 +22,7 @@ services:
     logging:
       driver: none
   client:
+    container_name: 'tamashii-next'
     build:
       dockerfile: Dockerfile.dev
       context: ./client
@@ -26,7 +30,10 @@ services:
       - /app/node_modules
       - ./client/:/app
       - /app/.next
+    links:
+      - api
   api:
+    container_name: 'tamashii-api'
     depends_on:
       - tamashii-mongo
     restart: always

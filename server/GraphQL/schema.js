@@ -202,13 +202,12 @@ const typeDefs = gql`
 
     type Query {
         #Users
-        getUser(token: String!) : User
-        getUserInfo: User
-
-        #Products
-        getProducts:[Product]
-        getProduct(id : ID!) : Product
+        queryUserByToken(token: String!) : User
+        queryUserInfo: User
         
+        #Products
+        queryProducts:[Product]
+        queryProduct(id : ID!) : Product
     }
 
     type Mutation {
@@ -220,7 +219,7 @@ const typeDefs = gql`
         resetPassword(input: resetPasswordInput) : User
 
         #Productos
-        newProduct(input: ProductInput) : Product
+        createNewProduct(input: ProductInput) : Product
         updateProduct( id: ID!, input: ProductInput ) : Product
         deleteProduct( id : ID! ): String
 

@@ -1,0 +1,437 @@
+{
+  "type" : "SteppedTask",
+  "inputSet" : {
+    "list" : [ ]
+  },
+  "outputSet" : {
+    "list" : [ ]
+  },
+  "step" : {
+    "children" : [ {
+      "sources" : {
+        "URL" : {
+          "type" : "string",
+          "value" : "http://localhost:5000signup"
+        }
+      },
+      "type" : "goto-url"
+    }, {
+      "sources" : {
+        "height" : {
+          "type" : "integer",
+          "value" : 1440
+        },
+        "width" : {
+          "type" : "integer",
+          "value" : 1302
+        }
+      },
+      "type" : "browser-size"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "name"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "name"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Juan"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "middleName"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Armando"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "lastName"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Manzanero"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "secondLastname"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Juarez"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "email"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "juan@gmail.com"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "password"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "test"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "birthday"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "birthday"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "birthday"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "1992-02-12"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "cellphone"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "cellphone"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "33253342323"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.city"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.city"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Guadalajara"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.state"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Jalisco"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.country"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Mexico"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.zipcode"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "44130"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.suburb"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Centro"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.street"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "Acatempan"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.buildingNumber"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "22"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.apartmentNumber"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.buildingNumber"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.apartmentNumber"
+          },
+          "type" : "element-id"
+        }
+      },
+      "type" : "click-element"
+    }, {
+      "sources" : {
+        "clear" : {
+          "type" : "boolean",
+          "value" : true
+        },
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "address.apartmentNumber"
+          },
+          "type" : "element-id"
+        },
+        "keys" : {
+          "type" : "string",
+          "value" : "1"
+        }
+      },
+      "type" : "send-keys"
+    }, {
+      "sources" : {
+        "element" : {
+          "source" : {
+            "type" : "string",
+            "value" : "button"
+          },
+          "type" : "css-selector"
+        }
+      },
+      "type" : "click-element"
+    } ],
+    "type" : "compound"
+  },
+  "tags" : [ ]
+}

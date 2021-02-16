@@ -4,16 +4,14 @@ import fetch from 'node-fetch'
 
 const httpLink = createHttpLink({
     uri: '/api',
-    fetch
+    fetch: fetch
 });
 
 
 
 const authLink = setContext((_, { headers }) => {
-
     //Read the token storage
     const token = localStorage.getItem('token');
-    
     return{
         headers:{
             ...headers,
@@ -21,7 +19,6 @@ const authLink = setContext((_, { headers }) => {
             
         }
     }
-
 });
 
 
