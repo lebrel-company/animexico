@@ -9,25 +9,16 @@ const httpLink = createHttpLink({
 });
 
 
-
 const authLink = setContext((_, { headers }) => {
-    
-
     //Read the token storage
     const token = localStorage.getItem('token');
-
-    
-    
-    
     return{
-       
-        headers:{            
+        headers:{
             ...headers,
-            authorization: token ? `Bearer ${token}` : ''               
-        },
-                
+            authorization: token ? `Bearer ${token}` : ''
+            
+        }
     }
-    
 });
 
 
@@ -38,3 +29,4 @@ const client = new ApolloClient({
 });
 
 export default client;
+

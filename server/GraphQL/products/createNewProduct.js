@@ -2,6 +2,7 @@
 const Product = require('../../models/Product');
 
 async function createNewProduct (_,{input}){
+
     try {
         const newProduct = new Product(input);
 

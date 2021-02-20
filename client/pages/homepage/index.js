@@ -1,11 +1,16 @@
 import Link from 'next/link';
+import Singoff from '../../components/Singoff';
+
 
 'use strict';
 
 function Homepage() {
+    
+    
     return (
         <div>
             <div>{data.title}</div>
+            <Singoff/>
 
             <div>
                 <Link href="/userProfile">

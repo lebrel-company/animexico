@@ -8,7 +8,7 @@ async function queryUserByToken(_,{token}){
 }
 
 async function queryUserInfo(parent,{},context,info){
-   
+    
     return await User.findById(context.user.id);
 }
 

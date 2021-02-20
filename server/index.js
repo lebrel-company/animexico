@@ -20,7 +20,7 @@ const server = new ApolloServer({
                 const user = jsonWebToken.verify(token.replace('Bearer ', ''), process.env.SECRET);
                 //console.log(user)
                 return{
-                    user
+                    user:user
                 }
             } catch (error) {
                 console.log('There was an error');
