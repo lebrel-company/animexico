@@ -152,17 +152,13 @@ const typeDefs = gql`
         name: String!
         price: [PriceInput]!
         description: String!
-        codes:[CodesInput]!
+        jancode: String!
         category: String!
         stock: Int!
         available: Boolean!
         images: String!
     }
 
-    input CodesInput{
-        barcode: String
-        jancode: String
-    }
 
     input PriceInput{
         amount: Float

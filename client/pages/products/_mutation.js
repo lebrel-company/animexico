@@ -10,10 +10,7 @@ var createNewProductMutation = gql `
             currency
         }
         description
-        codes{
-            barcode
-            jancode
-        }
+        jancode
         category
         stock
         available

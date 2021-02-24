@@ -18,16 +18,11 @@ var fields = {
     description: {
         placeholder:'Descripcion',
         id:'description'
-    },
-    codes: {
-        barcode:{
-            placeholder: 'codigo de barras',
-            id: 'codes.barcode'
-        },
-        jancode:{
-            placeholder: 'Jancode',
-            id: 'codes.jancode'
-        }
+    },    
+    jancode:{
+        placeholder: 'Jancode',
+        id: 'codes.jancode'
+    
     },
     category:{
         placeholder: 'Categoria',

@@ -36,24 +36,8 @@ function Homepage() {
     console.log( loading )
     console.log( error )
 
-    const numbers = [data.queryUserInfo.name,
-                     data.queryUserInfo.middlename,
-                     data.queryUserInfo.lastname,
-                     data.queryUserInfo.secondLastname,
-                     data.queryUserInfo.email,
-                     data.queryUserInfo.cellphone,
-                     data.queryUserInfo.address[0].city,
-                     data.queryUserInfo.address[0].country,
-                     data.queryUserInfo.address[0].state,
-                     data.queryUserInfo.address[0].zipcode,
-                     data.queryUserInfo.address[0].street,
-                     data.queryUserInfo.address[0].suburb,
-                     data.queryUserInfo.address[0].buildingNumber,
-                     data.queryUserInfo.address[0].apartmentNumber,
-                    ];
-    const listItems = numbers.map((number) =>
-            <li key={number}>{number}</li>
-    );
+    
+   
 
 
     return (
@@ -61,7 +45,7 @@ function Homepage() {
             <div>{text.title}</div>
             <Singoff/>
             <div>
-                <ul>{listItems}</ul>
+                
                 
                 <Link href="/secondaryAddress">
                 <input

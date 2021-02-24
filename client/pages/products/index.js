@@ -33,11 +33,8 @@ function createProduct() {
                         amount:values.price.amount,
                         currency:values.price.currency,
                     },
-                    description: values.description,
-                    codes: {
-                        barcode:values.codes.barcode,
-                        jancode:values.codes.jancode,
-                    },
+                    description: values.description,                    
+                    jancode:values.codes.jancode,                    
                     category: values.category,
                     stock: values.stock,
                     available: values.available,
@@ -121,25 +118,13 @@ function createProduct() {
 
             <div>
                 <input
-                    id={fields.codes.barcode.id}
-                    name={fields.codes.barcode.id}
+                    id={fields.jancode.id}
+                    name={fields.jancode.id}
                     type="text"
-                    placeholder={fields.codes.barcode.placeholder}
+                    placeholder={fields.jancode.placeholder}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.codes.barcode}
-                />
-            </div>
-
-            <div>
-                <input
-                    id={fields.codes.jancode.id}
-                    name={fields.codes.jancode.id}
-                    type="text"
-                    placeholder={fields.codes.jancode.placeholder}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.codes.jancode}
+                    value={formik.values.jancode}
                 />
             </div>
 

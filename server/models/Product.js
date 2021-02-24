@@ -23,19 +23,13 @@ const ProductSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    codes:[{
-        barcode:{
-            type: String,
-            required: true,
-            trim: true
-        },
-        jancode:{
-            type:String,
-            required: true,
-            trim: true
-        } 
-        
-    }],
+    
+    jancode:{
+        type:String,
+        required: true,
+        trim: true
+    },        
+    
     category:{
         type:String,
         required: true,
