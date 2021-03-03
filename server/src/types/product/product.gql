@@ -1,0 +1,66 @@
+
+type Product {
+    id: ID!
+    name: String!
+    price: Price!
+    description: String!
+    code: String!
+    stock: Int!
+    available: Boolean!
+    images: [String]
+    tags: [String]
+}
+input ProductInput {
+    id: ID!
+    name: String!
+    price: PriceInput!
+    description: String!
+    code: String!
+    stock: Int!
+    available: Boolean!
+    images: [String]
+    tags: [String]
+}
+input CreateProductInput {
+    name: String!
+    price: PriceInput!
+    description: String!
+    code: String!
+    stock: Int!
+    available: Boolean!
+    images: [String]
+    tags: [String]
+}
+input UpdateProductInput {
+    name: String!
+    price: PriceInput!
+    description: String!
+    code: String!
+    stock: Int!
+    available: Boolean!
+    images: [String]
+    tags: [String]
+}
+
+type Price{
+    amount: Float!
+    currency: String!
+}
+
+input PriceInput{
+    amount: Float!
+    currency: String!
+}
+
+extend type Query {
+    queryProducts:[Product]
+    queryProduct(id : ID!) : Product
+}
+
+extend type Mutation {
+    createProduct(input: CreateProductInput) : Product
+    updateProduct( id: ID!, input: UpdateProductInput) : Product
+    deleteProduct( id : ID! ): String
+}
+
+

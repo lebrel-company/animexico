@@ -1,0 +1,35 @@
+type Order{
+    id: ID
+    user: User!
+    listOfProducts: [Product]!
+    shipping: String!
+    total: Float!
+    address: Address!
+    status: OrderStatus!
+}
+
+input OrderInput{
+    id: ID
+    user: UserInput!
+    listOfProducts: [ProductInput]!
+    shipping: String!
+    total: Float!
+    address: AddressInput!
+    status: OrderStatus!
+}
+
+enum OrderStatus{
+    PENDING
+    IN_TRANSIT
+    COMPLETED
+    CANCEL
+}
+
+extend type Query{
+    queryOrder(input: ID!): Order
+}
+
+extend type Mutation {
+    createOrder(input: OrderInput): Order
+    updateOrder(input: ID!): Order
+}

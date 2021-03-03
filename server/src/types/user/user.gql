@@ -1,0 +1,81 @@
+
+type User{
+    id: ID
+    firstName: String!
+    middleName: String
+    lastName: String!
+    secondLastName: String!
+    email: String!
+    birthday: String!
+    cellphone: String
+    role: String!
+    mapOfAddresses: MapOfAddresses
+}
+input UserInput{
+    id: ID
+    firstName: String!
+    middleName: String
+    lastName: String!
+    secondLastName: String!
+    email: String!
+    birthday: String!
+    cellphone: String
+    role: String!
+    mapOfAddresses: MapOfAddressesInput
+}
+
+input CreateUserInput{
+    firstName: String!
+    middleName: String
+    lastName: String!
+    secondLastName: String!
+    email: String!
+    birthday: String!
+    cellphone: String
+    role: String!
+    mapOfAddresses: MapOfAddressesInput
+}
+
+type Token {
+    token: String
+}
+
+type ResetPassword{
+    email: String!
+    password: String!
+    confirmPassword: String!
+}
+
+input UpdateUserInput{
+    id: ID
+    name: String
+    middleName: String
+    lastname: String
+    secondLastname: String
+    cellphone: String
+    address: [AddressInput!]
+}
+
+input  AuthenticateInput{
+    email: String!
+    password: String!
+}
+
+input ResetPasswordInput{
+    email: String!
+    password: String!
+    confirmPassword: String!
+}
+
+type Query {
+    queryUserByToken(token: String!) : User
+    queryUserInfo: User
+}
+
+type Mutation {
+    createUser(input: CreateUserInput) : User
+    authUser(input: AuthenticateInput): Token
+    deleteUser( id : ID!) : String
+    updateUser( input: UpdateUserInput ) : User
+    resetPassword(input: ResetPasswordInput) : User
+}

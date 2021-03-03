@@ -1,0 +1,33 @@
+
+type MapOfAddresses{
+    primary: Address!
+    secondary: Address
+}
+
+input MapOfAddressesInput{
+    primary: AddressInput
+    secondary: AddressInput
+}
+
+type Address {
+    city: String!
+    state: String!
+    country: String!
+    zipcode: Int!
+    neighbourhood: String!
+    street: String!
+    buildingNumber: String!
+    apartmentNumber: String
+}
+
+input AddressInput {
+    city: String!
+    state: String!
+    country: String!
+    zipcode: Int!
+    suburb: String!
+    street: String!
+    buildingNumber: String!
+    apartmentNumber: String
+}
+
