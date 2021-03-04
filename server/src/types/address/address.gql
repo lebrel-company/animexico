@@ -5,7 +5,7 @@ type MapOfAddresses{
 }
 
 input MapOfAddressesInput{
-    primary: AddressInput
+    primary: AddressInput!
     secondary: AddressInput
 }
 
@@ -25,7 +25,7 @@ input AddressInput {
     state: String!
     country: String!
     zipcode: Int!
-    suburb: String!
+    neighbourhood: String!
     street: String!
     buildingNumber: String!
     apartmentNumber: String

@@ -5,10 +5,21 @@ type User{
     middleName: String
     lastName: String!
     secondLastName: String!
+    password: String!
     email: String!
     birthday: String!
     cellphone: String
     role: String!
+    mapOfAddresses: MapOfAddresses
+}
+type QueryUser{
+    id: ID
+    firstName: String!
+    middleName: String
+    lastName: String!
+    secondLastName: String!
+    birthday: String!
+    cellphone: String
     mapOfAddresses: MapOfAddresses
 }
 input UserInput{
@@ -17,6 +28,7 @@ input UserInput{
     middleName: String
     lastName: String!
     secondLastName: String!
+    password: String!
     email: String!
     birthday: String!
     cellphone: String
@@ -29,11 +41,12 @@ input CreateUserInput{
     middleName: String
     lastName: String!
     secondLastName: String!
+    password: String!
     email: String!
     birthday: String!
     cellphone: String
     role: String!
-    mapOfAddresses: MapOfAddressesInput
+    mapOfAddresses: MapOfAddressesInput!
 }
 
 type Token {
@@ -48,10 +61,10 @@ type ResetPassword{
 
 input UpdateUserInput{
     id: ID
-    name: String
+    firstName: String
     middleName: String
-    lastname: String
-    secondLastname: String
+    lastName: String
+    secondLastName: String
     cellphone: String
     address: [AddressInput!]
 }
@@ -73,7 +86,7 @@ type Query {
 }
 
 type Mutation {
-    createUser(input: CreateUserInput) : User
+    createUser(input: CreateUserInput): QueryUser
     authUser(input: AuthenticateInput): Token
     deleteUser( id : ID!) : String
     updateUser( input: UpdateUserInput ) : User

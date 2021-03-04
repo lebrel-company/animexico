@@ -5,7 +5,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "start": "node dist/index.js",
-    "dev": "nodemon --exec npx babel-node src",
+    "dev": "nodemon --exec babel-node src -L",
     "restart": "yarn run rimraf dist && yarn run build && yarn run start",
     "rimraf": "./node_modules/rimraf/bin.js",
     "test": "jest"

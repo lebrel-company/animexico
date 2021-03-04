@@ -42,7 +42,6 @@ const AddressSchema = mongoose.Schema({
             trim: true
         }
     },
-    {timestamps: true}
 )
 
 module.exports = AddressSchema;

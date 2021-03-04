@@ -11,8 +11,6 @@ services:
     depends_on:
       - api
       - client
-    logging:
-      driver: none
   tamashii-mongo:
     image: mongo:latest
     container_name: 'tamashii-mongo'

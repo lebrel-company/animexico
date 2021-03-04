@@ -3,7 +3,7 @@ import path from 'path';
 
 
 function loadSchemaType(type) {
-    return new Promise(function (resolve, reject) {
+    var result = new Promise(function (resolve, reject) {
         const pathToSchema = path.join(
             process.cwd(), `src/types/${type}/${type}.gql`
         )
@@ -19,6 +19,10 @@ function loadSchemaType(type) {
             }
         )
     })
+
+    return result;
 };
 
-export default loadSchemaType;
+export {
+    loadSchemaType
+};

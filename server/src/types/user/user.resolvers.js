@@ -1,5 +1,6 @@
 'use strict';
 const User = require('./user.model');
+import bcrypt from 'bcryptjs';
 require('dotenv').config({path: 'variables.env'});
 const jsonWebToken = require('jsonwebtoken');
 
@@ -19,6 +20,8 @@ async function queryUserInfo(parent, {}, context, info) {
 // MUTATIONS:
 
 async function createUser(parent, {input}, context, info) {
+    console.log(input);
+    console.log(bcrypt)
     const {email, password, birthday} = input;
     let age = getAge(birthday)
     if (age < 18) {
@@ -31,8 +34,8 @@ async function createUser(parent, {input}, context, info) {
         throw new Error('That email has already been registered.')
     }
 
-    const salt = await bcryptsjs.genSalt(10)
-    input.password = await bcryptsjs.hash(password, salt);
+    const salt = await bcrypt.genSalt(10)
+    input.password = await bcrypt.hash(password, salt);
     input.access = 'user'
 
     try {
@@ -114,7 +117,7 @@ export default {
         queryUserInfo,
         queryUserByToken
     },
-    Mutations: {
+    Mutation: {
         createUser,
         authUser
     }

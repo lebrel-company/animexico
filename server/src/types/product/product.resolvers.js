@@ -3,10 +3,10 @@ const Product = require('./product.model');
 //==============================================================================
 
 
-async function createNewProduct (_,{input}){
+async function createProduct (_,{input}){
 
     try {
-        const newProduct = new Product(input);
+        const newProduct = await new Product(input);
 
         //save in data base
         const product = await newProduct.save();
@@ -17,9 +17,6 @@ async function createNewProduct (_,{input}){
     }
 }
 
-module.exports = {
-    createNewProduct: createNewProduct
-}
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
@@ -48,6 +45,6 @@ export default {
         queryListOfProducts
     },
     Mutation: {
-        createNewProduct
+        createProduct
     }
 }
