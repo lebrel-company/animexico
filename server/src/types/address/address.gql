@@ -31,3 +31,7 @@ input AddressInput {
     apartmentNumber: String
 }
 
+extend type Query {
+    queryMapOfAddresses: MapOfAddresses
+}
+

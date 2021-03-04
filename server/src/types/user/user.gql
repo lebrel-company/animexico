@@ -1,4 +1,8 @@
-
+enum Role {
+    ADMIN
+    MEMBER
+    EDITOR
+}
 type User{
     id: ID
     firstName: String!
@@ -9,17 +13,7 @@ type User{
     email: String!
     birthday: String!
     cellphone: String
-    role: String!
-    mapOfAddresses: MapOfAddresses
-}
-type QueryUser{
-    id: ID
-    firstName: String!
-    middleName: String
-    lastName: String!
-    secondLastName: String!
-    birthday: String!
-    cellphone: String
+    role: Role!
     mapOfAddresses: MapOfAddresses
 }
 input UserInput{
@@ -35,8 +29,7 @@ input UserInput{
     role: String!
     mapOfAddresses: MapOfAddressesInput
 }
-
-input CreateUserInput{
+input SignupInput{
     firstName: String!
     middleName: String
     lastName: String!
@@ -45,20 +38,18 @@ input CreateUserInput{
     email: String!
     birthday: String!
     cellphone: String
-    role: String!
+    role: Role!
     mapOfAddresses: MapOfAddressesInput!
 }
-
-type Token {
-    token: String
+input SigninInput{
+    email: String!
+    password: String!
 }
-
 type ResetPassword{
     email: String!
     password: String!
     confirmPassword: String!
 }
-
 input UpdateUserInput{
     id: ID
     firstName: String
@@ -68,12 +59,10 @@ input UpdateUserInput{
     cellphone: String
     address: [AddressInput!]
 }
-
-input  AuthenticateInput{
-    email: String!
-    password: String!
+type AuthUser {
+    token: String!
+    user: User!
 }
-
 input ResetPasswordInput{
     email: String!
     password: String!
@@ -83,11 +72,11 @@ input ResetPasswordInput{
 type Query {
     queryUserByToken(token: String!) : User
     queryUserInfo: User
+    me: User!
 }
-
 type Mutation {
-    createUser(input: CreateUserInput): QueryUser
-    authUser(input: AuthenticateInput): Token
+    signup(input: SignupInput): AuthUser!
+    signin(input: SigninInput): AuthUser!
     deleteUser( id : ID!) : String
     updateUser( input: UpdateUserInput ) : User
     resetPassword(input: ResetPasswordInput) : User

@@ -1,8 +1,10 @@
 'use strict';
 const User = require('./user.model');
 import bcrypt from 'bcryptjs';
+import {authenticated, authorized, createToken} from "../../utils/auth";
 require('dotenv').config({path: 'variables.env'});
 const jsonWebToken = require('jsonwebtoken');
+
 
 //==============================================================================
 // QUERIES:
@@ -15,13 +17,23 @@ async function queryUserInfo(parent, {}, context, info) {
     return await User.findById(context.user.id).exec();
 }
 
+function me(parent, args, context, info){
+    return context.user
+}
+//==============================================================================
+// TYPES:
+
+function mapOfAddresses(parent, args, context, info){
+    return {
+        primary: parent.mapOfAddresses.get('primary'),
+        secondary: parent.mapOfAddresses.get('secondary')
+    }
+}
 
 //==============================================================================
 // MUTATIONS:
 
-async function createUser(parent, {input}, context, info) {
-    console.log(input);
-    console.log(bcrypt)
+async function signup(parent, {input}, context, info) {
     const {email, password, birthday} = input;
     let age = getAge(birthday)
     if (age < 18) {
@@ -41,10 +53,12 @@ async function createUser(parent, {input}, context, info) {
     try {
         const user = new User(input);
         await user.save();
-        console.log('Saving data')
-        return user
+        let token = createToken(user)
+        return {
+            token: token,
+            user: user
+        }
     } catch (error) {
-        console.log(error)
         return error;
     }
 }
@@ -62,8 +76,7 @@ function getAge(dateString) {
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
-async function authUser(parent, {input}, context, info) {
-
+async function signin(parent, {input}, context, info) {
     const {email, password} = input;
 
     const userExist = await User.findOne({email});
@@ -84,41 +97,20 @@ async function authUser(parent, {input}, context, info) {
     }
 }
 
-function createToken(user, secret, expiresIn) {
-    const {
-        id,
-        firstName,
-        middleName,
-        lastName,
-        secondLastName,
-        email,
-        birthday,
-        cellphone,
-        mapOfAddresses,
-    } = user;
-
-    return jsonWebToken.sign({
-        id,
-        firstName,
-        middleName,
-        lastName,
-        secondLastName,
-        email,
-        birthday,
-        cellphone,
-        mapOfAddresses
-    }, secret, {expiresIn})
-}
 
 //==============================================================================
 
 export default {
     Query: {
-        queryUserInfo,
-        queryUserByToken
+        queryUserInfo: authenticated(queryUserInfo),
+        queryUserByToken: authenticated(queryUserByToken),
+        me: authenticated(me)
+    },
+    User:{
+       mapOfAddresses: mapOfAddresses
     },
     Mutation: {
-        createUser,
-        authUser
+        signup,
+        signin
     }
 }

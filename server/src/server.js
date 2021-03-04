@@ -1,13 +1,13 @@
-'use strict';
-const {ApolloServer} = require('apollo-server');
-const {loadSchemaType} = require('./utils/schema');
-const {merge} = require('lodash');
-const jsonWebToken = require('jsonwebtoken')
-const mongoConnection = require('./config/database.js');
-import product from './types/product/product.resolvers';
-import user from './types/user/user.resolvers';
-import order from './types/order/order.resolvers';
-mongoConnection();
+const {ApolloServer} = require('apollo-server')
+const {loadSchemaType} = require('./utils/schema')
+const {merge} = require('lodash')
+const mongoConnection = require('./config/database.js')
+import {createToken, userFromToken} from  './utils/auth'
+import product from './types/product/product.resolvers'
+import user from './types/user/user.resolvers'
+import order from './types/order/order.resolvers'
+import address from './types/address/address.resolvers'
+mongoConnection()
 
 const types = ['product', 'user', 'order', 'address'];
 
@@ -22,29 +22,13 @@ async function start() {
         }
     `
 
-
     const server = new ApolloServer({
         typeDefs: [rootSchema, ...schemaTypes],
-        resolvers: merge({}, product, user, order),
-        context: ({req}) => {
-            console.log('\n\n' + '>'.repeat(100));
-            console.log('HEADERS:\n\n', req.headers);
-            console.log('>'.repeat(100) + '\n\n');
-            const token = req.headers['authorization'] || '';
-            if (token) {
-                try {
-                    const user = jsonWebToken.verify(
-                        token.replace('Bearer ', ''),
-                        process.env.SECRET
-                    );
-                    return {
-                        user: user
-                    }
-                } catch (error) {
-                    console.log('There was an error');
-                    console.log(error);
-                }
-            }
+        resolvers: merge({}, product, user, order, address),
+        context: ({req, connection}) => {
+            let token = req.headers.authorization
+            let user = userFromToken(token)
+            return {user, createToken}
         }
     });
 
