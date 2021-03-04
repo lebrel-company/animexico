@@ -30,7 +30,7 @@ var fields = {
         id: 'birthday'
     },
     cellphone: {
-        placeholder: 'Number Celular',
+        placeholder: 'Numero de Celular',
         id: 'cellphone'
     },
     address: {
@@ -69,7 +69,7 @@ var fields = {
     },
     submit: {
         id: 'submit-button',
-        value: 'Enviar'
+        value: 'Crear cuenta'
     }
 }
 
