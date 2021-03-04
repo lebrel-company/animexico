@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Layout from '../../components/Layout';
 
 
 const AUTHENTICATE_USER = gql`
@@ -80,29 +81,36 @@ function Index(){
     return(
         <>  
 
-            
-                <h1 className="text-center text-black">Login</h1>
+            <Layout>
+               
 
                 { message && showMessage()}
 
-                <div className="mt-5">
-                    <div className="w-full max-w-sm">
+                <div className="flex justify-center mt-20">
+                    <div className="w-full max-w-lg">
+                        
                         <form
-                            className="bg-gray-100 px-8 pt-6 pb-8 mb-4"
+                            className="bg-gray-800 px-8 pt-6 pb-8 mb-4 rounded-md"
                             onSubmit={formik.handleSubmit}
                         >
+                             <h1 className="text-center py-5 text-white text-2xl font-semibold">Iniciar Sesión</h1>
                             <div className="mb-4">
                                 
                                 <input
-                                    className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="bg-gray-500 rounded-sm w-full text-white"
                                     id="email"
                                     type="email"
-                                    placeholder="Email Usuario"
+                                    placeholder="Correo Electrónico"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values.email}
                                 />
+                                <div>
+                                    <p className="text-red-500">espacio obligatorio</p>
+                                </div>
                             </div>
+                           
+                           
 
                             { formik.touched.email && formik.errors.email ? (
                                 <div className= "my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
@@ -111,9 +119,9 @@ function Index(){
                                 </div>
                             ): null }
 
-                           
+                            <div>
                                 <input
-                                    className="shadow apperance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="bg-gray-500 rounded-sm w-full text-white"
                                     id="password"
                                     type="password"
                                     placeholder="Password Usuario"
@@ -121,6 +129,16 @@ function Index(){
                                     onBlur={formik.handleBlur}
                                     value={formik.values.password}
                                 />
+                                <div>
+                                    <p className="text-red-500">espacio obligatorio</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <Link href="/resetPassword">
+                                    <a className="flex justify-end inline-block text-white text-xs">Restaurar Contraseña</a>
+                                </Link>
+                             </div>    
                             
 
                             { formik.touched.password && formik.errors.password ? (
@@ -130,28 +148,29 @@ function Index(){
                                 </div>
                             ): null }
 
-                            <div>
-                                <input
-                                    type="submit"
-                                    className="bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
-                                    value="Login"
-                                
-                                />
+                            <div className="grid grid-cols-1 divide-y divide-white">
+                                <div className="flex justify-center">
+                                    <input
+                                        type="submit"
+                                        className="bg-red-600 py-2 px-10 rounded-sm shadow-md mt-5 p-2 text-white uppercase hover:bg-red-500"
+                                        value="Login"
+                                    
+                                    />
                             </div>
-
-                            
-                            
-                        </form>
-                        <Link href="/signup">
-                            <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Crear Cuenta</a>
-                        </Link>
-                        <div>
-                            <Link href="/resetPassword">
-                                <a className="bg-black py-2 px-5 mt-5 inline-block text-white">Restaurar Contraseña</a>
-                            </Link>
+                                <Link href="/signup">
+                                    <a className="flex justify-center py-2 px-5 mt-5 inline-block text-white">Crear Cuenta</a>
+                                </Link>
                         </div>
+
+                                
+                                                 
+                        </form>
+                        
                     </div>
                 </div>
+               
+            </Layout>
+                
                         
                           
         </>

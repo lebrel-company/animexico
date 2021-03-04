@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Singoff from '../components/Singoff';
 import { useQuery, gql } from '@apollo/client'
+import Layout from '../components/Layout';
 
 const QUERY_USER_INFO = gql`
         query queryUserInfo{
@@ -29,7 +30,7 @@ const QUERY_USER_INFO = gql`
     }
 `;
 
-function Homepage() {
+function userProfile() {
 
     const {data, loading, error} = useQuery(QUERY_USER_INFO);
     console.log( data )
@@ -37,37 +38,94 @@ function Homepage() {
     console.log( error )
 
     
+
+    
    
 
 
     return (
         <div>
-            <div>{text.title}</div>
-            <Singoff/>
-            <div>
+            <Layout/>
+            
+            
+            <div className="container mx-auto mt-20 grid grid-cols-2 gap-4">
+                <div>
+                    <div className="text-2xl font-semibold">Juan Pérez</div>
+                    <div className="ml-20 mt-10 text-xl">
+                        Perfíl
+                    </div>
+                    <div className="ml-20 mt-2 text-xl">
+                        <Link href="/userOrdersHistory">
+                            <a>
+                                {text.userOrderTitle} 
+                            </a>
+                        </Link>
+                    </div>
+                    <div className="ml-20 mt-2 text-xl">
+                        <Link href="/secondaryAddress">
+                            <a > {text.secondaryAddressTitle}</a>                                                  
+                        </Link>
+                    </div>
+                    <div className="ml-20 mt-2 text-xl">
+                        <Link href="/editUser">
+                            <a > {text.editUser}</a>                                                  
+                        </Link>
+                    </div>                  
+                    <div className="ml-20 mt-2 text-xl">
+                        <Singoff/>
+                    </div>
+                    
+                </div>
                 
-                
-                <Link href="/secondaryAddress">
-                <input
-                        type="submit"
-                        className="bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
-                        value={text.secondaryAddressTitle}                    
-                    />
-                </Link>
-                <Link href="/userOrdersHistory">
-                <input
-                        type="submit"
-                        className="bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
-                        value={text.userOrderTitle}                    
-                    />
-                </Link>
-                <Link href="/editUser">
-                <input
-                        type="submit"
-                        className="bg-gray-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
-                        value={text.editUser}                    
-                    />
-                </Link>
+                <div className="rounded-md flex flex-col border-2 border-gray-500">
+                    <div className="p-4 m-2 grid grid-cols-2 gap-4">
+                        <div className="border border-gray-500">
+                                nombre
+                        </div>
+                        <div className="border border-gray-500">
+                                segundo nombre
+                        </div>
+                        <div className="border border-gray-500">
+                                Apellido Paterno
+                        </div>
+                        <div className="border border-gray-500">
+                                Apellido Materno
+                        </div>
+                        <div className="border border-gray-500">
+                                Fecha de nacimiento
+                        </div>
+                        <div className="border border-gray-500">
+                                Celular
+                        </div>
+                        <div className="border border-gray-500">
+                                México
+                        </div>
+                        <div className="border border-gray-500">
+                                Ciudad
+                        </div>
+                        <div className="border border-gray-500">
+                                Estado
+                        </div>
+                        <div className="border border-gray-500">
+                                Código Postal
+                        </div>
+                        <div className="border border-gray-500">
+                                Calle
+                        </div>
+                        <div className="border border-gray-500">
+                                Colonia
+                        </div>
+                        <div className="border border-gray-500">
+                                Número Exterior
+                        </div>
+                        <div className="border border-gray-500">
+                                Número Interior
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
             </div>
         </div>
         
@@ -76,9 +134,9 @@ function Homepage() {
 
 var text = {
     title: 'Perfil de usuario',
-    userOrderTitle: 'Ver historial de compras',
-    secondaryAddressTitle: 'Añadir Dirección',
+    userOrderTitle: 'Historial de pedidos',
+    secondaryAddressTitle: 'Direción Opcional',
     editUser: 'Editar Usuario'
 }
 
-export default Homepage;
+export default userProfile;

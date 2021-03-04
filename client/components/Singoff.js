@@ -56,13 +56,13 @@ const SingoffButton = () => {
     }
 
     return (
-        <div>
-            <p>{name} {lastname}</p>
+        <div>            
             <button
                 onClick={() => SingOff()}
             >
                 {text.ButtonName}
             </button>
+            
         </div>
     )
 }
