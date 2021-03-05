@@ -20,12 +20,18 @@ function Card(props) {
                     m-auto font-bold border-2 text-red rounded-md px-2
                     hover:bg-red hover:text-pale
                     '>
-                        add to cart
+                        {texts.addToCart.title}
                     </button>
                 </div>
             </div>
         </div>
     )
+}
+
+var texts = {
+    addToCart: {
+        title: 'añadir al carrito'
+    }
 }
 
 export default Card
