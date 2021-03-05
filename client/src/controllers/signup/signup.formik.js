@@ -2,7 +2,7 @@ import {validationsTexts, fields} from "./signup.data";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-export function signupFormik(signupMutation) {
+export function signupFormik(mutation, route) {
     return useFormik({
             initialValues: {
                 firstName: '',
@@ -84,12 +84,12 @@ export function signupFormik(signupMutation) {
                     }
                 }
                 try {
-                    let {data} = await signupMutation({
+                    let {data} = await mutation({
                         variables: {
                             input: _input
                         }
                     });
-                    console.log(data)
+                    route.hook.push(route.path)
                 } catch (error) {
                     console.log(error)
                 }

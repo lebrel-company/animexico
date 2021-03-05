@@ -1,6 +1,7 @@
 'use strict';
 
 var fields = {
+    message: 'Llena el siguiente formulario con tu información de contacto',
     firstName: {
         placeholder: 'Nombre',
         id: 'firstName',

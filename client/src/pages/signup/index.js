@@ -1,27 +1,35 @@
 import React from 'react';
 import {useMutation} from "@apollo/client";
-import Layout from '../../../components/Layout';
+import Header from '../../components/Header';
 import {signupMutationString} from '../../controllers/signup/signup.mutation';
 import {signupFormik} from '../../controllers/signup/signup.formik';
 import {fields, validationsTexts} from '../../controllers/signup/signup.data'
+import {useRouter} from 'next/router'
+
 
 function SignupForm(props) {
     const [signup] = useMutation(signupMutationString);
-    const formik = signupFormik(signup);
+    const formik = signupFormik(signup, {hook: useRouter,});
     return (
         <div>
-            <div>
-                <Layout/>
+            <div className='w-screen'>
+                <Header/>
             </div>
-            <div className="flex justify-center mt-14">
-                <div className="w-full max-w-lg">
+            <div
+                className="
+                container h-full flex items-center justify-center
+                mx-auto my-20
+                font-simp lg:w-1/2
+                p-4
+                ">
+                <div className="shadow-2xl p-4 md:p-10 bg-dark rounded-lg">
+                    <div className='text-2xl text-pale p-4'>{fields.message}</div>
                     <form
-                        className="bg-gray-800 px-8 pt-6 pb-8 mb-4 rounded-md"
                         onSubmit={formik.handleSubmit}>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 gap-4">
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.firstName.id}
                                     name={fields.firstName.id}
                                     type="text"
@@ -34,7 +42,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.middleName.id}
                                     name={fields.middleName.id}
                                     type="text"
@@ -47,7 +55,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 m-y rounded-sm w-full text-white border border-white"
                                     id={fields.lastName.id}
                                     name={fields.lastName.id}
                                     type="text"
@@ -60,7 +68,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.secondLastName.id}
                                     name={fields.secondLastName.id}
                                     type="text"
@@ -73,7 +81,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.birthday.id}
                                     name={fields.birthday.id}
                                     type="date"
@@ -86,7 +94,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 my-2 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.cellphone.id}
                                     name={fields.cellphone.id}
                                     type="text"
@@ -101,7 +109,7 @@ function SignupForm(props) {
 
                         <div>
                             <input
-                                className="my-2 bg-gray-800 rounded-sm w-full text-white border border-white"
+                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-white border border-white"
                                 id={fields.email.id}
                                 name={fields.email.id}
                                 type="email"
@@ -115,7 +123,7 @@ function SignupForm(props) {
 
                         <div>
                             <input
-                                className="my-2 bg-gray-800 rounded-sm w-full text-white border border-white"
+                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-white border border-white"
                                 id={fields.password.id}
                                 name={fields.password.id}
                                 type="password"
@@ -128,10 +136,10 @@ function SignupForm(props) {
                             {appendWarningMessage(formik, fields.password.id)}
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.city.id}
                                     name={fields.address.city.id}
                                     type="text"
@@ -144,7 +152,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.state.id}
                                     name={fields.address.state.id}
                                     type="text"
@@ -158,7 +166,7 @@ function SignupForm(props) {
 
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.country.id}
                                     name={fields.address.country.id}
                                     type="text"
@@ -171,7 +179,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.zipcode.id}
                                     name={fields.address.zipcode.id}
                                     type="number"
@@ -184,7 +192,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.neighbourhood.id}
                                     name={fields.address.neighbourhood.id}
                                     type="text"
@@ -197,7 +205,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.street.id}
                                     name={fields.address.street.id}
                                     type="text"
@@ -210,7 +218,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.buildingNumber.id}
                                     name={fields.address.buildingNumber.id}
                                     type="text"
@@ -223,7 +231,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
                                     id={fields.address.apartmentNumber.id}
                                     name={fields.address.apartmentNumber.id}
                                     type="text"
@@ -235,9 +243,9 @@ function SignupForm(props) {
                                 {appendWarningMessage(formik, fields.address.apartmentNumber.id)}
                             </div>
                         </div>
-                        <div className="flex justify-center">
+                        <div className="flex mt-4 justify-center">
                             <button
-                                className="bg-red-600 py-2 px-10 rounded-sm shadow-md mt-5 p-2 text-white uppercase hover:bg-red-500"
+                                className="bg-red text-pale uppercase p-4 font-black rounded-md"
                                 type="submit"
                                 id={fields.submit.id}>{fields.submit.value}
                             </button>
@@ -268,10 +276,9 @@ function appendWarningMessage(formik, value) {
                             return null
                         }
                         return (
-
                             formik.touched.address[_value] &&
                             formik.errors.address[_value] ? (
-                                <div className='text-red-400'>
+                                <div className='text-palered'>
                                     {formik.errors.address[_value]}
                                 </div>
                             ) : null
@@ -287,7 +294,7 @@ function appendWarningMessage(formik, value) {
                     function () {
                         return (
                             formik.touched[value] && formik.errors[value] ? (
-                                <div className='text-red-400'>
+                                <div className='text-palered'>
                                     {formik.errors[value]}
                                 </div>
                             ) : null
