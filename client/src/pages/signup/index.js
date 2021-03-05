@@ -5,31 +5,33 @@ import {signupMutationString} from '../../controllers/signup/signup.mutation';
 import {signupFormik} from '../../controllers/signup/signup.formik';
 import {fields, validationsTexts} from '../../controllers/signup/signup.data'
 import {useRouter} from 'next/router'
+import Footer from "../../components/Footer";
 
 
 function SignupForm(props) {
     const [signup] = useMutation(signupMutationString);
     const formik = signupFormik(signup, {hook: useRouter,});
     return (
-        <div>
+        <div className='h-screen'>
             <div className='w-screen'>
                 <Header/>
             </div>
             <div
                 className="
                 container h-full flex items-center justify-center
-                mx-auto my-20
+                mx-auto
                 font-simp lg:w-1/2
                 p-4
                 ">
                 <div className="shadow-2xl p-4 md:p-10 bg-dark rounded-lg">
                     <div className='text-2xl text-pale p-4'>{fields.message}</div>
                     <form
+                        className='text-dark'
                         onSubmit={formik.handleSubmit}>
                         <div className="grid md:grid-cols-2 gap-4">
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.firstName.id}
                                     name={fields.firstName.id}
                                     type="text"
@@ -42,7 +44,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.middleName.id}
                                     name={fields.middleName.id}
                                     type="text"
@@ -55,7 +57,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 m-y rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 m-y rounded-sm w-full text-dark border border-white"
                                     id={fields.lastName.id}
                                     name={fields.lastName.id}
                                     type="text"
@@ -68,7 +70,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.secondLastName.id}
                                     name={fields.secondLastName.id}
                                     type="text"
@@ -81,7 +83,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.birthday.id}
                                     name={fields.birthday.id}
                                     type="date"
@@ -94,7 +96,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 my-2 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 my-2 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.cellphone.id}
                                     name={fields.cellphone.id}
                                     type="text"
@@ -109,7 +111,7 @@ function SignupForm(props) {
 
                         <div>
                             <input
-                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-white border border-white"
+                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-dark border border-white"
                                 id={fields.email.id}
                                 name={fields.email.id}
                                 type="email"
@@ -121,9 +123,13 @@ function SignupForm(props) {
                             {appendWarningMessage(formik, fields.email.id)}
                         </div>
 
-                        <div>
+                        <div className='
+                        my-4 border-2
+                        border-pale rounded-lg
+                        p-4
+                        border-opacity-20'>
                             <input
-                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-white border border-white"
+                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-dark border border-white"
                                 id={fields.password.id}
                                 name={fields.password.id}
                                 type="password"
@@ -134,12 +140,24 @@ function SignupForm(props) {
                                 value={formik.values.password}
                             />
                             {appendWarningMessage(formik, fields.password.id)}
+                            <input
+                                className="my-2 p-2 bg-gray-800 rounded-sm w-full text-dark border border-white"
+                                id={fields.passwordConfirmation.id}
+                                name={fields.passwordConfirmation.id}
+                                type="password"
+                                placeholder={fields.passwordConfirmation.placeholder}
+                                autoComplete='on'
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.passwordConfirmation}
+                            />
+                            {appendWarningMessage(formik, fields.passwordConfirmation.id)}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.city.id}
                                     name={fields.address.city.id}
                                     type="text"
@@ -152,7 +170,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.state.id}
                                     name={fields.address.state.id}
                                     type="text"
@@ -166,7 +184,7 @@ function SignupForm(props) {
 
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.country.id}
                                     name={fields.address.country.id}
                                     type="text"
@@ -179,7 +197,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.zipcode.id}
                                     name={fields.address.zipcode.id}
                                     type="number"
@@ -192,7 +210,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.neighbourhood.id}
                                     name={fields.address.neighbourhood.id}
                                     type="text"
@@ -205,7 +223,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.street.id}
                                     name={fields.address.street.id}
                                     type="text"
@@ -218,7 +236,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.buildingNumber.id}
                                     name={fields.address.buildingNumber.id}
                                     type="text"
@@ -231,7 +249,7 @@ function SignupForm(props) {
                             </div>
                             <div>
                                 <input
-                                    className="bg-gray-800 p-2 rounded-sm w-full text-white border border-white"
+                                    className="bg-gray-800 p-2 rounded-sm w-full text-dark border border-white"
                                     id={fields.address.apartmentNumber.id}
                                     name={fields.address.apartmentNumber.id}
                                     type="text"
@@ -252,6 +270,9 @@ function SignupForm(props) {
                         </div>
                     </form>
                 </div>
+            </div>
+            <div className='relative bottom-0'>
+                <Footer/>
             </div>
         </div>
     );

@@ -36,6 +36,8 @@ export function signupFormik(mutation, route) {
                     .required(validationsTexts.requiredField(fields.email.placeholder)),
                 password: Yup.string()
                     .required(validationsTexts.requiredField(fields.password.placeholder)),
+                passwordConfirmation: Yup.string()
+                    .required(validationsTexts.requiredField(fields.passwordConfirmation.placeholder)),
                 birthday: Yup.string()
                     .required(validationsTexts.requiredField(fields.birthday.placeholder)),
                 cellphone:

@@ -3,42 +3,45 @@ import routes from '../utils/routes'
 
 function Header() {
     return (
-        <div className='bg-dark shadow-lg'>
-            <div className='container mx-auto md:p-4'>
+        <div className='bg-dark shadow-lg bg-gradient-to-t from-dark to-darkindigo'>
+            <div className='container mx-auto md:p-2'>
                 <div
                     className='flex justify-center items-center md:flex-row flex-wrap p-4'>
                     <img src='/logo.png'
-                         className='w-1/4 opacity-90 lg:block hidden'/>
+                         className='
+                         w-1/4 opacity-90 lg:block hidden
+                         '
+                    />
                     {
                         createRoutes()
                     }
                     <div className='
-                    relative py-6 z-20 md:py-0
-                    md:grid grid-cols-1 md:grid-cols-3 gap-4
+                    relative py-4 z-20 md:py-0
+                    grid grid-cols-3 gap-4
                     '>
                         <Link href='/signup'>
                             <a className='
                             text-pale font-bold font-simp text-lg text-center
-                            p-2 m-2 rounded-md border-2
+                            px-2 rounded-md border-2
                             '>
                                 signup
                             </a>
                         </Link>
                         <Link href='/signin'>
-                            <a className='
+                            <button className='
                             text-pale font-bold font-simp text-lg text-center
-                            p-2 m-2 rounded-md border-2
+                            px-2 rounded-md border-2
                             '>
                                 signin
-                            </a>
+                            </button>
                         </Link>
                         <Link href='/cart'>
-                            <a className='
+                            <button className='
                             text-pale font-bold font-simp text-lg text-center
-                            p-2 m-2 rounded-md bg-red border-2 border-red
+                            px-2 rounded-md bg-red border-2 border-red
                             '>
                                 cart
-                            </a>
+                            </button>
                         </Link>
                     </div>
                 </div>
@@ -51,11 +54,27 @@ function createRoutes() {
     let listOfKeys = ['homepage', 'profile', 'store', 'faqs']
     return listOfKeys.map(function createLinks(value, index) {
             return (
-                <div key={index} className='flex-1 text-center'>
+                <div key={index} className='flex-1 text-center
+                    transition duration-500 ease-in-out
+                    transform hover:scale-110
+                    '
+                     >
                     <Link href={routes[value]['route']}
                     >
                         <a className='
-                        text-2xl font-deco text-pale
+                        text-xl font-deco text-pale
+                        border-2
+                        px-4
+                        py-2
+                        rounded-md
+                        transform
+                        transition
+                        ease-in-out
+                        duration-200
+                        border-transparent
+                        hover:border-pale
+                        hover:border-opacity-10
+                        hover:shadow-md
                     '>
                             {routes[value]['title']}
                         </a>

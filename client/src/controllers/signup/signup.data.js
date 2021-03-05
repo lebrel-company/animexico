@@ -26,6 +26,10 @@ var fields = {
         placeholder: 'Contraseña',
         id: 'password'
     },
+    passwordConfirmation: {
+        placeholder: 'Confirmación de contraseña',
+        id: 'passwordConfirmation'
+    },
     birthday: {
         placeholder: 'Fecha de Nacimiento',
         id: 'birthday'

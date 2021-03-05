@@ -12,7 +12,7 @@ function Homepage() {
         <div>
             <div className='fixed z-20 top-0 w-screen'><Header/></div>
             <div
-                className='container py-40 h-full mx-auto relative grid md:grid-cols-3 gap-10'>
+                className='container py-40 h-full mx-auto relative grid md:grid-cols-2 lg:grid-cols-3 gap-10'>
                 <Card
                     name='Godzilla'
                     price={200}
