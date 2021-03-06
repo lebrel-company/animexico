@@ -59,9 +59,22 @@ input UpdateUserInput{
     cellphone: String
     address: [AddressInput!]
 }
+type QueryUser{
+    id: ID
+    firstName: String!
+    middleName: String
+    lastName: String!
+    secondLastName: String!
+    email: String!
+    birthday: String!
+    cellphone: String
+    role: Role!
+    mapOfAddresses: MapOfAddresses
+}
+
 type AuthUser {
     token: String!
-    user: User!
+    user: QueryUser
 }
 input ResetPasswordInput{
     email: String!
@@ -70,13 +83,13 @@ input ResetPasswordInput{
 }
 
 type Query {
-    queryUserByToken(token: String!) : User
-    queryUserInfo: User
-    me: User!
+    queryUserByToken(token: String!) : QueryUser!
+    queryUserInfo: QueryUser!
+    me: QueryUser!
 }
 type Mutation {
-    signup(input: SignupInput): AuthUser!
-    signin(input: SigninInput): AuthUser!
+    signup(input: SignupInput!): AuthUser!
+    signin(input: SigninInput!): AuthUser!
     deleteUser( id : ID!) : String
     updateUser( input: UpdateUserInput ) : User
     resetPassword(input: ResetPasswordInput) : User

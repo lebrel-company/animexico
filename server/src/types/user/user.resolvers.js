@@ -2,6 +2,7 @@
 const User = require('./user.model');
 import bcrypt from 'bcryptjs';
 import {authenticated, authorized, createToken} from "../../utils/auth";
+import messages from './user.messages'
 require('dotenv').config({path: 'variables.env'});
 const jsonWebToken = require('jsonwebtoken');
 
@@ -78,25 +79,24 @@ function getAge(dateString) {
 
 async function signin(parent, {input}, context, info) {
     const {email, password} = input;
-
-    const userExist = await User.findOne({email});
-    if (!userExist) {
-        throw new Error('Username does not exist')
+    const user = await User.findOne({email});
+    if (!user) {
+        throw new Error(messages.signin.errors.noRegisteredEmail)
     }
 
-    const correctPassword = await bcryptsjs.compare(
-        password, userExist.password
+    const correctPassword = await bcrypt.compare(
+        password, user.password
     );
 
     if (!correctPassword) {
-        throw new Error('Password is Wrong')
+        throw new Error(messages.signin.errors.wrongPassword)
     }
 
     return {
-        token: createToken(userExist, process.env.SECRET, '24h')
+        token: createToken(user, process.env.SECRET, '24h'),
+        user: user
     }
 }
-
 
 //==============================================================================
 

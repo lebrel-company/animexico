@@ -20,26 +20,17 @@ function Header() {
                     grid grid-cols-3 gap-4
                     '>
                         <Link href='/signup'>
-                            <a className='
-                            text-pale font-bold font-simp text-lg text-center
-                            px-2 rounded-md border-2
-                            '>
+                            <button className='button-pale-outline'>
                                 signup
-                            </a>
+                            </button>
                         </Link>
                         <Link href='/signin'>
-                            <button className='
-                            text-pale font-bold font-simp text-lg text-center
-                            px-2 rounded-md border-2
-                            '>
+                            <button className='button-pale-outline'>
                                 signin
                             </button>
                         </Link>
                         <Link href='/cart'>
-                            <button className='
-                            text-pale font-bold font-simp text-lg text-center
-                            px-2 rounded-md bg-red border-2 border-red
-                            '>
+                            <button className='button-red'>
                                 cart
                             </button>
                         </Link>

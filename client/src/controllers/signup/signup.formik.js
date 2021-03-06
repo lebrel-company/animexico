@@ -1,6 +1,7 @@
-import {validationsTexts, fields} from "./signup.data";
-import { useFormik } from "formik";
+import {fields} from "../../utils/formsHelpers";
+import {useFormik} from "formik";
 import * as Yup from "yup";
+import {spanishValidationHelpers} from '../../utils/validationHelpers'
 
 export function signupFormik(mutation, route) {
     return useFormik({
@@ -26,39 +27,120 @@ export function signupFormik(mutation, route) {
             },
             validationSchema: Yup.object({
                 firstName: Yup.string()
-                    .required(validationsTexts.requiredField(fields.firstName.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.firstName.placeholder)
+                    ),
                 lastName: Yup.string()
-                    .required(validationsTexts.requiredField(fields.lastName.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.lastName.placeholder)
+                    ),
                 secondLastName: Yup.string()
-                    .required(validationsTexts.requiredField(fields.secondLastName.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.secondLastName.placeholder)
+                    ),
                 email: Yup.string()
-                    .email('El correo no es válido')
-                    .required(validationsTexts.requiredField(fields.email.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.email.placeholder)
+                    )
+                    .email('El correo no es válido'),
                 password: Yup.string()
-                    .required(validationsTexts.requiredField(fields.password.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.password.placeholder)
+                    ),
                 passwordConfirmation: Yup.string()
-                    .required(validationsTexts.requiredField(fields.passwordConfirmation.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.passwordConfirmation.placeholder)
+                    ),
                 birthday: Yup.string()
-                    .required(validationsTexts.requiredField(fields.birthday.placeholder)),
+                    .required(
+                        spanishValidationHelpers
+                            .messages
+                            .errors
+                            .formatRequiredField(fields.birthday.placeholder)
+                    ),
                 cellphone:
                     Yup.string()
-                        .required(validationsTexts.requiredField(fields.cellphone.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.cellphone.placeholder)
+                        ),
                 address: Yup.object({
                     country: Yup.string()
-                        .required(validationsTexts.requiredField(fields.address.country.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.country.placeholder)
+                        ),
                     city: Yup.string()
-                        .required(validationsTexts.requiredField(fields.address.city.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.city.placeholder)
+                        ),
                     state: Yup.string()
-                        .required(validationsTexts.requiredField(fields.address.state.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.state.placeholder)
+                        ),
                     zipcode: Yup.number()
-                        .required(validationsTexts.requiredField(fields.address.zipcode.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.zipcode.placeholder)
+                        ),
                     neighbourhood: Yup.string()
-                        .required(validationsTexts.requiredField(fields.address.neighbourhood.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.neighbourhood.placeholder)
+                        ),
                     street: Yup.string()
-                        .required(validationsTexts.requiredField(fields.address.street.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.street.placeholder)
+                        ),
                     buildingNumber: Yup.string()
-                        .required(validationsTexts.requiredField(fields.address.buildingNumber.placeholder)),
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.buildingNumber.placeholder)
+                        ),
                     apartmentNumber: Yup.string()
+                        .required(
+                            spanishValidationHelpers
+                                .messages
+                                .errors
+                                .formatRequiredField(fields.address.apartmentNumber.placeholder)
+                        ),
                 })
             }),
             onSubmit: async function submitForm(values) {

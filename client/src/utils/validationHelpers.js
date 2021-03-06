@@ -1,5 +1,7 @@
-
-
-const export var validationsTexts = {
-    requiredField: (value)=>`${value} invalido`
+export var spanishValidationHelpers = {
+    messages: {
+        errors: {
+            formatRequiredField: (value) => `${value} es requerido`
+        }
+    }
 }

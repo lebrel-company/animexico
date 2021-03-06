@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
+import ClientLayout from "../../layout/Client";
 import Card from '../../components/Card'
 import Layout from '../../components/Layout';
 import {useRouter} from 'next/router'
@@ -9,10 +8,14 @@ import {useRouter} from 'next/router'
 
 function Homepage() {
     return (
-        <div>
-            <div className='fixed z-20 top-0 w-screen'><Header/></div>
+        <ClientLayout>
+            <img className='
+                fixed bg-cover bg-center
+                z-0 opacity-20 transform
+                md:scale-150 rotate-12 xl:translate-x-1/4
+            ' src='/background/tamashii_vignettes.png'/>
             <div
-                className='container py-40 h-full mx-auto relative grid md:grid-cols-2 lg:grid-cols-3 gap-10'>
+                className='relative z-20 grid md:grid-cols-2 lg:grid-cols-3 gap-10'>
                 <Card
                     name='Godzilla'
                     price={200}
@@ -59,8 +62,7 @@ function Homepage() {
                     image='https://cdn.shopify.com/s/files/1/0065/2535/4073/products/SOC-GX-93-SB-Arcadia-TV-Ver.-03_900x.jpg?v=1610142906'
                 />
             </div>
-            <Footer/>
-        </div>
+        </ClientLayout>
     )
 }
 
