@@ -1,19 +1,31 @@
+// libraries
 import React from 'react';
 import {useMutation} from "@apollo/client";
-import {signupMutationString} from '../../controllers/signup/signup.mutation';
-import {signupFormik} from '../../controllers/signup/signup.formik';
-import {fields} from '../../utils/formsHelpers'
 import {useRouter} from 'next/router'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts
 import ClientLayout from '../../layout/Client'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components
+import FieldError from '../../components/messages/FieldError'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project
+import {signupFormik} from '../../controllers/signup/signup.formik';
+import {signupMutationString} from '../../controllers/signup/signup.mutation';
+import {fields} from '../../utils/formsHelpers'
+//==============================================================================
 
 
-function SignupForm(props) {
+export default function SignupForm(props) {
     const [signup] = useMutation(signupMutationString);
     const formik = signupFormik(signup, {hook: useRouter, path: '/'});
     return (
         <ClientLayout>
-            <div className='container m-auto md:flex justify-center'>
-                <form className='form-dark' onSubmit={formik.handleSubmit}>
+            <div className='
+            min-h-screen
+            container m-auto md:flex justify-center
+            '>
+                <form className='form-dark m-auto' onSubmit={formik.handleSubmit}>
                     <div className="grid md:grid-cols-2 gap-4">
                         <div>
                             <input
@@ -25,7 +37,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.firstName}
                             />
-                            {appendWarningMessage(formik, fields.firstName.id)}
+                            {FieldError(formik, fields.firstName.id)}
                         </div>
                         <div>
                             <input
@@ -37,7 +49,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.middleName}
                             />
-                            {appendWarningMessage(formik, fields.middleName.id)}
+                            {FieldError(formik, fields.middleName.id)}
                         </div>
                         <div>
                             <input
@@ -49,7 +61,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.lastName}
                             />
-                            {appendWarningMessage(formik, fields.lastName.id)}
+                            {FieldError(formik, fields.lastName.id)}
                         </div>
                         <div>
                             <input
@@ -61,7 +73,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.secondLastName}
                             />
-                            {appendWarningMessage(formik, fields.secondLastName.id)}
+                            {FieldError(formik, fields.secondLastName.id)}
                         </div>
                         <div>
                             <input
@@ -73,7 +85,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.birthday}
                             />
-                            {appendWarningMessage(formik, fields.birthday.id)}
+                            {FieldError(formik, fields.birthday.id)}
                         </div>
                         <div>
                             <input
@@ -85,7 +97,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.cellphone}
                             />
-                            {appendWarningMessage(formik, fields.cellphone.id)}
+                            {FieldError(formik, fields.cellphone.id)}
                         </div>
                     </div>
 
@@ -99,7 +111,7 @@ function SignupForm(props) {
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
                         />
-                        {appendWarningMessage(formik, fields.email.id)}
+                        {FieldError(formik, fields.email.id)}
                     </div>
 
                     <div className='
@@ -117,7 +129,7 @@ function SignupForm(props) {
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
                         />
-                        {appendWarningMessage(formik, fields.password.id)}
+                        {FieldError(formik, fields.password.id)}
                         <input
                             id={fields.passwordConfirmation.id}
                             name={fields.passwordConfirmation.id}
@@ -128,7 +140,7 @@ function SignupForm(props) {
                             onBlur={formik.handleBlur}
                             value={formik.values.passwordConfirmation}
                         />
-                        {appendWarningMessage(formik, fields.passwordConfirmation.id)}
+                        {FieldError(formik, fields.passwordConfirmation.id)}
                     </div>
 
                     <div
@@ -143,7 +155,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.city}
                             />
-                            {appendWarningMessage(formik, fields.address.city.id)}
+                            {FieldError(formik, fields.address.city.id)}
                         </div>
                         <div>
                             <input
@@ -155,7 +167,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.state}
                             />
-                            {appendWarningMessage(formik, fields.address.state.id)}
+                            {FieldError(formik, fields.address.state.id)}
                         </div>
                         <div>
                             <input
@@ -167,7 +179,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.country}
                             />
-                            {appendWarningMessage(formik, fields.address.country.id)}
+                            {FieldError(formik, fields.address.country.id)}
                         </div>
                         <div>
                             <input
@@ -179,7 +191,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.zipcode}
                             />
-                            {appendWarningMessage(formik, fields.address.zipcode.id)}
+                            {FieldError(formik, fields.address.zipcode.id)}
                         </div>
                         <div>
                             <input
@@ -191,7 +203,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.neighbourhood}
                             />
-                            {appendWarningMessage(formik, fields.address.neighbourhood.id)}
+                            {FieldError(formik, fields.address.neighbourhood.id)}
                         </div>
                         <div>
                             <input
@@ -203,7 +215,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.street}
                             />
-                            {appendWarningMessage(formik, fields.address.street.id)}
+                            {FieldError(formik, fields.address.street.id)}
                         </div>
                         <div>
                             <input
@@ -215,7 +227,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.buildingNumber}
                             />
-                            {appendWarningMessage(formik, fields.address.buildingNumber.id)}
+                            {FieldError(formik, fields.address.buildingNumber.id)}
                         </div>
                         <div>
                             <input
@@ -227,7 +239,7 @@ function SignupForm(props) {
                                 onBlur={formik.handleBlur}
                                 value={formik.values.address.apartmentNumber}
                             />
-                            {appendWarningMessage(formik, fields.address.apartmentNumber.id)}
+                            {FieldError(formik, fields.address.apartmentNumber.id)}
                         </div>
                     </div>
                     <div className="flex mt-4 justify-center">
@@ -243,54 +255,3 @@ function SignupForm(props) {
     )
 }
 
-function appendWarningMessage(formik, value) {
-    if (value.includes('address')) {
-        let _value = value.split('.')[1]
-        if (!('address' in (formik.touched))) {
-            return null
-        }
-        if (!('address' in (formik.errors))) {
-            return null
-        }
-
-
-        return (
-            <div className='text-sm'>
-                {
-                    function () {
-                        if (!(_value in formik.touched.address)) {
-                            return null
-                        }
-                        return (
-                            formik.touched.address[_value] &&
-                            formik.errors.address[_value] ? (
-                                <div className='text-palered'>
-                                    {formik.errors.address[_value]}
-                                </div>
-                            ) : null
-                        )
-                    }()
-                }
-            </div>
-        )
-    } else {
-        return (
-            <div className='text-sm'>
-                {
-                    function () {
-                        return (
-                            formik.touched[value] && formik.errors[value] ? (
-                                <div className='text-palered'>
-                                    {formik.errors[value]}
-                                </div>
-                            ) : null
-                        )
-                    }()
-                }
-            </div>
-        )
-    }
-}
-
-
-export default SignupForm;

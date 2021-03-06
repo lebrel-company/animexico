@@ -1,9 +1,21 @@
+// libraries:
 import Link from 'next/link'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
 import routes from '../utils/routes'
+import buttons from '../utils/buttons.text'
+
+//==============================================================================
+
 
 function Header() {
     return (
-        <div className='bg-dark shadow-lg bg-gradient-to-t from-dark to-darkindigo'>
+        <div
+            className='bg-dark shadow-lg bg-gradient-to-t from-dark to-darkindigo'>
             <div className='container mx-auto md:p-2'>
                 <div
                     className='flex justify-center items-center md:flex-row flex-wrap p-4'>
@@ -21,17 +33,17 @@ function Header() {
                     '>
                         <Link href='/signup'>
                             <button className='button-pale-outline'>
-                                signup
+                                {buttons.signup.text}
                             </button>
                         </Link>
                         <Link href='/signin'>
                             <button className='button-pale-outline'>
-                                signin
+                                {buttons.signin.text}
                             </button>
                         </Link>
                         <Link href='/cart'>
                             <button className='button-red'>
-                                cart
+                                {buttons.cart.text}
                             </button>
                         </Link>
                     </div>
@@ -49,7 +61,7 @@ function createRoutes() {
                     transition duration-500 ease-in-out
                     transform hover:scale-110
                     '
-                     >
+                >
                     <Link href={routes[value]['route']}
                     >
                         <a className='

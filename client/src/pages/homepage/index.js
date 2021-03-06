@@ -1,10 +1,17 @@
-import Link from 'next/link';
-import ClientLayout from "../../layout/Client";
-import Card from '../../components/Card'
-import Layout from '../../components/Layout';
+// libraries:
 import {useRouter} from 'next/router'
+import Link from 'next/link';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+import ClientLayout from "../../layout/Client";
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+import Card from '../../components/Card'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+//==============================================================================
 
-'use strict';
+
 
 function Homepage() {
     return (
@@ -15,7 +22,12 @@ function Homepage() {
                 md:scale-150 rotate-12 xl:translate-x-1/4
             ' src='/background/tamashii_vignettes.png'/>
             <div
-                className='relative z-20 grid md:grid-cols-2 lg:grid-cols-3 gap-10'>
+                className='
+                relative z-20 grid md:grid-cols-2
+                container m-auto
+                py-20
+                lg:grid-cols-3 gap-10
+                '>
                 <Card
                     name='Godzilla'
                     price={200}

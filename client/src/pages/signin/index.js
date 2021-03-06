@@ -1,11 +1,20 @@
+// libraries:
 import React, {useState} from 'react'
 import {useMutation} from '@apollo/client';
-import {useRouter} from 'next/router';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+import ClientLayout from "../../layout/Client";
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+import FieldError from "../../components/messages/FieldError";
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
 import {fields} from '../../utils/formsHelpers'
 import {signinFormik} from '../../controllers/signin/signin.formik'
 import {signinMutationString} from '../../controllers/signin/signin.mutation'
-import ClientLayout from "../../layout/Client";
+import buttons from '../../utils/buttons.text'
 //==============================================================================
 
 
@@ -13,25 +22,29 @@ export default function Signin() {
     let _router = useRouter();
     let [message, setMessage] = useState(null);
     let [signinMutation] = useMutation(signinMutationString);
-    let {mutation, states, router} = [
+    let [mutation, states, router] = [
         signinMutation,
         {
             message: {
-                state: message,
+                getter: message,
                 setter: setMessage
             }
         },
         {
-            hook: _router, path: '/'
+            hook: _router,
+            path: '/'
         }
     ]
     let formik = signinFormik(mutation, states, router)
 
     return (
-        <ClientLayout>
-            <div className='container m-auto md:flex justify-center'>
+        <ClientLayout label='signin'>
+            <div className='
+            min-h-screen
+            container m-auto md:flex justify-center
+            '>
                 {message && showMessage()}
-                <form className='form-dark' onSubmit={formik.handleSubmit}>
+                <form className='form-dark m-auto' onSubmit={formik.handleSubmit}>
                     <h1 className="text-center py-5 text-white text-2xl font-semibold">Iniciar
                         Sesión</h1>
                     <div className="mb-4">
@@ -39,11 +52,12 @@ export default function Signin() {
                             className="bg-gray-500 rounded-sm w-full"
                             id={fields.email.id}
                             type="email"
-                            placeholder={fields.password.placeholder}
+                            placeholder={fields.email.placeholder}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
                         />
+                        {FieldError(formik, 'email')}
                     </div>
                     <div>
                         <input
@@ -55,24 +69,8 @@ export default function Signin() {
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
                         />
+                        {FieldError(formik, 'password')}
                     </div>
-
-                    <div>
-                        <Link href="/resetPassword">
-                            <a className="flex justify-end inline-block text-xs">Restaurar
-                                Contraseña</a>
-                        </Link>
-                    </div>
-
-
-                    {formik.touched.password && formik.errors.password ? (
-                        <div
-                            className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-                            <p className="font-bold">Error</p>
-                            <p>{formik.errors.password}</p>
-                        </div>
-                    ) : null}
-
                     <div className="grid grid-cols-1 divide-y divide-white">
                         <div className="flex justify-center">
                             <input
@@ -82,16 +80,29 @@ export default function Signin() {
                                     rounded-sm shadow-md mt-5 p-2
                                     button-red
                                     uppercase hover:bg-red-500"
-                                value="Login"
-
+                                value={buttons.signin.text}
                             />
                         </div>
                         <Link href="/signup">
-                            <a className="flex justify-center py-2 px-5 mt-5 inline-block text-white">Crear
-                                Cuenta</a>
+                            <a className="
+                            flex justify-center py-2 px-5 mt-5
+                            underline
+                            inline-block text-white">
+                                {buttons.createAccount.text}
+                            </a>
                         </Link>
                     </div>
+                    <Link href="/resetPassword">
+                        <a className="
+                        text-pale text-xs text-simp
+                        flex justify-center
+                        ">
+                            {buttons.restorePassword.text}
+                        </a>
+                    </Link>
                 </form>
+                <div>
+                </div>
             </div>
         </ClientLayout>
     )

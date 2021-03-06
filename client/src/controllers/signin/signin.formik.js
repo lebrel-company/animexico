@@ -1,12 +1,20 @@
+// libraries:
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
 import {fields} from '../../utils/formsHelpers'
 import {spanishValidationHelpers} from '../../utils/validationHelpers'
 
 //==============================================================================
 
 
-export function signinFormik(state, mutation, route) {
+export function signinFormik(mutation, states, route) {
+    console.log(route)
     return useFormik(
         {
             initialValues:
@@ -65,7 +73,7 @@ export function signinFormik(state, mutation, route) {
                         //routing to index
                         setTimeout(() => {
                             signinMessage(null);
-                            router.hook.push(router.path);
+                            route.hook.push(route.path);
                         }, 500);
 
 
@@ -76,7 +84,7 @@ export function signinFormik(state, mutation, route) {
                         //console.log(error)
 
                         setTimeout(() => {
-                            saveMessage(null)
+                            states.message.setter(null)
                         }, 3000);
                     }
                 }
@@ -89,7 +97,9 @@ export function signinFormik(state, mutation, route) {
 function signinMessage(message) {
     return (
         <div
-            className="bg-white py-2 px-3 w-full my-3 max-w-sm text-center mx-auto">
+            className="
+            bg-white py-2 px-3 w-full my-3
+            max-w-sm text-center mx-auto">
             <p>{message}</p>
         </div>
     )

@@ -7,6 +7,7 @@ export default function ClientLayout(props) {
         <div>
             <div className="
             flex flex-col justify-center items-center
+            min-h-screen
             md:w-screen md:h-screen
             ">
                 <div className='w-full relative z-30'>
@@ -16,13 +17,12 @@ export default function ClientLayout(props) {
                 overflow-y-scroll
                 m-auto
                 w-full
+                flex flex-col
                 '>
-                    {
-                        props.children
-                    }
-                </div>
-                <div className='w-full relative z-30 bottom-0'>
-                    <Footer/>
+                    {props.children}
+                    <div className='w-full relative z-30 bottom-0'>
+                        <Footer/>
+                    </div>
                 </div>
             </div>
         </div>
