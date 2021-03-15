@@ -1,0 +1,6 @@
+mutation signin($input: SigninInput!){
+    signin(input: $input){
+        token
+    }
+}
+

@@ -38,7 +38,6 @@ input SignupInput{
     email: String!
     birthday: String!
     cellphone: String
-    role: Role!
     mapOfAddresses: MapOfAddressesInput!
 }
 input SigninInput{
@@ -75,6 +74,7 @@ type QueryUser{
 type AuthUser {
     token: String!
     user: QueryUser
+    expiresIn: Int!
 }
 input ResetPasswordInput{
     email: String!

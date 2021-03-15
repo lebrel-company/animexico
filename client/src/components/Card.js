@@ -16,10 +16,7 @@ function Card(props) {
                         <h3 className="text-dark text-lg">{props.name}</h3>
                         <p className="text-gray-400">{'$' + props.price + ' MXN'}</p>
                     </div>
-                    <button className='
-                    m-auto font-bold border-2 text-red rounded-md px-2
-                    hover:bg-red hover:text-pale
-                    '>
+                    <button className='button-add'>
                         {texts.addToCart.title}
                     </button>
                 </div>
@@ -30,7 +27,7 @@ function Card(props) {
 
 var texts = {
     addToCart: {
-        title: 'añadir al carrito'
+        title: 'agregar'
     }
 }
 

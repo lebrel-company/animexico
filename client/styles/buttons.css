@@ -1,0 +1,43 @@
+
+.button-red {
+    @apply
+    px-2
+    bg-gradient-to-r
+    from-darkred
+    to-red
+    text-pale
+    rounded-md
+    font-bold
+    font-simp
+}
+
+.button-add{
+    @apply
+    m-auto
+    px-2
+    border-2
+    border-red
+    text-red
+    rounded-md
+    font-bold
+    font-simp
+}
+.button-add:hover{
+    @apply
+    bg-gradient-to-r
+    from-darkred
+    to-red
+    text-pale
+}
+
+.button-pale-outline {
+    @apply
+    px-2
+    bg-transparent
+    text-pale
+    border-2
+    border-pale
+    rounded-md
+    font-bold
+    font-simp
+}

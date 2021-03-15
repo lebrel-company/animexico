@@ -153,7 +153,6 @@ export function signupFormik(mutation, route) {
                     password: values.password,
                     birthday: values.birthday,
                     cellphone: values.cellphone,
-                    role: 'MEMBER',
                     mapOfAddresses: {
                         primary: {
                             city: values.address.city,

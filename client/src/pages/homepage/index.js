@@ -19,7 +19,7 @@ function Homepage() {
             <img className='
                 fixed bg-cover bg-center
                 z-0 opacity-20 transform
-                md:scale-150 rotate-12 xl:translate-x-1/4
+                md:scale-150 rotate-12 xl:translate-x-1/2 -translate-y-20
             ' src='/background/tamashii_vignettes.png'/>
             <div
                 className='

@@ -1,100 +1,179 @@
 'use strict';
-const User = require('./user.model');
+// libraries:
 import bcrypt from 'bcryptjs';
-import {authenticated, authorized, createToken} from "../../utils/auth";
-import messages from './user.messages'
-require('dotenv').config({path: 'variables.env'});
+import jwtDecode from 'jwt-decode';
+
 const jsonWebToken = require('jsonwebtoken');
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+import User from './user.model';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+import {
+    authenticated,
+    authorized,
+    getAge,
+    verifyPassword,
+    createToken,
+    hashPassword
+} from "../../utils/auth";
+import messages from './user.messages'
 
+require('dotenv').config({path: 'variables.env'});
 
-//==============================================================================
-// QUERIES:
+//=============================   QUERIES   ====================================
 
 async function queryUserByToken(_, {token}) {
     return await jsonWebToken.verify(token, process.env.SECRET)
+    gnin
 }
 
 async function queryUserInfo(parent, {}, context, info) {
     return await User.findById(context.user.id).exec();
 }
 
-function me(parent, args, context, info){
+function me(parent, args, context, info) {
     return context.user
 }
-//==============================================================================
-// TYPES:
 
-function mapOfAddresses(parent, args, context, info){
+//==============================   TYPES   =====================================
+function mapOfAddresses(parent, args, context, info) {
     return {
         primary: parent.mapOfAddresses.get('primary'),
         secondary: parent.mapOfAddresses.get('secondary')
     }
 }
 
-//==============================================================================
-// MUTATIONS:
-
+//============================   MUTATIONS   ===================================
 async function signup(parent, {input}, context, info) {
-    const {email, password, birthday} = input;
-    let age = getAge(birthday)
-    if (age < 18) {
-        throw new Error('You are not of legal age')
-    }
-
-
-    const userExists = await User.findOne({email})
-    if (userExists) {
-        throw new Error('That email has already been registered.')
-    }
-
-    const salt = await bcrypt.genSalt(10)
-    input.password = await bcrypt.hash(password, salt);
-    input.access = 'user'
-
     try {
-        const user = new User(input);
-        await user.save();
-        let token = createToken(user)
-        return {
-            token: token,
-            user: user
+
+        let age = getAge(input.birthday)
+        if (age < 18) {
+            throw new Error(message.signup.errors.age)
         }
-    } catch (error) {
-        return error;
+
+        const hashedPassword = await hashPassword(input.birthday)
+
+        const userData = {
+            email: input.email,
+            firstName: input.firstName,
+            middleName: input.middleName,
+            lastName: input.lastName,
+            secondLastName: input.secondLastName,
+            birthday: input.birthday,
+            cellphone: input.cellphone,
+            password: hashedPassword,
+            role: 'MEMBER',
+            mapOfAddresses: {
+                primary: {
+                    country: input.mapOfAddresses.primary.country,
+                    city: input.mapOfAddresses.primary.city,
+                    state: input.mapOfAddresses.primary.state,
+                    zipcode: input.mapOfAddresses.primary.zipcode,
+                    neighbourhood: input.mapOfAddresses.primary.neighbourhood,
+                    street: input.mapOfAddresses.primary.street,
+                    buildingNumber: input.mapOfAddresses.primary.buildingNumber,
+                    apartmentNumber: input.mapOfAddresses.primary.apartmentNumber,
+                }
+            }
+        };
+
+        const existingEmail = await User.findOne({
+            email: userData.email
+        }).lean();
+
+        if (existingEmail) {
+            throw new Error(messages.signup.errors.duplicatedEmail)
+        }
+
+        const newUser = new User(userData);
+        const savedUser = await newUser.save();
+
+        if (savedUser) {
+            const token = createToken(savedUser);
+            const decodedToken = jwtDecode(token);
+            const expiresAt = decodedToken.exp;
+
+            const {
+                firstName,
+                lastName,
+                email,
+                role
+            } = savedUser;
+
+            const userInfo = {
+                firstName,
+                lastName,
+                email,
+                role
+            };
+
+            return {
+                token: token,
+                user: userInfo,
+                expiresAt: expiresAt
+            }
+        } else {
+            throw new Error(messages.signup.errors.process)
+        }
+    } catch (err) {
+        throw new Error(err)
     }
 }
 
-function getAge(dateString) {
-    let today = new Date();
-    let birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    let m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-}
 
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
+//==============================================================================
 
 async function signin(parent, {input}, context, info) {
-    const {email, password} = input;
-    const user = await User.findOne({email});
-    if (!user) {
-        throw new Error(messages.signin.errors.noRegisteredEmail)
-    }
+    try {
+        const user = await User.findOne({email: input.email}).lean()
+        if (!user) {
+            throw Error(messages.signin.errors.noRegisteredEmail)
+        }
 
-    const correctPassword = await bcrypt.compare(
-        password, user.password
-    );
+        console.log(user.password)
 
-    if (!correctPassword) {
-        throw new Error(messages.signin.errors.wrongPassword)
-    }
+        const passwordValid =
+            await verifyPassword(
+                input.password,
+                user.password
+            );
 
-    return {
-        token: createToken(user, process.env.SECRET, '24h'),
-        user: user
+        console.log(passwordValid)
+
+        if (passwordValid) {
+            const {password, bio, ...rest} = user;
+            const {
+                firstName,
+                middleName,
+                lastName,
+                secondLastName,
+                email,
+                mapOfAddresses,
+            } = user
+
+            const userInfo = Object.assign(
+                {}, {
+                    firstName,
+                    middleName,
+                    lastName,
+                    secondLastName,
+                    email,
+                    mapOfAddresses
+                }
+            );
+
+            const token = createToken(userInfo);
+            const decodedToken = jwtDecode(token);
+            const expiresAt = decodedToken.exp;
+
+            return {token, user, expiresAt}
+        } else {
+            throw Error(messages.signin.errors.credentials)
+        }
+    } catch (err) {
+        throw Error(err)
     }
 }
 
@@ -106,8 +185,8 @@ export default {
         queryUserByToken: authenticated(queryUserByToken),
         me: authenticated(me)
     },
-    User:{
-       mapOfAddresses: mapOfAddresses
+    User: {
+        mapOfAddresses: mapOfAddresses
     },
     Mutation: {
         signup,

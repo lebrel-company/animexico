@@ -1,0 +1,11 @@
+.message-error{
+    @apply
+        text-sm
+        bg-palered
+        text-pale
+        bg-opacity-10
+        my-3
+        border-l-4
+        border-palered
+        p-2
+}

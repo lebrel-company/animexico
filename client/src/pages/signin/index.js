@@ -1,50 +1,73 @@
 // libraries:
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {useMutation} from '@apollo/client';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+import {AuthContext} from "../../context/AuthContext";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 import ClientLayout from "../../layout/Client";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
 import FieldError from "../../components/messages/FieldError";
+import ErrorModalDialog from '../../components/modal/ErrorModalDialog'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {fields} from '../../utils/formsHelpers'
 import {signinFormik} from '../../controllers/signin/signin.formik'
-import {signinMutationString} from '../../controllers/signin/signin.mutation'
+import signinMutationString from '../../controllers/signin/signin.mutation.gql'
 import buttons from '../../utils/buttons.text'
 //==============================================================================
 
 
 export default function Signin() {
+    let _authContext = useContext(AuthContext)
     let _router = useRouter();
     let [message, setMessage] = useState(null);
+    let [activateError, setActivateError] = useState(false);
     let [signinMutation] = useMutation(signinMutationString);
-    let [mutation, states, router] = [
+    let [mutation, states, context, router] = [
         signinMutation,
         {
             message: {
                 getter: message,
                 setter: setMessage
+            },
+            activateError: {
+                getter: activateError,
+                setter: setActivateError
             }
         },
+        _authContext,
         {
             hook: _router,
             path: '/'
         }
     ]
-    let formik = signinFormik(mutation, states, router)
+    let formik = signinFormik(mutation, states, context, router)
 
     return (
-        <ClientLayout label='signin'>
+        <ClientLayout>
             <div className='
             min-h-screen
             container m-auto md:flex justify-center
             '>
-                {message && showMessage()}
-                <form className='form-dark m-auto' onSubmit={formik.handleSubmit}>
+                {
+                    (()=>{
+                        if (activateError){
+                            return (
+                                <ErrorModalDialog message={message} activate={true}/>
+                            )
+                        }
+                        else{
+                            return null
+                        }
+                    })()
+                }
+                <form className='form-dark m-auto'
+                      onSubmit={formik.handleSubmit}>
                     <h1 className="text-center py-5 text-white text-2xl font-semibold">Iniciar
                         Sesión</h1>
                     <div className="mb-4">
@@ -71,6 +94,7 @@ export default function Signin() {
                         />
                         {FieldError(formik, 'password')}
                     </div>
+                    {activateError && <div className='message-error'>{message}</div>}
                     <div className="grid grid-cols-1 divide-y divide-white">
                         <div className="flex justify-center">
                             <input

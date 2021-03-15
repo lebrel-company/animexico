@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
+import ErrorModalDialog from "../../components/modal/ErrorModalDialog";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {fields} from '../../utils/formsHelpers'
@@ -13,8 +14,7 @@ import {spanishValidationHelpers} from '../../utils/validationHelpers'
 //==============================================================================
 
 
-export function signinFormik(mutation, states, route) {
-    console.log(route)
+export function signinFormik(mutation, states, context, route) {
     return useFormik(
         {
             initialValues:
@@ -52,8 +52,8 @@ export function signinFormik(mutation, states, route) {
 
             onSubmit:
                 async function submit_data(values) {
+                    states.activateError.setter(false)
                     const {email, password} = values;
-
                     try {
                         const {data} = await mutation({
                             variables: {
@@ -63,44 +63,17 @@ export function signinFormik(mutation, states, route) {
                                 }
                             }
                         });
-
-                        signinMessage('Autenticando...')
-
-                        //save token in the storage
-                        const {token} = data.signin;
-                        localStorage.setItem('token', token);
-
+                        context.setAuthState(data)
                         //routing to index
                         setTimeout(() => {
-                            signinMessage(null);
                             route.hook.push(route.path);
-                        }, 500);
-
+                        }, 800);
 
                     } catch (error) {
-                        signinMessage(
-                            error.message.replace('GraphQl error: ', '')
-                        )
-                        //console.log(error)
-
-                        setTimeout(() => {
-                            states.message.setter(null)
-                        }, 3000);
+                        states.activateError.setter(true)
+                        states.message.setter(error.message)
                     }
                 }
         }
     );
-}
-
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
-
-function signinMessage(message) {
-    return (
-        <div
-            className="
-            bg-white py-2 px-3 w-full my-3
-            max-w-sm text-center mx-auto">
-            <p>{message}</p>
-        </div>
-    )
 }
