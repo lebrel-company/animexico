@@ -13,7 +13,8 @@ module.exports = {
       palered: '#eb918a',
       dark: '#2b2b2b',
       darkindigo: '#34373b',
-      white: '#ffffff'
+      white: '#ffffff',
+      gray: '#a6a6a6'
     },
     fontFamily:{
       simp: ['Tajawal', 'sans-serif'],

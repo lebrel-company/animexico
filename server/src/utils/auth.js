@@ -48,7 +48,7 @@ export function getAge(dateString) {
 export function hashPassword(password) {
     return new Promise((resolve, reject) => {
         // Generate a salt at level 12 strength
-        bcrypt.genSalt(12, (err, salt) => {
+        bcrypt.genSalt(10, (err, salt) => {
             if (err) {
                 reject(err);
             }

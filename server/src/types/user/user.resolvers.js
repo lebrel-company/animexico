@@ -46,6 +46,7 @@ function mapOfAddresses(parent, args, context, info) {
 
 //============================   MUTATIONS   ===================================
 async function signup(parent, {input}, context, info) {
+    
     try {
 
         let age = getAge(input.birthday)
@@ -53,7 +54,7 @@ async function signup(parent, {input}, context, info) {
             throw new Error(message.signup.errors.age)
         }
 
-        const hashedPassword = await hashPassword(input.birthday)
+        const hashedPassword = await hashPassword(input.password)
 
         const userData = {
             email: input.email,
@@ -78,6 +79,8 @@ async function signup(parent, {input}, context, info) {
                 }
             }
         };
+
+        console.log(userData)
 
         const existingEmail = await User.findOne({
             email: userData.email
@@ -132,7 +135,7 @@ async function signin(parent, {input}, context, info) {
             throw Error(messages.signin.errors.noRegisteredEmail)
         }
 
-        console.log(user.password)
+        console.log(input.password)
 
         const passwordValid =
             await verifyPassword(
