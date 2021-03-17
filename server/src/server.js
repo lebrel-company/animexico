@@ -7,28 +7,33 @@ import product from './types/product/product.resolvers'
 import user from './types/user/user.resolvers'
 import order from './types/order/order.resolvers'
 import address from './types/address/address.resolvers'
+import file from './types/file/file.resolvers'
 mongoConnection()
 
-const types = ['product', 'user', 'order', 'address'];
+const types = ['product', 'user', 'order', 'address', 'file'];
 
 async function start() {
     let schemaTypes = await Promise.all(types.map(loadSchemaType));
-
-
     const rootSchema = `
         schema {
             query: Query
             mutation: Mutation
         }
     `
-
     const server = new ApolloServer({
         typeDefs: [rootSchema, ...schemaTypes],
-        resolvers: merge({}, product, user, order, address),
+        resolvers: merge(
+            {},
+            product,
+            user,
+            order,
+            address,
+            file
+        ),
         context: ({req, connection}) => {
             let token = req.headers.authorization
             let user = userFromToken(token)
-            return {user, createToken}
+            return {user}
         }
     });
 

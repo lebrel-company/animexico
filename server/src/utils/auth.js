@@ -19,7 +19,7 @@ export function createToken(user) {
     }
     return jsonWebToken.sign(
         {
-            sub: user._id,
+            id: user.id,
             email: user.email,
             role: user.role,
             iss: 'api.tamashii',
@@ -88,10 +88,12 @@ export function requireAdmin(req, res, next) {
 
 //==============================================================================
 
-export async function userFromToken(token) {
+export function userFromToken(token) {
     try {
         let user = jsonWebToken.verify(token, __JWT_SECRET)
-        return await User.findOne({id: user.id}).exec()
+        console.log('userFromToken')
+        console.log(user)
+        return user
     } catch (e) {
         return null
     }

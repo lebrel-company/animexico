@@ -1,0 +1,9 @@
+
+type SignedURL{
+    key: String!
+    url: String!
+}
+
+extend type Query {
+    awsSignedUrl: SignedURL
+}

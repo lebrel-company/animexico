@@ -135,7 +135,10 @@ async function signin(parent, {input}, context, info) {
             throw Error(messages.signin.errors.noRegisteredEmail)
         }
 
+<<<<<<< HEAD
         console.log(input.password)
+=======
+>>>>>>> d8432fad0cba1f2ce55309541983bd3f303be087
 
         const passwordValid =
             await verifyPassword(
@@ -143,27 +146,30 @@ async function signin(parent, {input}, context, info) {
                 user.password
             );
 
-        console.log(passwordValid)
-
+        console.log('signin')
+        console.log(user)
         if (passwordValid) {
-            const {password, bio, ...rest} = user;
             const {
+                _id,
                 firstName,
                 middleName,
                 lastName,
                 secondLastName,
                 email,
                 mapOfAddresses,
+                role,
             } = user
 
             const userInfo = Object.assign(
                 {}, {
+                    id:_id,
                     firstName,
                     middleName,
                     lastName,
                     secondLastName,
                     email,
-                    mapOfAddresses
+                    mapOfAddresses,
+                    role
                 }
             );
 

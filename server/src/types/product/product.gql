@@ -7,7 +7,7 @@ type Product {
     code: String!
     stock: Int!
     available: Boolean!
-    images: [String]
+    images: [String!]
     tags: [String]
 }
 input ProductInput {
