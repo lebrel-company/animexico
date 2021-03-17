@@ -1,0 +1,6 @@
+query fileUpload{
+    awsSignedUrl{
+        key
+        url
+    }
+}

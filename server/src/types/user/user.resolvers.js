@@ -139,11 +139,11 @@ async function signin(parent, {input}, context, info) {
                 user.password
             );
 
-
+        console.log('signin')
+        console.log(user)
         if (passwordValid) {
-            const {password, bio, ...rest} = user;
             const {
-                id,
+                _id,
                 firstName,
                 middleName,
                 lastName,
@@ -155,7 +155,7 @@ async function signin(parent, {input}, context, info) {
 
             const userInfo = Object.assign(
                 {}, {
-                    id,
+                    id:_id,
                     firstName,
                     middleName,
                     lastName,

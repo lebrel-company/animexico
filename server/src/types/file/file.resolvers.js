@@ -16,7 +16,6 @@ const S3 = new AWS.S3({
 })
 
 async function awsSignedUrl(parent, args, context, info) {
-    console.log(context.user)
     var _file_key = `${context.user.id}/${uuidv4()}.jpeg`
 
     function getSignedUrl() {
@@ -42,7 +41,6 @@ async function awsSignedUrl(parent, args, context, info) {
         url: await getSignedUrl(),
         key: _file_key
     }
-    console.log(result)
 
     return result
 }

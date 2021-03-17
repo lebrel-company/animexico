@@ -33,7 +33,7 @@ async function start() {
         context: ({req, connection}) => {
             let token = req.headers.authorization
             let user = userFromToken(token)
-            return {user, createToken}
+            return {user}
         }
     });
 
