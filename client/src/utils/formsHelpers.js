@@ -34,7 +34,7 @@ export var fields = {
         id: 'birthday'
     },
     cellphone: {
-        placeholder: 'Numero de Celular',
+        placeholder: 'Número de Celular',
         id: 'cellphone'
     },
     address: {

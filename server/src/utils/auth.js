@@ -91,6 +91,7 @@ export function requireAdmin(req, res, next) {
 export async function userFromToken(token) {
     try {
         let user = jsonWebToken.verify(token, __JWT_SECRET)
+        console.log(user)
         return await User.findOne({id: user.id}).exec()
     } catch (e) {
         return null

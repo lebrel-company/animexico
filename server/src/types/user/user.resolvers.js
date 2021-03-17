@@ -53,7 +53,7 @@ async function signup(parent, {input}, context, info) {
             throw new Error(message.signup.errors.age)
         }
 
-        const hashedPassword = await hashPassword(input.birthday)
+        const hashedPassword = await hashPassword(input.password)
 
         const userData = {
             email: input.email,
@@ -132,7 +132,6 @@ async function signin(parent, {input}, context, info) {
             throw Error(messages.signin.errors.noRegisteredEmail)
         }
 
-        console.log(user.password)
 
         const passwordValid =
             await verifyPassword(
@@ -140,27 +139,30 @@ async function signin(parent, {input}, context, info) {
                 user.password
             );
 
-        console.log(passwordValid)
 
         if (passwordValid) {
             const {password, bio, ...rest} = user;
             const {
+                id,
                 firstName,
                 middleName,
                 lastName,
                 secondLastName,
                 email,
                 mapOfAddresses,
+                role,
             } = user
 
             const userInfo = Object.assign(
                 {}, {
+                    id,
                     firstName,
                     middleName,
                     lastName,
                     secondLastName,
                     email,
-                    mapOfAddresses
+                    mapOfAddresses,
+                    role
                 }
             );
 
