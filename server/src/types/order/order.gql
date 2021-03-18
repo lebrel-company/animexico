@@ -1,20 +1,30 @@
 type Order{
     id: ID
-    user: User!
-    listOfProducts: [Product]!
+    listOfProducts: [ProductOrder!]!
     shipping: String!
     total: Float!
-    address: Address!
+    address: AddressName!
     status: OrderStatus!
+}
+
+type ProductOrder{
+    id: ID
+    idProduct: ID!
+    amount: Int
+}
+
+input ProductOrderInput{
+    id: ID
+    idProduct: ID!
+    amount: Int
 }
 
 input OrderInput{
     id: ID
-    user: UserInput!
-    listOfProducts: [ProductInput]!
+    listOfProducts: [ProductOrderInput!]!
     shipping: String!
     total: Float!
-    address: AddressInput!
+    address: AddressName!
     status: OrderStatus!
 }
 
@@ -22,7 +32,7 @@ enum OrderStatus{
     PENDING
     IN_TRANSIT
     COMPLETED
-    CANCEL
+    CANCELED
 }
 
 extend type Query{

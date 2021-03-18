@@ -4,7 +4,7 @@
   "main": "src/server.js",
   "scripts": {
     "build": "babel src --out-dir dist",
-    "start": "node dist/index.js",
+    "start": "set NODE_ENV=dev&&node dist --trace-warnings",
     "dev": "nodemon --exec babel-node src -L",
     "restart": "yarn run rimraf dist && yarn run build && yarn run start",
     "rimraf": "./node_modules/rimraf/bin.js",

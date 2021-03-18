@@ -1,12 +1,14 @@
 mutation signup($input: SignupInput!){
     signup(input: $input){
         token
-        user{
+        userInfo{
+            id
             firstName
             middleName
             lastName
             secondLastName
         }
+        expiresIn
     }
 }
 

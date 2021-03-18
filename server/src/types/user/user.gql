@@ -15,7 +15,10 @@ type User{
     cellphone: String
     role: Role!
     mapOfAddresses: MapOfAddresses
+    listOfOrders:[Order!]
+    listOfToys: [Toy!]
 }
+
 input UserInput{
     id: ID
     firstName: String!
@@ -29,6 +32,7 @@ input UserInput{
     role: String!
     mapOfAddresses: MapOfAddressesInput
 }
+
 input SignupInput{
     firstName: String!
     middleName: String
@@ -73,9 +77,10 @@ type QueryUser{
 
 type AuthUser {
     token: String!
-    user: QueryUser
+    userInfo: QueryUser
     expiresIn: Int!
 }
+
 input ResetPasswordInput{
     email: String!
     password: String!
@@ -87,8 +92,10 @@ type Query {
     queryUserInfo: QueryUser!
     me: QueryUser!
 }
+
 type Mutation {
     signup(input: SignupInput!): AuthUser!
+    adminSignup(input: SignupInput!): AuthUser!
     signin(input: SigninInput!): AuthUser!
     deleteUser( id : ID!) : String
     updateUser( input: UpdateUserInput ) : User

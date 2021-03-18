@@ -14,7 +14,7 @@ import {spanishValidationHelpers} from '../../utils/validationHelpers'
 //==============================================================================
 
 
-export function signinFormik(mutation, states, context, route) {
+export function signinFormik(mutation, states, contexts, route) {
     return useFormik(
         {
             initialValues:
@@ -63,8 +63,8 @@ export function signinFormik(mutation, states, context, route) {
                                 }
                             }
                         });
-                        context.setAuthState(data)
-                        //routing to index
+                        contexts.authContext.setAuthState(data.signin)
+
                         setTimeout(() => {
                             route.hook.push(route.path);
                         }, 800);

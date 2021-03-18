@@ -1,5 +1,14 @@
-const mongoose = require('mongoose');
-const AddressSchema = require('../address/address.schema');
+'use strict';
+// libraries:
+import mongoose from 'mongoose'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+import AddressSchema from '../address/address.schema'
+import OrderSchema from '../order/order.schema'
+import ToySchema from '../toy/toy.schema'
+//==============================================================================
 
 const UserSchema = mongoose.Schema({
     firstName:{
@@ -52,7 +61,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         enum: ['ADMIN','MEMBER', 'EDITOR']
-    }
+    },
+    listOfOrders: [OrderSchema],
+    listOfToys: [ToySchema]
 }, {
     timestamps:true
 });

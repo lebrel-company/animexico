@@ -2,7 +2,6 @@
 // libraries:
 import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
-
 const jsonWebToken = require('jsonwebtoken');
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
@@ -11,6 +10,7 @@ import User from './user.model';
 // project:
 import {
     authenticated,
+    addUserWithRole,
     authorized,
     getAge,
     verifyPassword,
@@ -25,7 +25,6 @@ require('dotenv').config({path: 'variables.env'});
 
 async function queryUserByToken(_, {token}) {
     return await jsonWebToken.verify(token, process.env.SECRET)
-    gnin
 }
 
 async function queryUserInfo(parent, {}, context, info) {
@@ -45,85 +44,19 @@ function mapOfAddresses(parent, args, context, info) {
 }
 
 //============================   MUTATIONS   ===================================
-async function signup(parent, {input}, context, info) {
-    try {
 
-        let age = getAge(input.birthday)
-        if (age < 18) {
-            throw new Error(message.signup.errors.age)
-        }
-
-        const hashedPassword = await hashPassword(input.password)
-
-        const userData = {
-            email: input.email,
-            firstName: input.firstName,
-            middleName: input.middleName,
-            lastName: input.lastName,
-            secondLastName: input.secondLastName,
-            birthday: input.birthday,
-            cellphone: input.cellphone,
-            password: hashedPassword,
-            role: 'MEMBER',
-            mapOfAddresses: {
-                primary: {
-                    country: input.mapOfAddresses.primary.country,
-                    city: input.mapOfAddresses.primary.city,
-                    state: input.mapOfAddresses.primary.state,
-                    zipcode: input.mapOfAddresses.primary.zipcode,
-                    neighbourhood: input.mapOfAddresses.primary.neighbourhood,
-                    street: input.mapOfAddresses.primary.street,
-                    buildingNumber: input.mapOfAddresses.primary.buildingNumber,
-                    apartmentNumber: input.mapOfAddresses.primary.apartmentNumber,
-                }
-            }
-        };
-
-        const existingEmail = await User.findOne({
-            email: userData.email
-        }).lean();
-
-        if (existingEmail) {
-            throw new Error(messages.signup.errors.duplicatedEmail)
-        }
-
-        const newUser = new User(userData);
-        const savedUser = await newUser.save();
-
-        if (savedUser) {
-            const token = createToken(savedUser);
-            const decodedToken = jwtDecode(token);
-            const expiresAt = decodedToken.exp;
-
-            const {
-                firstName,
-                lastName,
-                email,
-                role
-            } = savedUser;
-
-            const userInfo = {
-                firstName,
-                lastName,
-                email,
-                role
-            };
-
-            return {
-                token: token,
-                user: userInfo,
-                expiresAt: expiresAt
-            }
-        } else {
-            throw new Error(messages.signup.errors.process)
-        }
-    } catch (err) {
-        throw new Error(err)
-    }
+function signup(parent, {input}, context, info) {
+    return addUserWithRole('MEMBER')(parent, {input}, context, info)
 }
 
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
-//==============================================================================
+
+function adminSignup(parent, {input}, context, info) {
+    return addUserWithRole('ADMIN')(parent, {input}, context, info)
+}
+
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
 async function signin(parent, {input}, context, info) {
     try {
@@ -132,15 +65,10 @@ async function signin(parent, {input}, context, info) {
             throw Error(messages.signin.errors.noRegisteredEmail)
         }
 
+        const passwordValid = (
+            await verifyPassword(input.password, user.password)
+        )
 
-        const passwordValid =
-            await verifyPassword(
-                input.password,
-                user.password
-            );
-
-        console.log('signin')
-        console.log(user)
         if (passwordValid) {
             const {
                 _id,
@@ -155,22 +83,21 @@ async function signin(parent, {input}, context, info) {
 
             const userInfo = Object.assign(
                 {}, {
-                    id:_id,
+                    id: _id,
                     firstName,
                     middleName,
                     lastName,
                     secondLastName,
                     email,
-                    mapOfAddresses,
                     role
                 }
             );
 
             const token = createToken(userInfo);
             const decodedToken = jwtDecode(token);
-            const expiresAt = decodedToken.exp;
+            const expiresIn = decodedToken.exp;
 
-            return {token, user, expiresAt}
+            return {token, userInfo, expiresIn}
         } else {
             throw Error(messages.signin.errors.credentials)
         }
@@ -191,6 +118,7 @@ export default {
         mapOfAddresses: mapOfAddresses
     },
     Mutation: {
+        adminSignup,
         signup,
         signin
     }
