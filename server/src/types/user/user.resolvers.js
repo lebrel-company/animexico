@@ -135,10 +135,6 @@ async function signin(parent, {input}, context, info) {
             throw Error(messages.signin.errors.noRegisteredEmail)
         }
 
-<<<<<<< HEAD
-        console.log(input.password)
-=======
->>>>>>> d8432fad0cba1f2ce55309541983bd3f303be087
 
         const passwordValid =
             await verifyPassword(

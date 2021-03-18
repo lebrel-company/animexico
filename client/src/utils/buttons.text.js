@@ -31,11 +31,12 @@ var buttons = {
             text:'Promociones'
         },
         automaticMessages:{
-            text:'Mensajes Automaticos'
+            text:'Mensajes Automáticos'
         },
         reports:{
             text:'Reportes'
-        }
+        },
+        
     },
     productFields:{
         productPrice:{
@@ -57,8 +58,20 @@ var buttons = {
             text:'Borrar Producto'
         },
         editProduct:{
-            text:'Editar Producto'
+            text:'Editar'
+        },
+        applyChanges:{
+            text:'Aplicar'
+        },
+        cancel:{
+            text:'Cancelar'
         }
+    },
+    createProduct:{
+        text: 'Crear Producto +'
+    },
+    signoff:{
+        text:'Cerrar Sesión'
     }
     
 

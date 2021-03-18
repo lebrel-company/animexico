@@ -14,7 +14,8 @@ module.exports = {
       dark: '#2b2b2b',
       darkindigo: '#34373b',
       white: '#ffffff',
-      gray: '#a6a6a6'
+      gray: '#a6a6a6',
+      darkblue:'#283043'
     },
     fontFamily:{
       simp: ['Tajawal', 'sans-serif'],

@@ -11,6 +11,18 @@
     font-simp
 }
 
+.button-pill{
+    @apply
+    px-2
+    bg-gradient-to-r
+    from-darkred
+    to-red
+    text-pale
+    rounded-full
+    font-bold
+    font-simp
+}
+
 .button-add{
     @apply
     m-auto
@@ -37,6 +49,17 @@
     text-pale
     border-2
     border-pale
+    rounded-md
+    font-bold
+    font-simp
+}
+
+.button-blue{
+    @apply
+    m-auto
+    px-2
+    bg-darkblue
+    text-pale
     rounded-md
     font-bold
     font-simp
