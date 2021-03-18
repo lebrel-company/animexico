@@ -23,7 +23,7 @@ async function awsSignedUrl(parent, args, context, info) {
             function resolveSignedUrl(resolve, reject) {
                 S3.getSignedUrl('putObject', {
                         Bucket: keys.bucket,
-                        ContentType: 'jpeg',
+                        ContentType: 'image/jpeg',
                         Key: _file_key
                     },
                     function postRequest(err, url) {

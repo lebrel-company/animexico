@@ -14,30 +14,29 @@ const Provider = AuthContext.Provider
 function AuthProvider(props) {
     const [authState, setAuthState] = useState({
         token: null,
-        expiresAt: null,
+        expiresIn: null,
         userInfo: {}
     })
 
     function populateAuthData(data) {
         setAuthState({
             token: data.token,
-            expiresAt: data.expiresAt,
+            expiresIn: data.expiresIn,
             userInfo: data.userInfo
         })
     }
-
 
     return (
         <Provider
             value={{
                 authState: authState,
-                setAuthState: function updateAuthState(userData) {
+                setAuthState: function (userData) {
                     populateAuthData(userData)
                 }
             }}
         >
             {
-                children
+                props.children
             }
         </Provider>
     )

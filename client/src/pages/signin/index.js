@@ -23,12 +23,12 @@ import buttons from '../../utils/buttons.text'
 
 
 export default function Signin() {
-    let _authContext = useContext(AuthContext)
-    let _router = useRouter();
-    let [message, setMessage] = useState(null);
-    let [activateError, setActivateError] = useState(false);
-    let [signinMutation] = useMutation(signinMutationString);
-    let [mutation, states, context, router] = [
+    var authContext = useContext(AuthContext)
+    var _router = useRouter();
+    var [message, setMessage] = ontroseState(null);
+    var [activateError, setActivateError] = useState(false);
+    var [signinMutation] = useMutation(signinMutationString);
+    var [mutation, states, contexts, router] = [
         signinMutation,
         {
             message: {
@@ -40,14 +40,16 @@ export default function Signin() {
                 setter: setActivateError
             }
         },
-        _authContext,
+        {
+            authContext: authContext
+        },
         {
             hook: _router,
-            path: '/'
+            path: '/account'
         }
     ]
 
-    let formik = signinFormik(mutation, states, context, router)
+    let formik = signinFormik(mutation, states, contexts, router)
 
     return (
         <ClientLayout>

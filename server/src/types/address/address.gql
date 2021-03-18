@@ -20,6 +20,11 @@ type Address {
     apartmentNumber: String
 }
 
+enum AddressName{
+    primary
+    secondary
+}
+
 input AddressInput {
     city: String!
     state: String!

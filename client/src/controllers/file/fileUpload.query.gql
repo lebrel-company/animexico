@@ -1,4 +1,4 @@
-query fileUpload{
+query awsSignedUrl{
     awsSignedUrl{
         key
         url

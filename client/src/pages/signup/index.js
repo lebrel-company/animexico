@@ -1,7 +1,10 @@
 // libraries
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import {useMutation} from "@apollo/client";
 import {useRouter} from 'next/router'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// contexts
+import {AuthContext} from "../../context/AuthContext";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts
 import ClientLayout from '../../layout/Client'
@@ -17,8 +20,19 @@ import {fields} from '../../utils/formsHelpers'
 
 
 export default function SignupForm(props) {
-    const [signup] = useMutation(signupMutationString);
-    const formik = signupFormik(signup, {hook: useRouter, path: '/'});
+    var authContext = useContext(AuthContext)
+    var _router = useRouter();
+    var [signupMutation] = useMutation(signupMutationString);
+    var [mutation, states, contexts, router] = [
+        signupMutation,
+        {},
+        {authContext: authContext},
+        {hook:_router, path: '/account'}
+    ]
+
+    var formik = signupFormik(mutation, states, contexts, router);
+
+    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     return (
         <ClientLayout>
             <div className='
@@ -246,7 +260,8 @@ export default function SignupForm(props) {
                         <button
                             className='button-red p-2 text-2xl'
                             type="submit"
-                            id={fields.submit.id}>{fields.submit.value}
+                            id={fields.submit.id}>
+                            {fields.submit.value}
                         </button>
                     </div>
                 </form>

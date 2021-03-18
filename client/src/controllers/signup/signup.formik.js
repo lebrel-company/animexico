@@ -3,7 +3,7 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import {spanishValidationHelpers} from '../../utils/validationHelpers'
 
-export function signupFormik(mutation, route) {
+export function signupFormik(mutation, states, contexts, route) {
     return useFormik({
             initialValues: {
                 firstName: '',
@@ -167,12 +167,17 @@ export function signupFormik(mutation, route) {
                     }
                 }
                 try {
+                    console.log(_input)
                     let {data} = await mutation({
                         variables: {
                             input: _input
                         }
                     });
-                    route.hook.push(route.path)
+                    console.log(data)
+                    contexts.authContext.setAuthState(data.signup)
+                    setTimeout(() => {
+                        route.hook.push(route.path);
+                    }, 800);
                 } catch (error) {
                     console.log(error)
                 }

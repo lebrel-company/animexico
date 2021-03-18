@@ -1,6 +1,14 @@
 mutation signin($input: SigninInput!){
     signin(input: $input){
         token
+        userInfo{
+            id
+            firstName
+            middleName
+            lastName
+            secondLastName
+        }
+        expiresIn
     }
 }
 
