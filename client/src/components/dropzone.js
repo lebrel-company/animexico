@@ -36,7 +36,7 @@ function dropzone() {
                 {
                     selectedFiles.map(function formatFiles(values, index){
                         return (
-                        !values.invalid && <div>{values.name}</div>
+                        !values.invalid && <div className='text-pale'>{values.name}</div>
                         )
                     })
                 }
