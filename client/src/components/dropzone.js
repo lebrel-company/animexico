@@ -1,6 +1,18 @@
+'use strict';
+// libraries:
 import React, { useState } from 'react'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+//==============================================================================
 
-function dropzone() {
+
+export default function dropzone() {
     const [ selectedFiles, setSelectedFiles ] = useState([]);
     const [ errorMessage, setErrorMessage ] = useState('');
 
@@ -45,6 +57,11 @@ function dropzone() {
     )
 }
 
+function removeImage(index, states){
+
+
+}
+
 function dragOver(event){
     event.preventDefault();
 }
@@ -81,7 +98,7 @@ function listOfTaggedValidFilesByType(listOfFiles){
     for(let i = 0; i < listOfFiles.length; i++){   
         result.push(listOfFiles[i])
         if(validateFileType(listOfFiles[i])){
-            listOfFiles[i][property] = false;            
+            listOfFiles[i][property] = false;
         }else{
             listOfFiles[i][property] = true;
         }
@@ -99,10 +116,6 @@ function validateFileType(file){
         'image/x-icon'
     ];
 
-    if (validTypes.indexOf(file.type) === -1) {
-        return false;
-    }
-    return true;
+    return validTypes.indexOf(file.type) !== -1;
 }
 
-export default dropzone
