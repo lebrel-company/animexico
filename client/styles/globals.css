@@ -47,6 +47,21 @@ input, select, textarea {
        rounded-md
 }
 
+.dropzone{
+  width: 300px;
+  height: 300px;
+  border: 2px dashed #ccc;
+  color: #ccc;
+  line-height: 300px;
+  text-align: center;
+}
+
+.dropzone.dragover{
+  border-color:#c42034;
+  color:#c42034;
+  
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;

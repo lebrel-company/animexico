@@ -1,5 +1,7 @@
 import React from 'react'
 import {fields} from '../utils/formsProduct'
+import Dropzone from '../components/dropzone'
+
 
 function createProduct() {
     return (
@@ -53,11 +55,51 @@ function createProduct() {
                             //value={formik.values.firstName}
                         />
                     </div>
+                    <div>
+                        <input
+                            id={fields.stock.id}
+                            name={fields.stock.id}
+                            type="number"
+                            placeholder={fields.stock.placeholder}
+                            //onChange={formik.handleChange}
+                            //onBlur={formik.handleBlur}
+                            //value={formik.values.firstName}
+                        />
+                    </div>
+                    <div>
+                        <div className='text-pale'>
+                            {fields.available.placeholder}
+                        </div>
+                        <input
+                            className="w-5 h-5 bg-dark"
+                            id={fields.stock.id}
+                            name={fields.stock.id}
+                            type="checkbox"
+                            placeholder={fields.stock.placeholder}
+                            //onChange={formik.handleChange}
+                            //onBlur={formik.handleBlur}
+                            //value={formik.values.firstName}
+                        />
+                    </div>
                 </div>
-                <textarea></textarea>
+                <div className='pt-3'>
+                    <textarea
+                        placeholder={fields.description.placeholder}                        
+                        />
+                </div>
+                <div>
+                    
+                    <div>
+                        <Dropzone/>       
+                    </div>   
+                </div>
+                            
+                
            </form>
         </div>
     )
 }
+
+
 
 export default createProduct
