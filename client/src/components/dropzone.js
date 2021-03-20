@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================
+import buttons from '../utils/buttons.text'
 
 
 export default function dropzone() {
@@ -44,11 +45,30 @@ export default function dropzone() {
                     Dropzone
                 </div>                
             </div>
-            <div>
+            <div className='pt-4'>
                 {
                     selectedFiles.map(function formatFiles(values, index){
                         return (
-                        !values.invalid && <div className='text-pale'>{values.name}</div>
+                        !values.invalid &&  
+                                            <div className='pt-2'>
+                                                <div className='container flex items-center justify-between border-2 border-pale border-opacity-10 h-12'>
+                                                    <div className='pl-2'>
+                                                        <img src='/imageIconWhite.png'
+                                                            className='h-6 w-6
+                                                            '
+                                                        />
+                                                    </div>                                                
+                                                    <div className='text-pale'>
+                                                        {values.name}
+                                                    </div>
+                                                    <div className='pr-2'>
+                                                        <button className='button-add'>
+                                                            {buttons.delete.text}
+                                                        </button>
+                                                    </div>                                                
+                                                </div>    
+                                            </div>
+                                                         
                         )
                     })
                 }

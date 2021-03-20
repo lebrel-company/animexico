@@ -72,6 +72,9 @@ var buttons = {
     },
     signoff:{
         text:'Cerrar Sesión'
+    },
+    delete:{
+        text:'X'
     }
     
 
