@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import ErrorModalDialog from "../../components/modal/ErrorModalDialog";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {fields} from '../../utils/formsHelpers'
+import {fields} from '../../utils/fields.helpers'
 import {spanishValidationHelpers} from '../../utils/validationHelpers'
 
 //==============================================================================

@@ -22,6 +22,25 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+.admin-sidebar{
+    @apply
+    flex
+    flex-col
+    justify-between
+    bg-dark
+    shadow-lg
+    bg-gradient-to-t
+    from-dark
+    to-darkindigo
+    text-pale
+    h-full
+    w-full
+    py-12
+    relative
+    z-50
+}
+
+
 a {
     color: inherit;
     text-decoration: none;

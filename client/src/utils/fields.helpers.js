@@ -1,6 +1,18 @@
 'use strict';
+// libraries:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+//==============================================================================
 
-export var fields = {
+
+
+export var user = {
     firstName: {
         placeholder: 'Nombre',
         id: 'firstName',
@@ -77,3 +89,40 @@ export var fields = {
     }
 }
 
+export var productFields = {
+    name: {
+        id: 'name',
+        placeholder: 'Nombre del producto',
+        type: 'text'
+    },
+    price: {
+        id: 'price',
+        placeholder: 'Precio del producto',
+        type: 'number'
+    },
+    pieces: {
+        id: 'pieces',
+        placeholder: 'Número de piezas',
+        type: 'number'
+    },
+    stock: {
+        id: 'stock',
+        placeholder: 'Piezas disponibles',
+        type: 'number'
+    },
+    code: {
+        id: 'code',
+        placeholder: 'Jancode',
+        type: 'text'
+    },
+    block: {
+        id: 'block',
+        placeholder: 'Bloquear venta',
+        type: 'checkbox'
+    },
+    description: {
+        id: 'description',
+        placehoder: 'Descripción',
+        type: 'text'
+    }
+}

@@ -7,7 +7,7 @@ import Link from 'next/link'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import routes from '../utils/routes'
-import buttons from '../utils/buttons.text'
+import buttons from '../utils/buttons.helpers'
 
 //==============================================================================
 

@@ -1,4 +1,4 @@
-import {fields} from "../../utils/formsHelpers";
+import {fields} from "../../utils/fields.helpers";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {spanishValidationHelpers} from '../../utils/validationHelpers'

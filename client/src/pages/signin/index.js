@@ -15,10 +15,10 @@ import FieldError from "../../components/messages/FieldError";
 import ErrorModalDialog from '../../components/modal/ErrorModalDialog'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {fields} from '../../utils/formsHelpers'
+import {fields} from '../../utils/fields.helpers'
 import {signinFormik} from '../../controllers/signin/signin.formik'
 import signinMutationString from '../../controllers/signin/signin.mutation.gql'
-import buttons from '../../utils/buttons.text'
+import buttons from '../../utils/buttons.helpers'
 //==============================================================================
 
 

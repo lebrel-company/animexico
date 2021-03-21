@@ -54,6 +54,19 @@
     font-simp
 }
 
+.button-menu{
+    @apply
+        flex-1
+        text-center
+        text-xl
+        transition
+        duration-500
+        ease-in-out
+        transform
+        hover:scale-110
+}
+
+
 .button-blue{
     @apply
     m-auto

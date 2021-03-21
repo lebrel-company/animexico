@@ -15,7 +15,7 @@ import FieldError from '../../components/messages/FieldError'
 // project
 import {signupFormik} from '../../controllers/signup/signup.formik';
 import signupMutationString from '../../controllers/signup/signup.mutation.gql';
-import {fields} from '../../utils/formsHelpers'
+import {fields} from '../../utils/fields.helpers'
 //==============================================================================
 
 
