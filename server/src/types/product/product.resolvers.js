@@ -42,7 +42,8 @@ async function queryProduct(_, {id}){
 
 export default {
     Query: {
-        queryListOfProducts
+        queryListOfProducts,
+        queryProduct
     },
     Mutation: {
         createProduct
