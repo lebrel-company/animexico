@@ -10,7 +10,6 @@ import {useState} from 'react'
 import EditorProduct from './editor.product'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {generalButtons, productButtons} from "../../../utils/buttons.helpers";
 //==============================================================================
 
 

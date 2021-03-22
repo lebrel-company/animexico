@@ -1,148 +1,37 @@
-import {fields} from "../../utils/fields.helpers";
+'use strict';
+// libraries:
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {spanishValidationHelpers} from '../../utils/validationHelpers'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+import {userFields} from "../../utils/fields/user";
+
+//==============================================================================
+
 
 export function signupFormik(mutation, states, contexts, route) {
+
+    var _listOfValueNames = Object.keys(userFields)
+
+
+    function createInitialValuesObject() {
+        let result = {}
+        _listOfValueNames.forEach(function (_key) {
+            result[_key] = ''
+        })
+        return result
+    }
+
+
     return useFormik({
-            initialValues: {
-                firstName: '',
-                middleName: '',
-                lastName: '',
-                secondLastName: '',
-                email: '',
-                password: '',
-                birthday: '',
-                cellphone: '',
-                address: {
-                    city: '',
-                    state: '',
-                    country: '',
-                    zipcode: '',
-                    neighbourhood: '',
-                    street: '',
-                    buildingNumber: '',
-                    apartmentNumber: '',
-                }
-            },
-            validationSchema: Yup.object({
-                firstName: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.firstName.placeholder)
-                    ),
-                lastName: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.lastName.placeholder)
-                    ),
-                secondLastName: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.secondLastName.placeholder)
-                    ),
-                email: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.email.placeholder)
-                    )
-                    .email('El correo no es válido'),
-                password: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.password.placeholder)
-                    ),
-                passwordConfirmation: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.passwordConfirmation.placeholder)
-                    ),
-                birthday: Yup.string()
-                    .required(
-                        spanishValidationHelpers
-                            .messages
-                            .errors
-                            .formatRequiredField(fields.birthday.placeholder)
-                    ),
-                cellphone:
-                    Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.cellphone.placeholder)
-                        ),
-                address: Yup.object({
-                    country: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.country.placeholder)
-                        ),
-                    city: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.city.placeholder)
-                        ),
-                    state: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.state.placeholder)
-                        ),
-                    zipcode: Yup.number()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.zipcode.placeholder)
-                        ),
-                    neighbourhood: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.neighbourhood.placeholder)
-                        ),
-                    street: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.street.placeholder)
-                        ),
-                    buildingNumber: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.buildingNumber.placeholder)
-                        ),
-                    apartmentNumber: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(fields.address.apartmentNumber.placeholder)
-                        ),
-                })
-            }),
+            initialValues: createInitialValuesObject(),
+            validationSchema: Yup.object(createValidationSchema()),
             onSubmit: async function submitForm(values) {
                 let _input = {
                     firstName: values.firstName,
@@ -155,33 +44,51 @@ export function signupFormik(mutation, states, contexts, route) {
                     cellphone: values.cellphone,
                     mapOfAddresses: {
                         primary: {
-                            city: values.address.city,
-                            state: values.address.state,
-                            country: values.address.country,
-                            zipcode: values.address.zipcode,
-                            neighbourhood: values.address.neighbourhood,
-                            street: values.address.street,
-                            buildingNumber: values.address.buildingNumber,
-                            apartmentNumber: values.address.apartmentNumber
+                            city: values.city,
+                            state: values.state,
+                            country: values.country,
+                            zipcode: values.zipcode,
+                            neighbourhood: values.neighbourhood,
+                            street: values.street,
+                            buildingNumber: values.buildingNumber,
+                            apartmentNumber: values.apartmentNumber
                         }
                     }
                 }
                 try {
-                    console.log(_input)
                     let {data} = await mutation({
                         variables: {
                             input: _input
                         }
                     });
-                    console.log(data)
                     contexts.authContext.setAuthState(data.signup)
                     setTimeout(() => {
                         route.hook.push(route.path);
                     }, 800);
                 } catch (error) {
-                    console.log(error)
+                    console.error(error)
                 }
             },
         }
     );
 }
+
+function createValidationSchema() {
+    var result = {}
+    Object.keys(userFields).forEach(function (key) {
+        result[key] = userFields[key].yup.type
+        Object.keys(userFields[key].validations).forEach(
+            function appendValidations(validation_type) {
+                if (userFields[key].validations[validation_type].enabled === true) {
+                    result[key][validation_type](
+                        userFields[key].validations[validation_type].errorMessage
+                    )
+                }
+            }
+        )
+    })
+
+
+    return result
+}
+

@@ -1,0 +1,17 @@
+
+.card-product {
+    @apply
+        bg-lightpale
+        font-simp
+        cursor-pointer
+        shadow-md
+        rounded-md
+        md:m-auto
+        p-2
+        border-4
+        transition
+        duration-200
+        ease-in-out
+        transform
+        hover:scale-101
+}

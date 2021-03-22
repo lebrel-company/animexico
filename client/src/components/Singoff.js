@@ -1,10 +1,21 @@
-import React from 'react'
-import { useQuery, gql } from '@apollo/client'
-import { useRouter } from 'next/router'
+'use strict';
+// libraries:
+import {useQuery, gql} from '@apollo/client'
+import {useRouter} from 'next/router'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+//==============================================================================
+
 
 const QUERY_USER_INFO = gql`
     query queryUserInfo{
-            queryUserInfo{
+        queryUserInfo{
             id
             name
             lastname
@@ -29,22 +40,21 @@ const QUERY_USER_INFO = gql`
 `;
 
 
-
 const SingoffButton = () => {
 
 
     const router = useRouter();
 
     const {data, loading, error} = useQuery(QUERY_USER_INFO);
-    console.log( data )
-    console.log( loading )
-    console.log( error )
+    console.log(data)
+    console.log(loading)
+    console.log(error)
 
-    if(loading) return null;
+    if (loading) return null;
 
 
     //if there is not data
-    if(!data){
+    if (!data) {
         return router.push('/login');
     }
 
@@ -56,13 +66,13 @@ const SingoffButton = () => {
     }
 
     return (
-        <div>            
+        <div>
             <button
                 onClick={() => SingOff()}
             >
                 {text.ButtonName}
             </button>
-            
+
         </div>
     )
 }

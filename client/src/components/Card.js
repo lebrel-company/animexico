@@ -2,11 +2,7 @@ function Card(props) {
     return (
         <div>
             <div
-                className="
-                bg-pale lg:w-80 font-simp
-                border-dark shadow-lg rounded-md
-                mx-4 md:m-auto p-2 border-4
-                ">
+                className="card-product">
                 <img
                     className="md:w-72 h-72 block m-auto rounded-md object-cover"
                     src={props.image}

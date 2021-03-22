@@ -15,10 +15,11 @@ import FieldError from "../../components/messages/FieldError";
 import ErrorModalDialog from '../../components/modal/ErrorModalDialog'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {fields} from '../../utils/fields.helpers'
+import {userFields} from '../../utils/fields/user'
 import {signinFormik} from '../../controllers/signin/signin.formik'
 import signinMutationString from '../../controllers/signin/signin.mutation.gql'
-import buttons from '../../utils/buttons.helpers'
+import {generalButtons} from '../../utils/buttons/general'
+import {authButtons} from '../../utils/buttons/auth'
 //==============================================================================
 
 
@@ -54,31 +55,33 @@ export default function Signin() {
     return (
         <ClientLayout>
             <div className='
-            min-h-screen
             container m-auto md:flex justify-center
             '>
                 {
-                    (()=>{
-                        if (activateError){
+                    (() => {
+                        if (activateError) {
                             return (
-                                <ErrorModalDialog message={message} activate={true}/>
+                                <ErrorModalDialog message={message}
+                                                  activate={true}/>
                             )
-                        }
-                        else{
+                        } else {
                             return null
                         }
                     })()
                 }
                 <form className='form-dark m-auto'
                       onSubmit={formik.handleSubmit}>
-                    <h1 className="text-center py-5 text-white text-2xl font-semibold">Iniciar
-                        Sesión</h1>
+                    <div className="
+                    text-center py-5
+                    text-white text-2xl
+                    font-semibold">
+                        Iniciar sesión
+                    </div>
                     <div className="mb-4">
                         <input
-                            className="bg-gray-500 rounded-sm w-full"
-                            id={fields.email.id}
+                            id={userFields.email.value}
                             type="email"
-                            placeholder={fields.email.placeholder}
+                            placeholder={userFields.email.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}
@@ -87,27 +90,23 @@ export default function Signin() {
                     </div>
                     <div>
                         <input
-                            className="bg-gray-500 rounded-sm w-full"
-                            id="password"
-                            type="password"
-                            placeholder="Password Usuario"
+                            id={userFields.password.value}
+                            type={userFields.password.type}
+                            placeholder={userFields.password.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.password}
                         />
                         {FieldError(formik, 'password')}
                     </div>
-                    {activateError && <div className='message-error'>{message}</div>}
+                    {activateError &&
+                    <div className='message-error'>{message}</div>}
                     <div className="grid grid-cols-1 divide-y divide-white">
-                        <div className="flex justify-center">
+                        <div className="flex justify-center py-4">
                             <input
                                 type="submit"
-                                className="
-                                    bg-red-600 py-2 px-10
-                                    rounded-sm shadow-md mt-5 p-2
-                                    button-red
-                                    uppercase hover:bg-red-500"
-                                value={buttons.signin.text}
+                                className="button-red text-2xl"
+                                value={authButtons.signin.text}
                             />
                         </div>
                         <Link href="/signup">
@@ -115,7 +114,7 @@ export default function Signin() {
                             flex justify-center py-2 px-5 mt-5
                             underline
                             inline-block text-white">
-                                {buttons.createAccount.text}
+                                {authButtons.createAccount.text}
                             </a>
                         </Link>
                     </div>
@@ -124,7 +123,7 @@ export default function Signin() {
                         text-pale text-xs text-simp
                         flex justify-center
                         ">
-                            {buttons.restorePassword.text}
+                            {authButtons.restorePassword.text}
                         </a>
                     </Link>
                 </form>

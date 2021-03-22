@@ -1,5 +1,6 @@
 // libraries:
 import Link from 'next/link'
+import {v4 as uuidv4} from 'uuid'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -7,7 +8,8 @@ import Link from 'next/link'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import routes from '../utils/routes'
-import buttons from '../utils/buttons.helpers'
+import {authButtons, authHeaderKeys} from '../utils/buttons/auth'
+import {generalButtons} from '../utils/buttons/general'
 
 //==============================================================================
 
@@ -15,35 +17,30 @@ import buttons from '../utils/buttons.helpers'
 function Header() {
     return (
         <div
-            className='bg-dark shadow-lg bg-gradient-to-t from-dark to-darkindigo'>
+            className='bg-black-gradient'>
             <div className='container mx-auto md:p-2'>
                 <div
                     className='flex justify-center items-center md:flex-row flex-wrap p-4'>
                     <img src='/logo.png'
-                         className='
-                         w-1/4 opacity-90 lg:block hidden
-                         '
-                    />
+                         className='w-1/4 opacity-90 lg:block hidden'/>
                     {
                         createRoutes()
                     }
                     <div className='
                     relative py-4 z-20 md:py-0
-                    grid grid-cols-3 gap-4
+                    grid grid-cols-3 gap-2
                     '>
-                        <Link href='/signup'>
-                            <button className='button-pale-outline'>
-                                {buttons.signup.text}
-                            </button>
+                        <Link href={authButtons.signup.href}>
+                            <a className='button-pale-outline'>
+                                {authButtons.signup.text}</a>
                         </Link>
-                        <Link href='/signin'>
-                            <button className='button-pale-outline'>
-                                {buttons.signin.text}
-                            </button>
+                        <Link href={authButtons.signin.href}>
+                            <a className='button-pale-outline'>
+                                {authButtons.signin.text}</a>
                         </Link>
-                        <Link href='/cart'>
+                        <Link href={generalButtons.cart.href}>
                             <button className='button-red'>
-                                {buttons.cart.text}
+                                {generalButtons.cart.text}
                             </button>
                         </Link>
                     </div>
@@ -52,6 +49,7 @@ function Header() {
         </div>
     )
 }
+
 
 function createRoutes() {
     let listOfKeys = ['homepage', 'profile', 'store', 'faqs']

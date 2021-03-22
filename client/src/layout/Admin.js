@@ -11,11 +11,11 @@ export default function AdministratorLayout(props){
                 -translate-y-20
             ' src='/background/tamashii_vignettes.png'/>
 
-            <div className='flex h-full'>
+            <div className='flex h-screen'>
                 <div className='w-1/6'>
-                    <Sidebar/>
+                    <Sidebar states={props.states}/>
                 </div>
-                <div className='w-full m-10 p-5 container-scrollbar overflow-y-scroll'>
+                <div className='w-full h-screen p-5 container-scrollbar overflow-y-scroll'>
                     {props.children}
                 </div>
             </div>               

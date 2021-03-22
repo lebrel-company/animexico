@@ -10,7 +10,7 @@ import {v4 as uuidv4} from 'uuid'
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {generalButtons} from '../utils/buttons.helpers'
+import {generalButtons} from '../utils/buttons/general'
 //==============================================================================
 
 
@@ -19,7 +19,8 @@ export default function Dropzone(props) {
         selectedFiles: {
             getter: props.selectedFiles,
             setter: props.setSelectedFiles
-        },
+        }
+
         // errorMessage: {
         //     getter: errorMessage,
         //     setter: setErrorMessage
@@ -28,7 +29,7 @@ export default function Dropzone(props) {
 
     return (
         <div>
-            <div className='border-2 border-pale text-pale border-dashed h-24'
+            <div className='border-2 border-pale text-pale border-dashed h-16'
                  onDragOver={dragOver}
                  onDragEnter={dragEnter}
                  onDragLeave={dragLeave}
@@ -39,7 +40,7 @@ export default function Dropzone(props) {
                     Dropzone
                 </div>
             </div>
-            <div className='pt-4'>
+            <div className=''>
                 {
                     props.selectedFiles.map(function formatFiles(values, index) {
                         return (

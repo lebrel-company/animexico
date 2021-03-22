@@ -1,41 +1,71 @@
 
 .button-red {
     @apply
-    px-2
-    bg-gradient-to-r
-    from-darkred
-    to-red
-    text-pale
-    rounded-md
-    font-bold
-    font-simp
+        text-center
+        px-4
+        py-0.5
+        bg-gradient-to-tr
+        from-darkred
+        to-midred
+        text-pale
+        cursor-pointer
+        rounded-md
+        font-bold
+        font-simp
+        transition
+        duration-200
+        ease-out
+        transform
+        hover:scale-105
+}
+.button-blue {
+    @apply
+        text-center
+        shadow-xl
+        bg-gradient-to-tr
+        from-darkblue
+        to-lightblue
+        cursor-pointer
+        text-pale
+        rounded-md
+        font-bold
+        font-simp
+        transition
+        duration-200
+        ease-out
+        transform
+        hover:scale-105
 }
 
-.button-pill{
+.button-pill {
     @apply
+    text-center
     px-2
-    bg-gradient-to-r
-    from-darkred
-    to-red
-    text-pale
-    rounded-full
-    font-bold
-    font-simp
+        bg-gradient-to-r
+        from-darkred
+        to-red
+        text-pale
+        rounded-full
+        font-bold
+        font-simp
 }
 
-.button-add{
+.button-add {
     @apply
-    m-auto
-    px-2
-    border-2
-    border-red
-    text-red
-    rounded-md
-    font-bold
-    font-simp
+        text-center
+        m-auto
+        px-2
+        border-2
+        border-red
+        text-red
+        rounded-md
+        font-bold
+        font-simp
 }
-.button-add:hover{
+
+.button-add:hover {
     @apply
+    text-center
     bg-gradient-to-r
     from-darkred
     to-red
@@ -44,30 +74,42 @@
 
 .button-pale-outline {
     @apply
-    px-2
-    bg-transparent
-    text-pale
-    border-2
-    border-pale
-    rounded-md
-    font-bold
-    font-simp
-}
-
-.button-menu{
-    @apply
-        flex-1
         text-center
-        text-xl
+        px-4
+        py-0.5
+        bg-transparent
+        text-pale
+        border-2
+        border-pale
+        rounded-md
+        font-bold
+        font-simp
         transition
-        duration-500
+        duration-200
         ease-in-out
         transform
-        hover:scale-110
+        hover:scale-105
+}
+
+.button-menu {
+    @apply
+        flex-1
+        p-4
+        opacity-40
+        text-center
+        md:text-2xl
+        text-lg
+        transition
+        duration-200
+        ease-in-out
+        transform
+        hover:scale-105
+        hover:opacity-100
+        hover:text-lightpale
 }
 
 
-.button-blue{
+.button-blue {
     @apply
     m-auto
     px-2

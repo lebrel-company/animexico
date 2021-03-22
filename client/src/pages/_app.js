@@ -1,6 +1,7 @@
 'use strict';
 // libraries:
 import {ApolloProvider} from '@apollo/client'
+import 'react-awesome-slider/dist/styles.css';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --

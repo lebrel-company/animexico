@@ -1,5 +1,7 @@
 @import url('./buttons.css');
 @import url('./messages.css');
+@import url('./card.css');
+@import url('./checkbox.css');
 
 :root {
     --transparent: 'transparent';
@@ -8,7 +10,7 @@
     --pale: '#dedbe6',;
     --palered: '#eb918a';
     --dark: '#2b2b2b';
-    --darkindigo: '#34373b';
+    --middark: '#373737';
     --white: '#ffffff';
 }
 
@@ -17,27 +19,24 @@ body {
     background-color: #dedbe6;
     padding: 0;
     margin: 0;
-    height: 100%;
+    height:100%;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-.admin-sidebar{
+.admin-sidebar {
     @apply
-    flex
-    flex-col
-    justify-between
-    bg-dark
-    shadow-lg
-    bg-gradient-to-t
-    from-dark
-    to-darkindigo
-    text-pale
-    h-full
-    w-full
-    py-12
-    relative
-    z-50
+        bg-dark
+        shadow-lg
+        bg-gradient-to-t
+        from-dark
+        to-middark
+        text-pale
+        h-full
+        w-full
+        py-12
+        relative
+        z-50
 }
 
 
@@ -50,54 +49,61 @@ a {
     box-sizing: border-box;
 }
 
-.form-dark{
+.form-dark {
     @apply
-        bg-dark
-        p-4 md:p-10
-        rounded-lg
+    bg-dark
+    p-4 md:p-10
+    rounded-lg
 }
 
 input, select, textarea {
-    margin: .2rem;
     @apply
-       p-2
-       w-full
-       text-dark
-       rounded-md
+    p-2
+    w-full
+    text-dark
+    rounded-md
 }
 
-.dropzone{
-  width: 300px;
-  height: 300px;
-  border: 2px dashed #ccc;
-  color: #ccc;
-  line-height: 300px;
-  text-align: center;
+.dropzone {
+    width: 300px;
+    height: 300px;
+    border: 2px dashed #ccc;
+    color: #ccc;
+    line-height: 300px;
+    text-align: center;
 }
 
-.dropzone.dragover{
-  border-color:#c42034;
-  color:#c42034;
-  
+.dropzone.dragover {
+    border-color: #c42034;
+    color: #c42034;
+
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+    background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
+.bg-black-gradient {
+    @apply
+    bg-dark
+    shadow-lg
+    bg-gradient-to-t
+    from-dark
+    to-middark
+}

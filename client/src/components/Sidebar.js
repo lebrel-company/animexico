@@ -10,38 +10,75 @@ import {v4 as uuidv4} from 'uuid'
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {sidebarButtons, generalButtons} from '../utils/buttons.helpers'
+import {generalButtons} from '../utils/buttons/general'
+import {sidebarButtons} from '../utils/buttons/sidebar'
 
 //==============================================================================
 
-export default function Sidebar() {
-
+export default function Sidebar(props) {
     let listOfButtons = Object.keys(sidebarButtons)
+
+    function selectComponent(component){
+        return function inner () {
+            props.states.component.setter(component)
+        }
+    }
 
     return (
         <div
             className="admin-sidebar">
-            <div className='px-6'>
+            <div className=''>
                 <img src='/logo.png'
-                     className='opacity-90 lg:block hidden'
-                />
+                     className='px-4 opacity-30'/>
             </div>
-
-            {
-                listOfButtons.map(function createButtons(stringKey) {
-                        return (
-                            <div key={uuidv4()}
-                                 className='flex justify-center'>
-                                <button
-                                    className={sidebarButtons[stringKey].style}
-                                >
-                                    {sidebarButtons[stringKey].text}
-                                </button>
-                            </div>
-                        )
-                    }
-                )
-            }
+            <div className='flex justify-between flex-col h-full my-auto p-10'>
+                <div className='flex flex-row items-center'>
+                    <div> > </div>
+                    <button
+                        onClick={selectComponent('home')}
+                        className='button-menu'>
+                        {sidebarButtons.home.text}
+                    </button>
+                </div>
+                <div className='flex flex-row items-center'>
+                    <div> > </div>
+                    <button
+                        onClick={selectComponent('products')}
+                        className='button-menu'>
+                        {sidebarButtons.products.text}
+                    </button>
+                </div>
+                <div className='flex flex-row items-center'>
+                    <div> > </div>
+                    <button
+                        onClick={selectComponent('contactAndPrivacy')}
+                        className='button-menu'>
+                        {sidebarButtons.contactAndPrivacy.text}
+                    </button>
+                </div>
+                <div className='flex flex-row items-center'>
+                    <div> > </div>
+                    <button
+                        onClick={selectComponent('sales')}
+                        className='button-menu'>
+                        {sidebarButtons.sales.text}
+                    </button>
+                </div>
+                <div className='flex flex-row items-center'>
+                    <div> > </div>
+                    <button
+                        onClick={selectComponent('reports')}
+                        className='button-menu'>
+                        {sidebarButtons.reports.text}
+                    </button>
+                </div>
+                <div className='flex flex-row items-center'>
+                    <button
+                        className='button-red text-xl w-full'>
+                        {sidebarButtons.logout.text}
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

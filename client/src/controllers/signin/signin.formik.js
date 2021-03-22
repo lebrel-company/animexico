@@ -8,8 +8,7 @@ import * as Yup from 'yup';
 import ErrorModalDialog from "../../components/modal/ErrorModalDialog";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {fields} from '../../utils/fields.helpers'
-import {spanishValidationHelpers} from '../../utils/validationHelpers'
+import {userFields} from '../../utils/fields/user'
 
 //==============================================================================
 
@@ -27,25 +26,8 @@ export function signinFormik(mutation, states, contexts, route) {
 
             validationSchema:
                 Yup.object({
-                    email: Yup.string()
-                        .email('Email no es valido')
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(
-                                    fields.email.placeholder
-                                )
-                        ),
-                    password: Yup.string()
-                        .required(
-                            spanishValidationHelpers
-                                .messages
-                                .errors
-                                .formatRequiredField(
-                                    fields.password.placeholder
-                                )
-                        ),
+                    email: Yup.string(),
+                    password: Yup.string(),
                 }),
 
             //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -

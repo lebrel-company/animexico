@@ -1,4 +1,5 @@
 // libraries
+import {v4 as uuidv4} from 'uuid'
 import React, {useState, useContext} from 'react';
 import {useMutation} from "@apollo/client";
 import {useRouter} from 'next/router'
@@ -15,7 +16,9 @@ import FieldError from '../../components/messages/FieldError'
 // project
 import {signupFormik} from '../../controllers/signup/signup.formik';
 import signupMutationString from '../../controllers/signup/signup.mutation.gql';
-import {fields} from '../../utils/fields.helpers'
+import {userFields} from '../../utils/fields/user'
+import {authButtons} from "../../utils/buttons/auth";
+import {formTexts, spanishButtons} from "../../utils/texts/signup.texts";
 //==============================================================================
 
 
@@ -27,7 +30,7 @@ export default function SignupForm(props) {
         signupMutation,
         {},
         {authContext: authContext},
-        {hook:_router, path: '/account'}
+        {hook: _router, path: '/account'}
     ]
 
     var formik = signupFormik(mutation, states, contexts, router);
@@ -36,236 +39,169 @@ export default function SignupForm(props) {
     return (
         <ClientLayout>
             <div className='
-            min-h-screen
-            container m-auto md:flex justify-center
+            md:flex justify-center
             '>
-                <form className='form-dark m-auto' onSubmit={formik.handleSubmit}>
+                <form className='form-dark my-auto'
+                      onSubmit={formik.handleSubmit}>
+                    <div className='text-pale text-5xl font-deco my-6'>
+                        {formTexts.header.text}
+                    </div>
                     <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <input
-                                id={fields.firstName.id}
-                                name={fields.firstName.id}
-                                type="text"
-                                placeholder={fields.firstName.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.firstName}
-                            />
-                            {FieldError(formik, fields.firstName.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.middleName.id}
-                                name={fields.middleName.id}
-                                type="text"
-                                placeholder={fields.middleName.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.middleName}
-                            />
-                            {FieldError(formik, fields.middleName.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.lastName.id}
-                                name={fields.lastName.id}
-                                type="text"
-                                placeholder={fields.lastName.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.lastName}
-                            />
-                            {FieldError(formik, fields.lastName.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.secondLastName.id}
-                                name={fields.secondLastName.id}
-                                type="text"
-                                placeholder={fields.secondLastName.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.secondLastName}
-                            />
-                            {FieldError(formik, fields.secondLastName.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.birthday.id}
-                                name={fields.birthday.id}
-                                type="date"
-                                placeholder={fields.birthday.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.birthday}
-                            />
-                            {FieldError(formik, fields.birthday.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.cellphone.id}
-                                name={fields.cellphone.id}
-                                type="text"
-                                placeholder={fields.cellphone.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.cellphone}
-                            />
-                            {FieldError(formik, fields.cellphone.id)}
-                        </div>
-                    </div>
-
-                    <div>
                         <input
-                            id={fields.email.id}
-                            name={fields.email.id}
-                            type="email"
-                            placeholder={fields.email.placeholder}
+                            id={userFields.firstName.value}
+                            type={userFields.firstName.type}
+                            placeholder={userFields.firstName.name}
+                            name={userFields.firstName.value}
+                            value={formik[userFields.firstName.value]}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.email}
                         />
-                        {FieldError(formik, fields.email.id)}
-                    </div>
-
-                    <div className='
-                        my-4 border-2
-                        border-pale rounded-lg
-                        p-4
-                        border-opacity-20'>
                         <input
-                            id={fields.password.id}
-                            name={fields.password.id}
-                            type="password"
-                            placeholder={fields.password.placeholder}
-                            autoComplete='on'
+                            id={userFields.middleName.value}
+                            type={userFields.middleName.type}
+                            placeholder={userFields.middleName.name}
+                            name={userFields.middleName.value}
+                            value={formik[userFields.middleName.value]}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.password}
                         />
-                        {FieldError(formik, fields.password.id)}
                         <input
-                            id={fields.passwordConfirmation.id}
-                            name={fields.passwordConfirmation.id}
-                            type="password"
-                            placeholder={fields.passwordConfirmation.placeholder}
-                            autoComplete='on'
+                            id={userFields.lastName.value}
+                            type={userFields.lastName.type}
+                            placeholder={userFields.lastName.name}
+                            name={userFields.lastName.value}
+                            value={formik[userFields.lastName.value]}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.passwordConfirmation}
                         />
-                        {FieldError(formik, fields.passwordConfirmation.id)}
+                        <input
+                            id={userFields.secondLastName.value}
+                            type={userFields.secondLastName.type}
+                            placeholder={userFields.secondLastName.name}
+                            name={userFields.secondLastName.value}
+                            value={formik[userFields.secondLastName.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
                     </div>
-
-                    <div
-                        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
-                        <div>
-                            <input
-                                id={fields.address.city.id}
-                                name={fields.address.city.id}
-                                type="text"
-                                placeholder={fields.address.city.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.city}
-                            />
-                            {FieldError(formik, fields.address.city.id)}
+                    <div className='w-5/6 mx-auto'>
+                        <div
+                            className='border-pale border-2 rounded-md p-2 m-2 border-opacity-50'>
+                            <div className='m-2'>
+                                <input
+                                    id={userFields.email.value}
+                                    type={userFields.email.type}
+                                    placeholder={userFields.email.name}
+                                    name={userFields.email.value}
+                                    value={formik[userFields.email.value]}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                />
+                            </div>
+                            <div className='m-2'>
+                                <input
+                                    id={userFields.emailConfirm.value}
+                                    type={userFields.emailConfirm.type}
+                                    placeholder={userFields.emailConfirm.name}
+                                    name={userFields.emailConfirm.value}
+                                    value={formik[userFields.emailConfirm.value]}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                />
+                            </div>
                         </div>
                         <div>
-                            <input
-                                id={fields.address.state.id}
-                                name={fields.address.state.id}
-                                type="text"
-                                placeholder={fields.address.state.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.state}
-                            />
-                            {FieldError(formik, fields.address.state.id)}
+                            <div
+                                className='border-pale border-2 rounded-md p-2 m-2 border-opacity-50'>
+                                <div className='m-2'>
+                                    <input
+                                        id={userFields.password.value}
+                                        type={userFields.password.type}
+                                        placeholder={userFields.password.name}
+                                        name={userFields.password.value}
+                                        value={formik[userFields.password.value]}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                </div>
+                                <div className='m-2'>
+                                    <input
+                                        id={userFields.passwordConfirm.value}
+                                        type={userFields.passwordConfirm.type}
+                                        placeholder={userFields.passwordConfirm.name}
+                                        name={userFields.passwordConfirm.value}
+                                        value={formik[userFields.passwordConfirm.value]}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <input
-                                id={fields.address.country.id}
-                                name={fields.address.country.id}
-                                type="text"
-                                placeholder={fields.address.country.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.country}
-                            />
-                            {FieldError(formik, fields.address.country.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.address.zipcode.id}
-                                name={fields.address.zipcode.id}
-                                type="number"
-                                placeholder={fields.address.zipcode.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.zipcode}
-                            />
-                            {FieldError(formik, fields.address.zipcode.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.address.neighbourhood.id}
-                                name={fields.address.neighbourhood.id}
-                                type="text"
-                                placeholder={fields.address.neighbourhood.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.neighbourhood}
-                            />
-                            {FieldError(formik, fields.address.neighbourhood.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.address.street.id}
-                                name={fields.address.street.id}
-                                type="text"
-                                placeholder={fields.address.street.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.street}
-                            />
-                            {FieldError(formik, fields.address.street.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.address.buildingNumber.id}
-                                name={fields.address.buildingNumber.id}
-                                type="text"
-                                placeholder={fields.address.buildingNumber.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.buildingNumber}
-                            />
-                            {FieldError(formik, fields.address.buildingNumber.id)}
-                        </div>
-                        <div>
-                            <input
-                                id={fields.address.apartmentNumber.id}
-                                name={fields.address.apartmentNumber.id}
-                                type="text"
-                                placeholder={fields.address.apartmentNumber.placeholder}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address.apartmentNumber}
-                            />
-                            {FieldError(formik, fields.address.apartmentNumber.id)}
-                        </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input
+                            id={userFields.country.value}
+                            type={userFields.country.type}
+                            placeholder={userFields.country.name}
+                            name={userFields.country.value}
+                            value={formik[userFields.country.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <input
+                            id={userFields.state.value}
+                            type={userFields.state.type}
+                            placeholder={userFields.middleName.name}
+                            name={userFields.state.value}
+                            value={formik[userFields.state.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <input
+                            id={userFields.city.value}
+                            type={userFields.city.type}
+                            placeholder={userFields.city.name}
+                            name={userFields.city.value}
+                            value={formik[userFields.city.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <input
+                            id={userFields.neighbourhood.value}
+                            type={userFields.neighbourhood.type}
+                            placeholder={userFields.neighbourhood.name}
+                            name={userFields.neighbourhood.value}
+                            value={formik[userFields.neighbourhood.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <input
+                            id={userFields.street.value}
+                            type={userFields.street.type}
+                            placeholder={userFields.street.name}
+                            name={userFields.street.value}
+                            value={formik[userFields.buildingNumber.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <input
+                            id={userFields.zipcode.value}
+                            type={userFields.zipcode.type}
+                            placeholder={userFields.zipcode.name}
+                            name={userFields.zipcode.value}
+                            value={formik[userFields.zipcode.value]}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
                     </div>
                     <div className="flex mt-4 justify-center">
-                        <button
-                            className='button-red p-2 text-2xl'
-                            type="submit"
-                            id={fields.submit.id}>
-                            {fields.submit.value}
+                        <button className='button-red text-3xl' type="submit">
+                            {spanishButtons.submit.text}
                         </button>
                     </div>
                 </form>
             </div>
+            }
         </ClientLayout>
     )
 }

@@ -16,14 +16,11 @@ import Card from '../../components/Card'
 function Homepage() {
     return (
         <ClientLayout>
-            <img className='
-                fixed bg-cover bg-center
-                z-0 opacity-20 transform
-                md:scale-150 rotate-12 xl:translate-x-1/2 -translate-y-20
-            ' src='/background/tamashii_vignettes.png'/>
             <div
                 className='
                 relative z-20 grid md:grid-cols-2
+                w-screen
+                h-full
                 container m-auto
                 py-20
                 lg:grid-cols-3 gap-10
