@@ -1,46 +1,51 @@
-'use strict';
-// libraries:
+'use strict'; // libraries:
 import {useState} from 'react'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
-import AdministratorLayout from "../../../layout/Admin";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
-import Creator from './creator'
-import Editor from './editor'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================
 
 
-export default function Products(props) {
-    var [editMode, setEditMode] = useState(true)
-    var [buttonText, setButtonText] = useState('')
-
-    function toggleMode(event) {
-        setEditMode(!editMode)
-    }
-
+export default function Reports(props) {
     return (
         <div>
-            <div className='relative z-20'>
-                <div className='flex justify-end'>
-                    <div>
-                        <button
-                            onClick={toggleMode}
-                            className='button-blue text-3xl p-4'>
-                            {
-                                editMode ? 'crear producto' : 'editar producto'
-                            }
-                        </button>
-                    </div>
-                </div>
+            <div className='flex flex-col'>
                 {
-                    editMode ? <Editor/> : <Creator/>
+                    data.map(function (data) {
+                            return (
+                                <div>
+                                    <div>{data[0]}</div>
+                                    <div>{data[1]}</div>
+                                    <div>{data[2]}</div>
+                                    <div>{data[3]}</div>
+                                    <div>{data[4]}</div>
+                                    <div>{data[5]}</div>
+                                    <div>{data[6]}</div>
+                                    <div>{data[7]}</div>
+                                    <div>{data[8]}</div>
+                                    <div>{data[9]}</div>
+                                    <div>{data[10]}</div>
+                                </div>
+                            )
+                        }
+                    )
                 }
             </div>
         </div>
     )
 }
+
+var data = [
+    ['juan', 'jose', 'perez', 'lopez', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+    ['maria', '', 'garcia', 'lopez', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+    ['pedro', 'ramon', 'hernandez', 'jimenez', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+    ['karla', 'jose', 'perez', 'lopez', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+    ['raul', '', 'perez', 'lopez', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+    ['mariana', 'laura', 'gutierrez', 'lopez', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+    ['pablo', '', 'rocha', 'reyes', 'dato_01', 'dato-02', 'dato_03', 'dato-04', 'dato-05', 'dato-05', 'empaquetado', 'ver orden'],
+]
