@@ -5,11 +5,6 @@ import Footer from "../components/Footer";
 export default function ClientLayout(props) {
     return (
         <div>
-            <img className='
-                fixed bg-cover bg-center
-                z-0 opacity-20 transform
-                rotate-12 scale-150 mx-auto
-            ' src='/background/tamashii_vignettes.png'/>
             <div className="
             flex flex-col h-screen relative z-50
             ">

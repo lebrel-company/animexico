@@ -19,6 +19,18 @@ export default function Admin() {
     var [component, setComponent] = useState('products')
     var router = useRouter()
 
+    function renderComponent(component) {
+        switch (component) {
+            case 'home':
+                return router.push('/')
+            case 'reports':
+                return <Reports/>
+            default:
+                return <Products/>
+
+        }
+    }
+
     var states = {
         component: {
             getter: component,
@@ -26,23 +38,11 @@ export default function Admin() {
         }
     }
 
-    function renderComponent(component) {
-        switch (component) {
-            case 'home':
-                return router.push('/')
-            case 'reports':
-                return <Reports/>
-            case '':
-                return router.push('/')
-            default:
-                return <Products/>
-
-        }
-    }
-
     return (
         <AdministratorLayout states={states}>
-            <Products/>
+            {
+                renderComponent(component)
+            }
         </AdministratorLayout>
     )
 }

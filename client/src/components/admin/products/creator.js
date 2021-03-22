@@ -24,6 +24,11 @@ export default function Creator() {
             container m-auto md:flex justify-center
         '>
             <form className='form-dark m-auto'>
+                <div>
+                    <div className='text-3xl text-pale font-deco my-4'>
+                        Registrar nuevo producto:
+                    </div>
+                </div>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div>
                         <input
@@ -99,6 +104,7 @@ export default function Creator() {
 
                 <div className='my-2'>
                     <textarea
+                        className='w-full'
                         id={productFields.description.value}
                         type={productFields.description.type}
                         placeholder={productFields.description.name}

@@ -18,6 +18,12 @@ import {generalButtons} from "../../../utils/buttons/general";
 import {productFields} from "../../../utils/fields/product";
 //==============================================================================
 
+var listOfImages = [
+'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013333_rsqWpdMA_01_1500x.jpg',
+'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/SOC-GX-93-SB-Arcadia-TV-Ver.-03.jpg',
+'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000012161_Gxr51siy_03_900x.jpg',
+'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013312_LclgAvZO_05_1500x.jpg'
+]
 
 export default function EditorProduct() {
     var [selectedFiles, setSelectedFiles] = useState([])
@@ -26,6 +32,8 @@ export default function EditorProduct() {
     function changeEditMode(enabled) {
         setEditMode(enabled)
     }
+
+
 
     return (
         <div>
@@ -37,12 +45,37 @@ export default function EditorProduct() {
                 ">
                 <div>
                     <AwesomeSlider className='' bullets={false}>
-                        <div>
+                        <div
+                            data-src={listOfImages[0]}
+                        >
                             <div hidden={!editMode} className='button-red absolute bottom-2 right-2'>
                                 delete
                             </div>
                         </div>
-                        <div>
+                        <div
+                            data-src={listOfImages[1]}
+                        >
+                            <div hidden={!editMode} className='button-red absolute bottom-2 right-2'>
+                                delete
+                            </div>
+                        </div>
+                        <div
+                            data-src={listOfImages[2]}
+                        >
+                            <div hidden={!editMode} className='button-red absolute bottom-2 right-2'>
+                                delete
+                            </div>
+                        </div>
+                        <div
+                            data-src={listOfImages[3]}
+                        >
+                            <div hidden={!editMode} className='button-red absolute bottom-2 right-2'>
+                                delete
+                            </div>
+                        </div>
+                        <div
+                            data-src={listOfImages[4]}
+                        >
                             <div hidden={!editMode} className='button-red absolute bottom-2 right-2'>
                                 delete
                             </div>
@@ -130,6 +163,7 @@ export default function EditorProduct() {
                     </div>
                     <div className='my-4'>
                         <textarea
+                            className='max-w-full min-w-full'
                             disabled={!editMode}
                             id={productFields.description.value}
                             type={productFields.description.type}
@@ -148,7 +182,6 @@ export default function EditorProduct() {
                                 setSelectedFiles={setSelectedFiles}
                             />
                         </div>
-
                     }
                     <div className='py-4'>
                         {

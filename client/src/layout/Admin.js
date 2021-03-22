@@ -1,7 +1,10 @@
 import Sidebar from '../components/Sidebar'
+import Reports from "../components/admin/reports";
+import Products from "../components/admin/products";
 
 
 export default function AdministratorLayout(props){
+
     return(
         <div className="w-screen h-screen">
             <img className='

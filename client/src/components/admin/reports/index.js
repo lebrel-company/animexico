@@ -13,28 +13,48 @@ import {useState} from 'react'
 
 export default function Reports(props) {
     return (
-        <div>
-            <div className='flex flex-col'>
-                {
-                    data.map(function (data) {
-                            return (
-                                <div>
-                                    <div>{data[0]}</div>
-                                    <div>{data[1]}</div>
-                                    <div>{data[2]}</div>
-                                    <div>{data[3]}</div>
-                                    <div>{data[4]}</div>
-                                    <div>{data[5]}</div>
-                                    <div>{data[6]}</div>
-                                    <div>{data[7]}</div>
-                                    <div>{data[8]}</div>
-                                    <div>{data[9]}</div>
-                                    <div>{data[10]}</div>
-                                </div>
-                            )
+        <div className='h-full w-full container mx-auto relative z-50'>
+            <div className='flex flex-col h-full w-full justify-center'>
+                <div>
+                    <table className='table-auto border-2 container mx-auto w-5/6'>
+                        <thead>
+                        <tr className='bg-dark text-pale'>
+                            <th>dato_01</th>
+                            <th>dato_02</th>
+                            <th>dato_03</th>
+                            <th>dato_04</th>
+                            <th>dato_05</th>
+                            <th>dato_06</th>
+                            <th>dato_07</th>
+                            <th>dato_08</th>
+                            <th>dato_09</th>
+                            <th>dato_10</th>
+                            <th>dato_11</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            data.map(function (data, index) {
+                                return (
+                                    <tr key={index} className='bg-pale h-10'>
+                                        <td>{data[0]}</td>
+                                        <td>{data[1]}</td>
+                                        <td>{data[2]}</td>
+                                        <td>{data[3]}</td>
+                                        <td>{data[4]}</td>
+                                        <td>{data[5]}</td>
+                                        <td>{data[6]}</td>
+                                        <td>{data[7]}</td>
+                                        <td>{data[8]}</td>
+                                        <td>{data[9]}</td>
+                                        <td className='button-blue rounded-md'>{data[10]}</td>
+                                    </tr>
+                                )
+                            })
                         }
-                    )
-                }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )

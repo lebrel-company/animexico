@@ -12,11 +12,14 @@ import {v4 as uuidv4} from 'uuid'
 // project:
 import {generalButtons} from '../utils/buttons/general'
 import {sidebarButtons} from '../utils/buttons/sidebar'
+import Reports from "./admin/reports";
+import Products from "./admin/products";
 
 //==============================================================================
 
 export default function Sidebar(props) {
     let listOfButtons = Object.keys(sidebarButtons)
+
 
     function selectComponent(component){
         return function inner () {
