@@ -111,7 +111,6 @@
 
 .button-blue {
     @apply
-    m-auto
     px-2
     bg-darkblue
     text-pale
@@ -119,3 +118,5 @@
     font-bold
     font-simp
 }
+
+

@@ -108,3 +108,15 @@ input, select, textarea {
     from-dark
     to-middark
 }
+
+.bannerFondo{
+    height: 400px;
+}
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+  }

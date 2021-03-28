@@ -23,18 +23,16 @@ export default function ProductDetails(props) {
     let router = useRouter()
     let {pid} = router.query
 
-    const {loading, error, data} = useQuery(
-        queryGetProductInfoString, {
-            variables: {id: pid},
-        }
-    );
-
+    const { loading, error, data } = useQuery(queryGetProductInfoString, {
+        variables: { id: pid },
+      });
     return (
-        loading ? <div>Loading...</div> :
-            <ClientLayout>
+            
+        loading ? <div>loading...</div> :
+           <ClientLayout>
                 <img className='
-                    fixed container my-auto bg-cover bg-center
-                    z-0 opacity-5 hidden md:block transform scale-150
+                    fixed bg-cover bg-center w-full
+                    z-0 opacity-5 hidden md:block
                 ' src='/background/tamashii_vignettes_02.png'/>
 
                 <div className='h-full flex justify-center items-center relative z-50'>
