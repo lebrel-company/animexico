@@ -9,8 +9,8 @@ function Card(props) {
                     alt=""/>
                 <div className='flex flex-row mx-4 my-2 font-bold'>
                     <div className="flex-1">
-                        <h3 className="text-dark text-lg">{props.name}</h3>
-                        <p className="text-gray-400">{'$' + props.price + ' MXN'}</p>
+                        <h3 className="text-pale text-lg">{props.name}</h3>
+                        <p className="text-pale">{'$' + props.price + ' MXN'}</p>
                     </div>
                     <button className='button-add'>
                         {texts.addToCart.title}

@@ -14,6 +14,7 @@ module.exports = {
             lightpale: '#efedf5',
             palered: '#eb918a',
             dark: '#2b2b2b',
+            black: '#000000',
             middark: '#373737',
             white: '#ffffff',
             darkblue: '#283043',
