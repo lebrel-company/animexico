@@ -18,7 +18,8 @@ module.exports = {
             middark: '#373737',
             white: '#ffffff',
             darkblue: '#283043',
-            lightblue: '#243d78'
+            lightblue: '#243d78',
+            grayblue: '#B0C4DE'
         },
         scale: {
             '0': '0',

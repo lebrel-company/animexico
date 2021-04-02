@@ -119,4 +119,14 @@
     font-simp
 }
 
+.button-orange {
+    @apply
+    px-2
+    bg-grayblue
+    text-pale
+    rounded-md
+    font-bold
+    font-simp
+}
+
 
