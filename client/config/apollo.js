@@ -5,7 +5,8 @@ import fetch from 'node-fetch'
 
 const httpLink = createHttpLink({
     uri: '/api',
-    fetch: fetch
+    fetch: fetch,
+    credential: 'same-origin'
 });
 
 
