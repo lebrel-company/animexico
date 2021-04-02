@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode';
 import {AuthenticationError} from 'apollo-server'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
-import User from '../types/user/user.model'
+import {UserModel} from '../types/user/user.model'
 import messages from "../types/user/user.messages";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
@@ -77,7 +77,7 @@ export function requireAdmin(req, res, next) {
             message: 'There was a problem authorizing the request'
         });
     }
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== 'ADMIN') {
         return res
             .status(401)
             .json({message: 'Insufficient role'});
@@ -109,9 +109,9 @@ export function authenticated(nextResolver) {
 
 //==============================================================================
 export function authorized(role, nextResolver) {
-    return function inner(root, args, context, info) {
-
-        if (context.user.role !== role) {
+    return async function inner(root, args, context, info) {
+        const _user = await UserModel.findById(context.userInfo.id)
+        if (_user.role !== role) {
             throw new AuthenticationError('Must be a ${role}')
         }
         return nextResolver(root, args, context, info)
@@ -152,7 +152,7 @@ export function addUserWithRole(role){
                 }
             };
 
-            const existingEmail = await User.findOne({
+            const existingEmail = await UserModel.findOne({
                 email: userData.email
             }).lean();
 
@@ -160,7 +160,7 @@ export function addUserWithRole(role){
                 throw new Error(messages.signup.errors.duplicatedEmail)
             }
 
-            const newUser = new User(userData);
+            const newUser = new UserModel(userData);
             const savedUser = await newUser.save();
 
             if (savedUser) {

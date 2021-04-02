@@ -51,7 +51,7 @@ async function updateProduct(parent, args, context, info) {
             description: args.description,
             code: args.code,
             stock: args.stock,
-            publish: new Date(args.publish),
+            publishDate: new Date(args.publish),
             available: args.available,
             listOfImages: args.listOfImages,
             listOfTags: args.listOfTags

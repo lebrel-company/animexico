@@ -31,7 +31,7 @@ export function signupFormik(mutation, states, contexts, route) {
 
     return useFormik({
             initialValues: createInitialValuesObject(),
-            validationSchema: Yup.object(createValidationSchema()),
+            validationSchema: Yup.object(),
             onSubmit: async function submitForm(values) {
                 let _input = {
                     firstName: values.firstName,
@@ -72,21 +72,6 @@ export function signupFormik(mutation, states, contexts, route) {
         }
     );
 }
-
-function createValidationSchema() {
-    var result = {}
-    Object.keys(userFields).forEach(function (key) {
-        result[key] = userFields[key].yup.type
-        Object.keys(userFields[key].validations).forEach(
-            function appendValidations(validation_type) {
-                if (userFields[key].validations[validation_type].enabled === true) {
-                    result[key][validation_type](
-                        userFields[key].validations[validation_type].errorMessage
-                    )
-                }
-            }
-        )
-    })
 
 
     return result

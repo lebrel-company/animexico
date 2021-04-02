@@ -2,10 +2,11 @@
 // libraries:
 import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
+
 const jsonWebToken = require('jsonwebtoken');
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
-import User from './user.model';
+import { UserModel } from './user.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {
@@ -17,22 +18,22 @@ import {
     createToken,
     hashPassword
 } from "../../utils/auth";
-import messages from './user.messages'
+import messages from './user.messages';
 
 require('dotenv').config({path: 'variables.env'});
 
 //=============================   QUERIES   ====================================
 
 async function queryUserByToken(_, {token}) {
-    return await jsonWebToken.verify(token, process.env.SECRET)
+    return await jsonWebToken.verify(token, process.env.SECRET);
 }
 
 async function queryUserInfo(parent, {}, context, info) {
-    return await User.findById(context.user.id).exec();
+    return await UserModel.findById(context.user.id).exec();
 }
 
 function me(parent, args, context, info) {
-    return context.user
+    return context.user;
 }
 
 //==============================   TYPES   =====================================
@@ -40,34 +41,34 @@ function mapOfAddresses(parent, args, context, info) {
     return {
         primary: parent.mapOfAddresses.get('primary'),
         secondary: parent.mapOfAddresses.get('secondary')
-    }
+    };
 }
 
 //============================   MUTATIONS   ===================================
 
 function signup(parent, {input}, context, info) {
-    return addUserWithRole('MEMBER')(parent, {input}, context, info)
+    return addUserWithRole('MEMBER')(parent, {input}, context, info);
 }
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
 
 function adminSignup(parent, {input}, context, info) {
-    return addUserWithRole('ADMIN')(parent, {input}, context, info)
+    return addUserWithRole('ADMIN')(parent, {input}, context, info);
 }
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
 async function signin(parent, {input}, context, info) {
     try {
-        const user = await User.findOne({email: input.email}).lean()
+        const user = await UserModel.findOne({email: input.email}).lean();
         if (!user) {
-            throw Error(messages.signin.errors.noRegisteredEmail)
+            throw Error(messages.signin.errors.noRegisteredEmail);
         }
 
         const passwordValid = (
             await verifyPassword(input.password, user.password)
-        )
+        );
 
         if (passwordValid) {
             const {
@@ -78,8 +79,8 @@ async function signin(parent, {input}, context, info) {
                 secondLastName,
                 email,
                 mapOfAddresses,
-                role,
-            } = user
+                role
+            } = user;
 
             const userInfo = Object.assign(
                 {}, {
@@ -97,12 +98,12 @@ async function signin(parent, {input}, context, info) {
             const decodedToken = jwtDecode(token);
             const expiresIn = decodedToken.exp;
 
-            return {token, userInfo, expiresIn}
+            return {token, userInfo, expiresIn};
         } else {
-            throw Error(messages.signin.errors.credentials)
+            throw Error(messages.signin.errors.credentials);
         }
     } catch (err) {
-        throw Error(err)
+        throw Error(err);
     }
 }
 
@@ -122,4 +123,4 @@ export default {
         signup,
         signin
     }
-}
+};

@@ -38,7 +38,7 @@ const ProductSchema = mongoose.Schema({
             required: true,
             trim: true
         },
-        publish: {
+        publishDate: {
             type: Date,
             required: true
         },
