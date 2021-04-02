@@ -1,5 +1,5 @@
 // libraries:
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -13,15 +13,24 @@ const AuthContext = createContext();
 const Provider = AuthContext.Provider;
 
 function AuthProvider(props) {
-    const _token = localStorage.getItem('token');
-    const _userInfo = localStorage.getItem('userInfo');
-    const _expiresIn = localStorage.getItem('expiresIn');
-
     const [authState, setAuthState] = useState({
-        token: _token,
-        expiresIn: _expiresIn,
-        userInfo: _userInfo ? JSON.parse(_userInfo) : {}
+        token: '',
+        expiresIn: '',
+        userInfo: {}
     });
+
+    useEffect(function () {
+        const _token = localStorage.getItem('token');
+        const _userInfo = localStorage.getItem('userInfo');
+        const _expiresIn = localStorage.getItem('expiresIn');
+        setAuthState(
+            {
+                token: _token,
+                expiresIn: _expiresIn,
+                userInfo: _userInfo ? JSON.parse(_userInfo) : {}
+            }
+        );
+    }, []);
 
     function isAdmin() {
         return authState.userInfo.role === 'ADMIN';
@@ -62,7 +71,7 @@ function AuthProvider(props) {
                         populateAuthData(userData);
                     },
                 isAdmin: isAdmin,
-                isAuthenticated: isAuthenticated(),
+                isAuthenticated: isAuthenticated,
                 logout: logout
             } }
         >

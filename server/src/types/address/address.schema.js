@@ -38,7 +38,7 @@ export default mongoose.Schema({
         },
         apartmentNumber: {
             type: String,
-            required: true,
+            required: false,
             trim: true
         }
     },

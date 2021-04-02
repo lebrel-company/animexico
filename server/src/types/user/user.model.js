@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import AddressSchema from '../address/address.schema'
-import OrderSchema from '../order/order.schema'
+import OrderSchema from '../order/order.model'
 import ToySchema from '../toy/toy.schema'
 //==============================================================================
 
@@ -61,12 +61,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         enum: ['ADMIN','MEMBER', 'EDITOR']
-    },
-    listOfOrders: [OrderSchema],
-    listOfToys: [ToySchema]
+    }
 }, {
     timestamps:true
 });
 
 module.exports = mongoose.model('User', UserSchema);
-

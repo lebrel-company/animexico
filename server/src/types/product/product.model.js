@@ -38,14 +38,23 @@ const ProductSchema = mongoose.Schema({
             required: true,
             trim: true
         },
-        images: [{
+        publish: {
+            type: Date,
+            required: true
+        },
+        listOfImages: [{
             type: String,
             required: true,
             trim: true
         }],
+        listOfTags: [{
+            type: String,
+            required: false,
+            trim: true
+        }]
     },
     {timestamps: true}
 );
 
 
-module.exports = mongoose.model('Product', ProductSchema);
+export const ProductModel = mongoose.model('Product', ProductSchema);

@@ -1,20 +1,26 @@
+'use strict';
 // libraries:
-import Link from 'next/link'
-import {v4 as uuidv4} from 'uuid'
+import Link from 'next/link';
+import { v4 as uuidv4 } from 'uuid';
+import { useContext } from 'react';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+import { AuthContext } from '../context/AuthContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import routes from '../utils/routes'
-import {authButtons, authHeaderKeys} from '../utils/buttons/auth'
-import {generalButtons} from '../utils/buttons/general'
+import routes from '../utils/routes';
+import { authButtons, authHeaderKeys } from '../utils/buttons/auth';
+import { generalButtons } from '../utils/buttons/general';
 
 //==============================================================================
 
-
 function Header() {
+    var authContext = useContext(AuthContext);
+
     return (
         <div
             className='bg-black-gradient'>
@@ -30,37 +36,42 @@ function Header() {
                     relative py-4 z-20 md:py-0
                     grid grid-cols-3 gap-2
                     '>
-                        <Link href={authButtons.signup.href}>
+                        <Link
+                            href={ authContext.isAuthenticated() ? '/account' : authButtons.signup.href }>
                             <a className='button-pale-outline'>
-                                {authButtons.signup.text}</a>
+                                {
+                                    authButtons.signup.text
+                                }
+                            </a>
                         </Link>
-                        <Link href={authButtons.signin.href}>
+                        <Link
+                            href={ authContext.isAuthenticated() ? '/account' : authButtons.signin.href }>
                             <a className='button-pale-outline'>
-                                {authButtons.signin.text}</a>
+                                {
+                                    authButtons.signin.text }</a>
                         </Link>
-                        <Link href={generalButtons.cart.href}>
+                        <Link href={ generalButtons.cart.href }>
                             <button className='button-red'>
-                                {generalButtons.cart.text}
+                                { generalButtons.cart.text }
                             </button>
                         </Link>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-
 function createRoutes() {
-    let listOfKeys = ['homepage', 'profile', 'store', 'faqs']
+    let listOfKeys = ['homepage', 'profile', 'store', 'faqs'];
     return listOfKeys.map(function createLinks(value, index) {
             return (
-                <div key={index} className='flex-1 text-center
+                <div key={ index } className='flex-1 text-center
                     transition duration-500 ease-in-out
                     transform hover:scale-110
                     '
                 >
-                    <Link href={routes[value]['route']}
+                    <Link href={ routes[value]['route'] }
                     >
                         <a className='
                         text-xl font-deco text-pale
@@ -77,14 +88,14 @@ function createRoutes() {
                         hover:border-opacity-10
                         hover:shadow-md
                     '>
-                            {routes[value]['title']}
+                            { routes[value]['title'] }
                         </a>
                     </Link>
                 </div>
-            )
+            );
         }
-    )
+    );
 }
 
 
-export default Header
+export default Header;

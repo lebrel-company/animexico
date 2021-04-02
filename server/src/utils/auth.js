@@ -49,7 +49,6 @@ export function getAge(dateString) {
 
 export function hashPassword(password) {
     return new Promise((resolve, reject) => {
-        // Generate a salt at level 12 strength
         bcrypt.genSalt(10, (err, salt) => {
             if (err) {
                 reject(err);
@@ -66,11 +65,9 @@ export function hashPassword(password) {
 
 //==============================================================================
 
-
 export function verifyPassword(passwordAttempt, hashedPassword) {
     return bcrypt.compare(passwordAttempt, hashedPassword);
 }
-
 
 //==============================================================================
 
@@ -113,6 +110,7 @@ export function authenticated(nextResolver) {
 //==============================================================================
 export function authorized(role, nextResolver) {
     return function inner(root, args, context, info) {
+
         if (context.user.role !== role) {
             throw new AuthenticationError('Must be a ${role}')
         }

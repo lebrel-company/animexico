@@ -3,6 +3,7 @@ enum Role {
     MEMBER
     EDITOR
 }
+
 type User{
     id: ID
     firstName: String!
@@ -15,8 +16,6 @@ type User{
     cellphone: String
     role: Role!
     mapOfAddresses: MapOfAddresses
-    listOfOrders:[Order!]
-    listOfToys: [Toy!]
 }
 
 input UserInput{
@@ -44,15 +43,18 @@ input SignupInput{
     cellphone: String
     mapOfAddresses: MapOfAddressesInput!
 }
+
 input SigninInput{
     email: String!
     password: String!
 }
+
 type ResetPassword{
     email: String!
     password: String!
     confirmPassword: String!
 }
+
 input UpdateUserInput{
     id: ID
     firstName: String
@@ -62,6 +64,7 @@ input UpdateUserInput{
     cellphone: String
     address: [AddressInput!]
 }
+
 type QueryUser{
     id: ID
     firstName: String!

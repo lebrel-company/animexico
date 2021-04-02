@@ -1,4 +1,3 @@
-
 type MapOfAddresses{
     primary: Address!
     secondary: Address
@@ -38,5 +37,9 @@ input AddressInput {
 
 extend type Query {
     queryMapOfAddresses: MapOfAddresses
+}
+
+extend type Mutation{
+    updateAddress(idUser: ID!, addressName: String!, addressInput: AddressInput!): User
 }
 

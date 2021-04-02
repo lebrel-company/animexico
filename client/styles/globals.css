@@ -58,6 +58,7 @@ a {
 }
 
 input, select, textarea {
+    color: #2b2b2b;
     @apply
     p-2
     w-full

@@ -1,31 +1,60 @@
 type Order{
     id: ID
-    listOfProducts: [ProductOrder!]!
-    shipping: String!
-    total: Float!
-    address: AddressName!
-    status: OrderStatus!
-}
-
-type ProductOrder{
-    id: ID
-    idProduct: ID!
-    amount: Int
-}
-
-input ProductOrderInput{
-    id: ID
-    idProduct: ID!
-    amount: Int
+    idUser: ID,
+    listOfProducts: [OrderProduct]
+    total: Float
+    shippingAddress: OrderShippingAddress
+    status: OrderStatus
 }
 
 input OrderInput{
-    id: ID
-    listOfProducts: [ProductOrderInput!]!
-    shipping: String!
+    idUser: ID!,
+    listOfProducts: [OrderProductInput!]!
     total: Float!
-    address: AddressName!
+    shippingAddress: OrderShippingAddressInput!
     status: OrderStatus!
+}
+
+type OrderProduct{
+    id: ID
+    code: String
+    name: String
+    description: String
+    quantity: Int
+    thumbnail: String
+    price: Float
+    subtotal: Float
+    currency: String
+}
+
+input OrderProductInput{
+    code: String!
+    name: String!
+    description: String
+    quantity: Int!
+    thumbnail: String!
+    price: Float!
+    currency: String
+}
+
+type OrderShippingAddress{
+    country: String
+    city: String
+    neighbourhood: String
+    zipcode: Int
+    street: String
+    buildingNumber: String
+    apartmentNumber: String
+}
+
+input OrderShippingAddressInput{
+    country: String!
+    city: String!
+    neighbourhood: String!
+    zipcode: Int!
+    street: String!
+    buildingNumber: String!
+    apartmentNumber: String
 }
 
 enum OrderStatus{
@@ -40,6 +69,6 @@ extend type Query{
 }
 
 extend type Mutation {
-    createOrder(input: OrderInput): Order
-    updateOrder(input: ID!): Order
+    createOrder(input: OrderInput!): Order
+    updateOrder(id: ID!, input: OrderInput!): Order
 }
