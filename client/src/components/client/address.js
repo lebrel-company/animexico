@@ -171,7 +171,7 @@ function address(){
                                 </div>
                             </div>
                             <div className='border-2 border-pale border-opacity-20 p-1 m-1'>
-                                <div className='pb-2 font-deco text-pale text-xl'>Número Exterior</div>
+                                <div className='pb-2 font-deco text-pale text-xl'>Número Interior</div>
                                 <div>
                                     <input
                                         id='name'
