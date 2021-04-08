@@ -1,6 +1,6 @@
 import React from 'react'
 import ClientLayout from "../../layout/Client";
-import CheckoutProduct from "../../components/checkout";
+import CheckoutProduct from "../../components/checkoutProduct";
 import CheckoutInfo from "../../components/checkoutInfo";
 
 
@@ -16,7 +16,7 @@ function cart(){
                     <CheckoutProduct/>
                     <CheckoutProduct/>
                 </div>
-                <div>
+                <div className='ml-4'>
                     <CheckoutInfo/>
                 </div>                
             </div>        

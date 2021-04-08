@@ -1,6 +1,6 @@
 import React from 'react'
 
-function checkoutInfo() {
+function cartPayPanel() {
     return (
             <div className='pt-4 shadow-md'>
                 <div className='bg-dark rounded-md'>
@@ -22,8 +22,8 @@ function checkoutInfo() {
                     </div>
                     <div className='flex justify-center py-10'>
                         <button
-                            className='button-red text-xl h-12 w-60 flex justify-center items-center'>
-                            Proceder al pago
+                            className='button-red text-4xl h-12 w-60 flex justify-center items-center'>
+                            Pagar
                         </button>
                     </div>                
                 </div>
@@ -33,4 +33,4 @@ function checkoutInfo() {
     )
 }
 
-export default checkoutInfo
+export default cartPayPanel
