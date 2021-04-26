@@ -44,10 +44,13 @@ export function signupFormik(mutation, states, contexts, route) {
                 email: Yup.string()
                     .required(requiredMessage(userFields.email.placeholder))
                     .email('El correo no es válido'),
+                emailConfirm: Yup.string()
+                    .required(requiredMessage(userFields.emailConfirm.placeholder))
+                    .email('El correo no es válido'),
                 password: Yup.string()
                     .required(requiredMessage(userFields.password.placeholder)),
-                passwordConfirmation: Yup.string()
-                    .required(requiredMessage(userFields.passwordConfirmation.placeholder)),
+                passwordConfirm: Yup.string()
+                    .required(requiredMessage(userFields.passwordConfirm.placeholder)),
                 birthday: Yup.string()
                     .required(requiredMessage(userFields.birthday.placeholder)),
                 cellphone:
