@@ -77,7 +77,7 @@ export function signupFormik(mutation, states, contexts, route) {
                     Yup.string()
                         .required(requiredMessage(userFields.address.state.placeholder)),
                 zipcode:
-                    Yup.number()
+                    Yup.string()
                         .required(requiredMessage(userFields.address.zipcode.placeholder)),
                 neighbourhood:
                     Yup.string()
