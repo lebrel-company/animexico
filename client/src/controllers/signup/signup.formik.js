@@ -25,7 +25,8 @@ export function signupFormik(mutation, states, contexts, route) {
                 firstName: '',
                 lastName: '',
                 secondLastName: '',
-                email: ''
+                email: '',
+                emailConfirm: ''
             },
             validationSchema: Yup.object({
                 firstName: Yup.string()
