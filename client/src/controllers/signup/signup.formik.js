@@ -1,6 +1,6 @@
 'use strict';
 // libraries:
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from "yup";
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
@@ -10,64 +10,87 @@ import * as Yup from "yup";
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import { userFields } from "../../utils/fields/user";
+import {userFields} from "../../utils/fields/user";
 
 //==============================================================================
 
 
 export function signupFormik(mutation, states, contexts, route) {
-    function requiredMessage(field_name){
+    function requiredMessage(field_name) {
         return `${field_name} es requerido`
     }
 
     return useFormik({
-            initialValues:{
+            initialValues: {
                 firstName: '',
+                middleName: '',
                 lastName: '',
                 secondLastName: '',
+                birthday: '',
+                cellphone: '',
                 email: '',
-                emailConfirm: ''
+                emailConfirm: '',
+                password: '',
+                passwordConfirm: '',
+                state: '',
+                city: '',
+                neighbourhood: '',
+                street: '',
+                zipcode: '',
+                buildingNumber: '',
+                apartmentNumber: ''
             },
             validationSchema: Yup.object({
-                firstName: Yup.string()
-                    .required(requiredMessage(userFields.firstName.placeholder)),
-                lastName: Yup.string()
-                    .required(requiredMessage(userFields.lastName.placeholder)),
-                secondLastName: Yup.string()
-                    .required(requiredMessage(userFields.secondLastName.placeholder)),
-                email: Yup.string()
-                    .required(requiredMessage(userFields.email.placeholder))
-                    .email('El correo no es válido'),
-                emailConfirm: Yup.string()
-                    .required(requiredMessage(userFields.emailConfirm.placeholder))
-                    .email('El correo no es válido'),
-                password: Yup.string()
-                    .required(requiredMessage(userFields.password.placeholder)),
-                passwordConfirm: Yup.string()
-                    .required(requiredMessage(userFields.passwordConfirm.placeholder)),
-                birthday: Yup.string()
-                    .required(requiredMessage(userFields.birthday.placeholder)),
+                firstName:
+                    Yup.string()
+                        .required(requiredMessage(userFields.firstName.placeholder)),
+                lastName:
+                    Yup.string()
+                        .required(requiredMessage(userFields.lastName.placeholder)),
+                secondLastName:
+                    Yup.string()
+                        .required(requiredMessage(userFields.secondLastName.placeholder)),
+                email:
+                    Yup.string()
+                        .required(requiredMessage(userFields.email.placeholder))
+                        .email('El correo no es válido'),
+                emailConfirm:
+                    Yup.string()
+                        .required(requiredMessage(userFields.emailConfirm.placeholder))
+                        .email('El correo no es válido'),
+                password:
+                    Yup.string()
+                        .required(requiredMessage(userFields.password.placeholder)),
+                passwordConfirm:
+                    Yup.string()
+                        .required(requiredMessage(userFields.passwordConfirm.placeholder)),
+                birthday:
+                    Yup.string()
+                        .required(requiredMessage(userFields.birthday.placeholder)),
                 cellphone:
                     Yup.string()
                         .required(requiredMessage(userFields.cellphone.placeholder)),
-                address: Yup.object({
-                    country: Yup.string()
-                        .required(requiredMessage(userFields.address.country.placeholder)),
-                    city: Yup.string()
+                city:
+                    Yup.string()
                         .required(requiredMessage(userFields.address.city.placeholder)),
-                    state: Yup.string()
+                state:
+                    Yup.string()
                         .required(requiredMessage(userFields.address.state.placeholder)),
-                    zipcode: Yup.number()
+                zipcode:
+                    Yup.number()
                         .required(requiredMessage(userFields.address.zipcode.placeholder)),
-                    neighbourhood: Yup.string()
+                neighbourhood:
+                    Yup.string()
                         .required(requiredMessage(userFields.address.neighbourhood.placeholder)),
-                    street: Yup.string()
+                street:
+                    Yup.string()
                         .required(requiredMessage(userFields.address.street.placeholder)),
-                    buildingNumber: Yup.string()
+                buildingNumber:
+                    Yup.string()
                         .required(requiredMessage(userFields.address.buildingNumber.placeholder)),
-                    apartmentNumber: Yup.string()
+                apartmentNumber:
+                    Yup.string()
                         .required(requiredMessage(userFields.address.apartmentNumber.placeholder))
-                })
             }),
             onSubmit: async function submitForm(values) {
                 let _input = {
@@ -83,7 +106,7 @@ export function signupFormik(mutation, states, contexts, route) {
                         primary: {
                             city: values.city,
                             state: values.state,
-                            country: values.country,
+                            country: 'México',
                             zipcode: values.zipcode,
                             neighbourhood: values.neighbourhood,
                             street: values.street,
