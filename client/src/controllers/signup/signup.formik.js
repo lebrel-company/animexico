@@ -16,24 +16,17 @@ import { userFields } from "../../utils/fields/user";
 
 
 export function signupFormik(mutation, states, contexts, route) {
-
-    var _listOfValueNames = Object.keys(userFields);
-
-
-    function createInitialValuesObject() {
-        let result = {};
-        _listOfValueNames.forEach(function (_key) {
-            result[_key] = '';
-        });
-        return result;
-    }
-
     function requiredMessage(field_name){
         return `${field_name} es requerido`
     }
 
     return useFormik({
-            initialValues: createInitialValuesObject(),
+            initialValues:{
+                firstName: '',
+                lastName: '',
+                secondLastName: '',
+                email: ''
+            },
             validationSchema: Yup.object({
                 firstName: Yup.string()
                     .required(requiredMessage(userFields.firstName.placeholder)),
