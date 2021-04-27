@@ -28,7 +28,7 @@ input AddressInput {
     city: String!
     state: String!
     country: String!
-    zipcode: Int!
+    zipcode: String!
     neighbourhood: String!
     street: String!
     buildingNumber: String!
