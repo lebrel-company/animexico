@@ -16,6 +16,7 @@ import {userFields} from "../../utils/fields/user";
 
 
 export function signupFormik(mutation, states, contexts, route) {
+
     function requiredMessage(field_name) {
         return `${field_name} es requerido`
     }
@@ -69,6 +70,8 @@ export function signupFormik(mutation, states, contexts, route) {
                         .required(requiredMessage(userFields.birthday.placeholder)),
                 cellphone:
                     Yup.string()
+                        .length(10, 'Número celular debe ser de 10 dígitos')
+                        .match(/\d{10}/, 'Número celular debe ser de 10 dígitos')
                         .required(requiredMessage(userFields.cellphone.placeholder)),
                 city:
                     Yup.string()
@@ -78,6 +81,8 @@ export function signupFormik(mutation, states, contexts, route) {
                         .required(requiredMessage(userFields.address.state.placeholder)),
                 zipcode:
                     Yup.string()
+                        .length(5, 'Código postal debe ser de 5 dígitos')
+                        .match(/\d{5}/, 'Código postal debe ser de 5 dígitos')
                         .required(requiredMessage(userFields.address.zipcode.placeholder)),
                 neighbourhood:
                     Yup.string()
