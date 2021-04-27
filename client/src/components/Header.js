@@ -1,11 +1,11 @@
 'use strict';
 // libraries:
 import Link from 'next/link';
-import { v4 as uuidv4 } from 'uuid';
-import { useContext } from 'react';
+import {v4 as uuidv4} from 'uuid';
+import {useContext} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
-import { AuthContext } from '../context/AuthContext';
+import {AuthContext} from '../context/AuthContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -13,8 +13,8 @@ import { AuthContext } from '../context/AuthContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import routes from '../utils/routes';
-import { authButtons, authHeaderKeys } from '../utils/buttons/auth';
-import { generalButtons } from '../utils/buttons/general';
+import {authButtons} from '../utils/buttons/auth';
+import {generalButtons} from '../utils/buttons/general';
 
 //==============================================================================
 
@@ -23,36 +23,36 @@ function Header() {
 
     return (
         <div
-            className='bg-black-gradient'>
-            <div className='container mx-auto md:p-2'>
+            className="bg-black-gradient">
+            <div className="container mx-auto md:p-2">
                 <div
-                    className='flex justify-center items-center md:flex-row flex-wrap p-4'>
-                    <img src='/logo.png'
-                         className='w-1/4 opacity-90 lg:block hidden'/>
+                    className="flex justify-center items-center md:flex-row flex-wrap p-4">
+                    <img src="/logo.png"
+                         className="w-1/4 opacity-90 lg:block hidden"/>
                     {
                         createRoutes()
                     }
-                    <div className='
+                    <div className="
                     relative py-4 z-20 md:py-0
                     grid grid-cols-3 gap-2
-                    '>
+                    ">
                         <Link
-                            href={ authContext.isAuthenticated() ? '/account' : authButtons.signup.href }>
-                            <a className='button-pale-outline'>
+                            href={authContext.isAuthenticated() ? '/account' : authButtons.signup.href}>
+                            <a className="button-pale-outline">
                                 {
                                     authButtons.signup.text
                                 }
                             </a>
                         </Link>
                         <Link
-                            href={ authContext.isAuthenticated() ? '/account' : authButtons.signin.href }>
-                            <a className='button-pale-outline'>
+                            href={authContext.isAuthenticated() ? '/account' : authButtons.signin.href}>
+                            <a className="button-pale-outline">
                                 {
-                                    authButtons.signin.text }</a>
+                                    authButtons.signin.text}</a>
                         </Link>
-                        <Link href={ generalButtons.cart.href }>
-                            <button className='button-red'>
-                                { generalButtons.cart.text }
+                        <Link href={generalButtons.cart.href}>
+                            <button className="button-red">
+                                {generalButtons.cart.text}
                             </button>
                         </Link>
                     </div>
@@ -66,14 +66,14 @@ function createRoutes() {
     let listOfKeys = ['homepage', 'profile', 'store', 'faqs'];
     return listOfKeys.map(function createLinks(value, index) {
             return (
-                <div key={ index } className='flex-1 text-center
+                <div key={index} className="flex-1 text-center
                     transition duration-500 ease-in-out
                     transform hover:scale-110
-                    '
+                    "
                 >
-                    <Link href={ routes[value]['route'] }
+                    <Link href={routes[value]['route']}
                     >
-                        <a className='
+                        <a className="
                         text-xl font-deco text-pale
                         border-2
                         px-4
@@ -87,13 +87,13 @@ function createRoutes() {
                         hover:border-pale
                         hover:border-opacity-10
                         hover:shadow-md
-                    '>
-                            { routes[value]['title'] }
+                    ">
+                            {routes[value]['title']}
                         </a>
                     </Link>
                 </div>
             );
-        }
+        },
     );
 }
 

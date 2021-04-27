@@ -6,15 +6,15 @@ enum Role {
 
 type User{
     id: ID
-    firstName: String!
+    firstName: String
     middleName: String
-    lastName: String!
-    secondLastName: String!
-    password: String!
-    email: String!
-    birthday: String!
+    lastName: String
+    secondLastName: String
+    password: String
+    email: String
+    birthday: String
     cellphone: String
-    role: Role!
+    role: Role
     mapOfAddresses: MapOfAddresses
 }
 
@@ -27,7 +27,7 @@ input UserInput{
     password: String!
     email: String!
     birthday: String!
-    cellphone: String
+    cellphone: String!
     role: String!
     mapOfAddresses: MapOfAddressesInput
 }
@@ -72,10 +72,10 @@ type QueryUser{
     lastName: String!
     secondLastName: String!
     email: String!
-    birthday: String!
+    birthday: String
     cellphone: String
     role: Role!
-    mapOfAddresses: MapOfAddresses
+    mapOfAddresses: MapOfAddresses!
 }
 
 type AuthUser {

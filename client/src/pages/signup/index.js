@@ -244,7 +244,11 @@ export default function SignupForm(props) {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {appendWarningMessage(formik, userFields.address.street.value)}
+                            {
+                                appendWarningMessage(
+                                    formik,
+                                    userFields.address.street.value)
+                            }
                         </div>
                         <div>
                             <input
@@ -252,7 +256,11 @@ export default function SignupForm(props) {
                                 type={userFields.address.zipcode.type}
                                 placeholder={userFields.address.zipcode.placeholder}
                                 name={userFields.address.zipcode.value}
-                                value={formik.values[userFields.address.zipcode.value]}
+                                value={
+                                    formik.values[
+                                        userFields.address.zipcode.value
+                                        ]
+                                }
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
