@@ -18,6 +18,7 @@ import {signupFormik} from '../../controllers/signup/signup.formik';
 import signupMutationString from '../../controllers/signup/signup.mutation.gql';
 import {userFields} from '../../utils/fields/user'
 import {formTexts, spanishButtons} from '../../utils/texts/signup.texts';
+import {listOfStates} from '../../utils/location/mexico';
 //==============================================================================
 
 
@@ -187,7 +188,7 @@ export default function SignupForm(props) {
                             />
                         </div>
                         <div>
-                            <input
+                            <select
                                 id={userFields.address.state.value}
                                 type={userFields.address.state.type}
                                 placeholder={userFields.address.state.placeholder}
@@ -195,7 +196,17 @@ export default function SignupForm(props) {
                                 value={formik.values[userFields.address.state.value]}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                            />
+                            >
+                                {
+                                    listOfStates.map(function (element) {
+                                        return (
+                                            <option value={element}>
+                                                {element}
+                                            </option>
+                                        )
+                                    })
+                                }
+                            </select>
                             {appendWarningMessage(formik, userFields.address.state.value)}
                         </div>
                         <div>
@@ -229,7 +240,7 @@ export default function SignupForm(props) {
                                 type={userFields.address.street.type}
                                 placeholder={userFields.address.street.placeholder}
                                 name={userFields.address.street.value}
-                                value={formik.values[userFields.address.buildingNumber.value]}
+                                value={formik.values[userFields.address.street.value]}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />

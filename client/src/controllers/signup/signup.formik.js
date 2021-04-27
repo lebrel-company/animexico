@@ -98,6 +98,7 @@ export function signupFormik(mutation, states, contexts, route) {
                     Yup.string(),
             }),
             onSubmit: async function submitForm(values) {
+                console.log(values)
                 let _input = {
                     firstName: values.firstName,
                     middleName: values.middleName,
