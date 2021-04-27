@@ -1,7 +1,7 @@
 'use strict';
 // libraries:
-import {useFormik} from "formik";
-import * as Yup from "yup";
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -10,7 +10,7 @@ import * as Yup from "yup";
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {userFields} from "../../utils/fields/user";
+import {userFields} from '../../utils/fields/user';
 
 //==============================================================================
 
@@ -39,7 +39,7 @@ export function signupFormik(mutation, states, contexts, route) {
                 street: '',
                 zipcode: '',
                 buildingNumber: '',
-                apartmentNumber: ''
+                apartmentNumber: '',
             },
             validationSchema: Yup.object({
                 firstName:
@@ -57,13 +57,15 @@ export function signupFormik(mutation, states, contexts, route) {
                         .email('El correo no es válido'),
                 emailConfirm:
                     Yup.string()
-                        .oneOf([Yup.ref('email'), null], 'Los emails deben coincidir'),
+                        .oneOf([Yup.ref('email'), null], 'Los emails deben coincidir')
+                        .required(requiredMessage(userFields.email.placeholder)),
                 password:
                     Yup.string()
                         .required(requiredMessage(userFields.password.placeholder)),
                 passwordConfirm:
                     Yup.string()
-                        .oneOf([Yup.ref('password'), null], 'Los passwords deben coincidir'),
+                        .oneOf([Yup.ref('password'), null], 'Los passwords deben coincidir')
+                        .required(requiredMessage(userFields.passwordConfirm.placeholder)),
                 birthday:
                     Yup.string()
                         .required(requiredMessage(userFields.birthday.placeholder)),
@@ -93,7 +95,7 @@ export function signupFormik(mutation, states, contexts, route) {
                     Yup.string()
                         .required(requiredMessage(userFields.address.buildingNumber.placeholder)),
                 apartmentNumber:
-                    Yup.string()
+                    Yup.string(),
             }),
             onSubmit: async function submitForm(values) {
                 let _input = {
@@ -114,15 +116,15 @@ export function signupFormik(mutation, states, contexts, route) {
                             neighbourhood: values.neighbourhood,
                             street: values.street,
                             buildingNumber: values.buildingNumber,
-                            apartmentNumber: values.apartmentNumber
-                        }
-                    }
+                            apartmentNumber: values.apartmentNumber,
+                        },
+                    },
                 };
                 try {
                     let {data} = await mutation({
                         variables: {
-                            input: _input
-                        }
+                            input: _input,
+                        },
                     });
                     contexts.authContext.setAuthState(data.signup);
                     setTimeout(() => {
@@ -131,8 +133,8 @@ export function signupFormik(mutation, states, contexts, route) {
                 } catch (error) {
                     console.error(error);
                 }
-            }
-        }
+            },
+        },
     );
 }
 

@@ -125,7 +125,7 @@ export var userFields = {
             placeholder: _spanish_placeholders.country
         },
         zipcode: {
-            type: 'number',
+            type: 'text',
             value: values.zipcode,
             placeholder: _spanish_placeholders.zipcode
         },

@@ -96,6 +96,30 @@ export default function SignupForm(props) {
                             />
                             {appendWarningMessage(formik, userFields.secondLastName.value)}
                         </div>
+                        <div>
+                            <input
+                                id={userFields.birthday.value}
+                                type={userFields.birthday.type}
+                                placeholder={userFields.birthday.placeholder}
+                                name={userFields.birthday.value}
+                                value={formik.values[userFields.birthday.value]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {appendWarningMessage(formik, userFields.birthday.value)}
+                        </div>
+                        <div>
+                            <input
+                                id={userFields.cellphone.value}
+                                type={userFields.cellphone.type}
+                                placeholder={userFields.cellphone.placeholder}
+                                name={userFields.cellphone.value}
+                                value={formik.values[userFields.cellphone.value]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {appendWarningMessage(formik, userFields.cellphone.value)}
+                        </div>
                     </div>
                     <div className="w-5/6 mx-auto">
                         <div
@@ -223,6 +247,30 @@ export default function SignupForm(props) {
                             />
                             {appendWarningMessage(formik, userFields.address.zipcode.value)}
                         </div>
+                        <div>
+                            <input
+                                id={userFields.address.buildingNumber.value}
+                                type={userFields.address.buildingNumber.type}
+                                placeholder={userFields.address.buildingNumber.placeholder}
+                                name={userFields.address.buildingNumber.value}
+                                value={formik.values[userFields.address.buildingNumber.value]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {appendWarningMessage(formik, userFields.address.buildingNumber.value)}
+                        </div>
+                        <div>
+                            <input
+                                id={userFields.address.apartmentNumber.value}
+                                type={userFields.address.apartmentNumber.type}
+                                placeholder={userFields.address.apartmentNumber.placeholder}
+                                name={userFields.address.apartmentNumber.value}
+                                value={formik.values[userFields.address.apartmentNumber.value]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {appendWarningMessage(formik, userFields.address.apartmentNumber.value)}
+                        </div>
                     </div>
                     <div className="flex mt-4 justify-center">
                         <button className="button-red text-3xl" type="submit">
@@ -238,7 +286,7 @@ export default function SignupForm(props) {
 
 function appendWarningMessage(formik, value) {
     return (
-        <div className="text-sm">
+        <div className="text-sm text-palered">
             {
                 function () {
                     return (
