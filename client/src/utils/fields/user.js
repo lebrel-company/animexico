@@ -60,110 +60,92 @@ var text = spanishInputPlaceholders;
 export var userFields = {
     firstName: {
         type: 'text',
-        name: text.firstName,
         value: values.firstName,
         placeholder: _spanish_placeholders.firstName
     },
     middleName: {
         type: 'text',
-        name: text.middleName,
         value: values.middleName,
         placeholder: _spanish_placeholders.middleName
     },
     lastName: {
         type: 'text',
-        name: text.lastName,
         value: values.lastName,
         placeholder: _spanish_placeholders.lastName
     },
     secondLastName: {
         type: 'text',
-        name: text.secondLastName,
         value: values.secondLastName,
         placeholder: _spanish_placeholders.secondLastName
     },
     email: {
         type: 'email',
-        name: text.email,
         value: values.email,
         placeholder: _spanish_placeholders.email
     },
     emailConfirm: {
         type: 'email',
-        name: text.emailConfirm,
         value: values.emailConfirm,
         placeholder: _spanish_placeholders.emailConfirm
     },
     password: {
         type: 'password',
-        name: text.password,
         value: values.password,
         placeholder: _spanish_placeholders.password
     },
     passwordConfirm: {
         type: 'password',
-        name: text.passwordConfirm,
         value: values.passwordConfirm,
         placeholder: _spanish_placeholders.passwordConfirm
     },
     birthday: {
         type: 'date',
-        name: text.birthday,
         value: values.birthday,
         placeholder: _spanish_placeholders.birthday
     },
     cellphone: {
         type: 'text',
-        name: text.cellphone,
         value: values.cellphone,
         placeholder: _spanish_placeholders.cellphone
     },
     address: {
         city: {
             type: 'text',
-            name: text.city,
             value: values.city,
             placeholder: _spanish_placeholders.city
         },
         state: {
             type: 'text',
-            name: text.state,
             value: values.state,
             placeholder: _spanish_placeholders.state
         },
         country: {
             type: 'text',
-            name: text.country,
             value: values.country,
             placeholder: _spanish_placeholders.country
         },
         zipcode: {
             type: 'number',
-            name: text.zipcode,
             value: values.zipcode,
             placeholder: _spanish_placeholders.zipcode
         },
         neighbourhood: {
             type: 'text',
-            name: text.neighbourhood,
             value: values.neighbourhood,
             placeholder: _spanish_placeholders.neighbourhood
         },
         street: {
             type: 'text',
-            name: text.street,
             value: values.street,
             placeholder: _spanish_placeholders.street
         },
         buildingNumber: {
             type: 'text',
-            name: text.buildingNumber,
             value: values.buildingNumber,
             placeholder: _spanish_placeholders.buildingNumber
         },
         apartmentNumber: {
             type: 'text',
-            name: text.apartmentNumber,
             value: values.apartmentNumber,
             placeholder: _spanish_placeholders.apartmentNumber
         }
