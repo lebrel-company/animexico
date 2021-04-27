@@ -57,21 +57,20 @@ export function signupFormik(mutation, states, contexts, route) {
                         .email('El correo no es válido'),
                 emailConfirm:
                     Yup.string()
-                        .required(requiredMessage(userFields.emailConfirm.placeholder))
-                        .email('El correo no es válido'),
+                        .oneOf([Yup.ref('email'), null], 'Los emails deben coincidir'),
                 password:
                     Yup.string()
                         .required(requiredMessage(userFields.password.placeholder)),
                 passwordConfirm:
                     Yup.string()
-                        .required(requiredMessage(userFields.passwordConfirm.placeholder)),
+                        .oneOf([Yup.ref('password'), null], 'Los passwords deben coincidir'),
                 birthday:
                     Yup.string()
                         .required(requiredMessage(userFields.birthday.placeholder)),
                 cellphone:
                     Yup.string()
                         .length(10, 'Número celular debe ser de 10 dígitos')
-                        .match(/\d{10}/, 'Número celular debe ser de 10 dígitos')
+                        .matches(/\d{10}/, 'Número celular debe ser de 10 dígitos')
                         .required(requiredMessage(userFields.cellphone.placeholder)),
                 city:
                     Yup.string()
@@ -82,7 +81,7 @@ export function signupFormik(mutation, states, contexts, route) {
                 zipcode:
                     Yup.string()
                         .length(5, 'Código postal debe ser de 5 dígitos')
-                        .match(/\d{5}/, 'Código postal debe ser de 5 dígitos')
+                        .matches(/\d{5}/, 'Código postal debe ser de 5 dígitos')
                         .required(requiredMessage(userFields.address.zipcode.placeholder)),
                 neighbourhood:
                     Yup.string()
@@ -95,7 +94,6 @@ export function signupFormik(mutation, states, contexts, route) {
                         .required(requiredMessage(userFields.address.buildingNumber.placeholder)),
                 apartmentNumber:
                     Yup.string()
-                        .required(requiredMessage(userFields.address.apartmentNumber.placeholder))
             }),
             onSubmit: async function submitForm(values) {
                 let _input = {
