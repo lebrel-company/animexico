@@ -12,8 +12,10 @@ import 'react-awesome-slider/dist/styles.css';
 // project:
 import '../../styles/tailwind.css'
 import '../../styles/globals.css'
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import client from '../config/apollo';
-import {AuthProvider} from "../context/AuthContext";
+import {AuthProvider} from '../context/AuthContext';
 
 //==============================================================================
 

@@ -1,8 +1,17 @@
-import React, { Component } from "react";
+'use strict';
+// libraries:
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// layouts:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// components:
 import Card from '../components/Card'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+//==============================================================================
+
 
 const photos = [
     {
@@ -43,7 +52,10 @@ export default function Carousel(props){
                
                 {
                     photos.map((element) => {
-                        return(<div className='p-2'><Card image={element.url}/></div>)
+                        return(
+                            <div key={element.name} className='p-2'>
+                                <Card image={element.url}/>
+                            </div>)
                         })
                 }
                                

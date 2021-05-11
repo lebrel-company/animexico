@@ -8,14 +8,14 @@
 
 var keys = null
 
-if (process.env.NODE_ENV === 'dev'){
+if (process.env.NODE_ENV === 'dev') {
     keys = require('./dev')
-}else if(process.env.NODE_ENV === 'sta'){
-    keys = require('./sta')
-}else if(process.env.NODE_ENV  === 'pro'){
-    keys = require('./pro')
-}else{
-    throw Error('There is no NODE_ENV variable defined')
+} else {
+    keys = {
+        bucket: process.env.BUCKET,
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    }
 }
 
 export default keys
