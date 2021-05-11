@@ -30,7 +30,7 @@ export default function SignupForm(props) {
         signupMutation,
         {},
         {authContext: authContext},
-        {hook: _router, path: '/account'},
+        {hook: _router, path: '/profile'},
     ]
 
     var formik = signupFormik(mutation, states, contexts, router);

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "tests": "jest"
+    "tests": "jest --detectOpenHandles"
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",

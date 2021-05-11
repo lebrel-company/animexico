@@ -7,9 +7,6 @@ build:
 restart:
 	docker-compose restart
 
-restart:
-	docker-compose restart
-
 down:
 	docker-compose down
 

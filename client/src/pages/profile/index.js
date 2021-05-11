@@ -16,7 +16,7 @@ import Orders from '../../components/client/orders'
 //==============================================================================
 
 
-export default function Account() {
+export default function Profile() {
     var [component, setComponent] = useState('address')
     var authContext = useContext(AuthContext)
     var _u = authContext.authState.userInfo

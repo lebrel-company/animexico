@@ -12,43 +12,60 @@ import {AuthContext} from '../context/AuthContext';
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import routes from '../utils/routes';
-import {authButtons} from '../utils/buttons/auth';
+import {mapOfRoutes} from '../utils/routes'
 import {generalButtons} from '../utils/buttons/general';
-
 //==============================================================================
 
-function Header() {
+
+export default function Header() {
     var authContext = useContext(AuthContext);
+    var listOfMenuLinks = ['homepage', 'store', 'faqs'];
+
+    if (authContext.isAuthenticated()) {
+        listOfMenuLinks = listOfMenuLinks.push('profile')
+    }
 
     return (
         <div
             className="bg-black-gradient">
             <div className="container mx-auto md:p-2">
                 <div
-                    className="flex justify-center items-center md:flex-row flex-wrap p-4">
+                    className="
+                    flex justify-center items-center md:flex-row
+                    flex-wrap p-4
+                    ">
                     <img src="/logo.png"
                          className="w-1/4 opacity-90 lg:block hidden"/>
                     {
-                        createRoutes()
+                        createRoutes(mapOfRoutes, listOfMenuLinks)
                     }
                     <div className="
                     relative py-4 z-20 md:py-0
                     grid grid-cols-3 gap-2
                     ">
                         <Link
-                            href={authContext.isAuthenticated() ? '/account' : authButtons.signup.href}>
+                            href={
+                                authContext.isAuthenticated() ?
+                                    mapOfRoutes.account.route :
+                                    mapOfRoutes.signup.route
+                            }>
                             <a className="button-pale-outline">
                                 {
-                                    authButtons.signup.text
+                                    mapOfRoutes.signup.text
                                 }
                             </a>
                         </Link>
                         <Link
-                            href={authContext.isAuthenticated() ? '/account' : authButtons.signin.href}>
+                            href={
+                                authContext.isAuthenticated() ?
+                                    mapOfRoutes.account.route :
+                                    mapOfRoutes.login.route
+                            }>
                             <a className="button-pale-outline">
                                 {
-                                    authButtons.signin.text}</a>
+                                    mapOfRoutes.login.text
+                                }
+                            </a>
                         </Link>
                         <Link href={generalButtons.cart.href}>
                             <button className="button-red">
@@ -62,18 +79,21 @@ function Header() {
     );
 }
 
-function createRoutes() {
-    let listOfKeys = ['homepage', 'profile', 'store', 'faqs'];
+function createRoutes(mapOfRoutes, listOfKeys) {
     return listOfKeys.map(function createLinks(value, index) {
             return (
-                <div key={index} className="flex-1 text-center
+                <div
+                    key={index}
+                    className={` 
+                    flex-1 text-center
                     transition duration-500 ease-in-out
                     transform hover:scale-110
-                    "
+                    `}
                 >
-                    <Link href={routes[value]['route']}
+                    <Link href={mapOfRoutes[value]['route']}
                     >
-                        <a className="
+                        <a className={` 
+                        ${value}
                         text-xl font-deco text-pale
                         border-2
                         px-4
@@ -87,8 +107,9 @@ function createRoutes() {
                         hover:border-pale
                         hover:border-opacity-10
                         hover:shadow-md
-                    ">
-                            {routes[value]['title']}
+                        `}
+                        >
+                            {mapOfRoutes[value]['text']}
                         </a>
                     </Link>
                 </div>
@@ -97,5 +118,6 @@ function createRoutes() {
     );
 }
 
+//==============================================================================
+// Variables:
 
-export default Header;

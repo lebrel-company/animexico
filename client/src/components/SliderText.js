@@ -1,5 +1,6 @@
 'use strict';
 // libraries:
+import {v4 as uuid} from 'uuid'
 import Slider from 'react-slick';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
@@ -23,8 +24,11 @@ export default function SliderText(props) {
                 {
                     props.listOfTexts.map((element) => {
                         return (
-                            <div className="text-white text-center font-deco">
-                                    <span className="font-black text-9xl">
+                            <div
+                                key={uuid()}
+                                className="text-white text-center font-deco">
+                                    <span
+                                        className="font-black text-9xl">
                                         {element.title}
                                     </span>
                                 <span className="text-3xl">

@@ -1,28 +1,50 @@
-var routes = {
+'use strict';
+// libraries:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+//==============================================================================
+
+export var mapOfRoutes = {
     homepage: {
         route: '/',
-        title: 'inicio'
+        text: 'Inicio',
     },
-    profile: {
+    account: {
         route: '/profile',
-        title: 'perfil'
+        text: 'Mi cuenta',
     },
     store: {
         route: '/store',
-        title: 'tienda'
+        text: 'Tienda',
     },
     faqs: {
         route: '/faqs',
-        title: 'FAQs'
+        text: 'FAQs',
     },
     terms: {
-        route:'/terms',
-        title:'Términos y condiciones'
+        route: '/terms',
+        text: 'Términos y condiciones',
     },
     privacy: {
         route: '/privacy',
-        title: 'Política de privacidad'
-    }
+        text: 'Política de privacidad',
+    },
+    restorePassword: {
+        route: '/password_recovery',
+        text: 'Restaurar contraseña',
+    },
+    login: {
+        route: '/login',
+        text: 'Ingresar',
+    },
+    signup: {
+        route: '/signup',
+        text: 'Registrarme',
+    },
+    profile: {
+        route: '/profile',
+        text: 'Mi perfil',
+    },
 }
-
-export default routes
