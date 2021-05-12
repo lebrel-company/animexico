@@ -36,8 +36,8 @@ afterEach(async function _afterEach() {
 })
 
 test(
-    'The header has the correct buttons for not authenticated session',
-    async function validateNotAuthSessionHeaderButtons() {
+    'Header has the correct links for session',
+    async function validateNotAuthSessionHeaderLinks() {
         let mapOfLinks = {
             homepage: {
                 text: 'Inicio',
@@ -64,11 +64,43 @@ test(
         let linkToFaqsText = await homepage.$eval(
             'a.faqs', el => el.innerHTML,
         )
-        console.log(linkToHomeText)
-        console.log(linkToFaqsText)
-        console.log(linkToStoreText)
         expect(linkToHomeText).toEqual(mapOfLinks.homepage.text)
         expect(linkToStoreText).toEqual(mapOfLinks.store.text)
         expect(linkToFaqsText).toEqual(mapOfLinks.faqs.text)
     },
 )
+
+test(
+    'Header has the correct buttons for session',
+    async function header_has_the_correct_buttons_for_session() {
+    // async () => {
+        let mapOfButtons = {
+            signup: {
+                text: 'Registrarme',
+            },
+            login: {
+                text: 'Ingresar',
+            },
+        }
+
+        let signupButton = await homepage.$eval(
+            'a.button-signup', el => el.innerHTML,
+        )
+        let loginButton = await homepage.$eval(
+            'a.button-login', el => el.innerHTML,
+        )
+
+        // let cartButton = await homepage.$eval(
+        //     'a.button-cart', el => el.innerHTML,
+        // )
+
+        console.log(signupButton)
+        console.log(loginButton)
+        // console.log(cartButton)
+
+        expect(signupButton).toEqual(mapOfButtons.signup.text)
+        expect(loginButton).toEqual(mapOfButtons.login.text)
+        // expect(cartButton).toEqual('')
+    },
+)
+

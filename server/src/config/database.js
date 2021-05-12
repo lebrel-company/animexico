@@ -12,11 +12,9 @@ if (process.env.NODE_ENV == 'production'){
     connection_string = `mongodb://${username}:${password}@${host}/${database}`;
 }
 else{
-    connection_string = 'mongodb://tamashii-mongo/database';
+    connection_string = process.env.TEST_DB || 'mongodb://tamashii-mongo/database';
 }
 
-
-console.log(connection_string)
 const connection = async function () {
     try {
         await mongoose.connect(
@@ -37,5 +35,3 @@ const connection = async function () {
 }
 
 module.exports = connection;
-
-

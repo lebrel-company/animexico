@@ -16,11 +16,9 @@ import address from './types/address/address.resolvers'
 import file from './types/file/file.resolvers'
 //==============================================================================
 
-mongoConnection()
-
 const types = ['product', 'toy', 'user', 'order', 'address', 'file'];
 
-async function start() {
+export async function Server() {
     let schemaTypes = await Promise.all(types.map(loadSchemaType));
 
     const rootSchema = `
@@ -29,7 +27,7 @@ async function start() {
             mutation: Mutation
         }
     `
-    const server = new ApolloServer({
+    return new ApolloServer({
         typeDefs: [rootSchema, ...schemaTypes],
         resolvers: merge(
             {},
@@ -37,16 +35,21 @@ async function start() {
             user,
             order,
             address,
-            file
+            file,
         ),
         context: ({req, connection}) => {
-            let token = req.headers.authorization
+            let token = req?.headers?.authorization
             let userInfo = userFromToken(token)
             return {userInfo}
-        }
+        },
     });
+}
 
-    server.listen().then(({ url }) => {
+
+async function start() {
+    mongoConnection()
+    let _server = await Server()
+    _server.listen().then(({url}) => {
         console.log(`🚀  Server ready at ${url}`);
     });
 
@@ -54,5 +57,4 @@ async function start() {
 
 
 //==============================================================================
-
 export default start

@@ -41,7 +41,6 @@ export default function Header() {
                     }
                     <div className="
                     relative py-4 z-20 md:py-0
-                    grid grid-cols-3 gap-2
                     ">
                         <Link
                             href={
@@ -49,7 +48,11 @@ export default function Header() {
                                     mapOfRoutes.account.route :
                                     mapOfRoutes.signup.route
                             }>
-                            <a className="button-pale-outline">
+                            <a className={`
+                                button-signup
+                                m-2
+                                button-pale-outline
+                            `}>
                                 {
                                     mapOfRoutes.signup.text
                                 }
@@ -61,17 +64,26 @@ export default function Header() {
                                     mapOfRoutes.account.route :
                                     mapOfRoutes.login.route
                             }>
-                            <a className="button-pale-outline">
+                            <a className={`
+                            button-login
+                            m-2
+                            button-pale-outline
+                            `}>
                                 {
                                     mapOfRoutes.login.text
                                 }
                             </a>
                         </Link>
-                        <Link href={generalButtons.cart.href}>
-                            <button className="button-red">
-                                {generalButtons.cart.text}
-                            </button>
-                        </Link>
+                        {
+                            authContext.isAuthenticated() &&
+                            <Link href={generalButtons.cart.href}>
+                                <button className={`
+                                button-red button-cart
+                                `}>
+                                    {generalButtons.cart.text}
+                                </button>
+                            </Link>
+                        }
                     </div>
                 </div>
             </div>

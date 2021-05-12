@@ -6,8 +6,6 @@ import mongoose from 'mongoose'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import AddressSchema from '../address/address.schema'
-import OrderSchema from '../order/order.model'
-import ToySchema from '../toy/toy.schema'
 //==============================================================================
 
 const UserSchema = mongoose.Schema({

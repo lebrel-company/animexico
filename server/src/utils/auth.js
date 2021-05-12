@@ -3,15 +3,16 @@
 import bcrypt from 'bcryptjs'
 import jsonWebToken from 'jsonwebtoken'
 import jwtDecode from 'jwt-decode';
-import {AuthenticationError} from 'apollo-server'
+import {AuthenticationError, UserInputError} from 'apollo-server'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 import {UserModel} from '../types/user/user.model'
-import messages from "../types/user/user.messages";
+import messages from '../types/user/user.messages';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 require('dotenv').config({path: 'variables.env'});
 const __JWT_SECRET = process.env.JWT_SECRET
+
 //==============================================================================
 
 export function createToken(user) {
@@ -120,12 +121,18 @@ export function authorized(role, nextResolver) {
 
 //==============================================================================
 
-export function addUserWithRole(role){
+export function addUserWithRole(role) {
     return async function _resolver(parent, {input}, context, info) {
-        try{
+        console.log(input)
+        if (!input.lastName) {
+            throw new UserInputError('Missing lastName field');
+        }
+
+        try {
             let age = getAge(input.birthday)
+            console.log('AGE:', age)
             if (age < 18) {
-                throw new Error(message.signup.errors.age)
+                throw new UserInputError(messages.signup.errors.age)
             }
             const hashedPassword = await hashPassword(input.password)
             const userData = {
@@ -147,7 +154,7 @@ export function addUserWithRole(role){
                         neighbourhood: input.mapOfAddresses.primary.neighbourhood,
                         street: input.mapOfAddresses.primary.street,
                         buildingNumber: input.mapOfAddresses.primary.buildingNumber,
-                        apartmentNumber: input.mapOfAddresses.primary.apartmentNumber,
+                        apartmentNumber: input.mapOfAddresses.primary.apartmentNumber
                     }
                 }
             };

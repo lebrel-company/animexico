@@ -1,17 +1,15 @@
-const keys = require('../keys');
 const mongoose = require('mongoose');
-require('dotenv').config({path: 'variables.env'});
 
 
 const connection = async function () {
     try {
         await mongoose.connect(
-            'mongodb://tamashii-mongo/test_database',
+            'mongodb://localhost:27017/database',
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useFindAndModify: false,
-                useCreateIndex: true
+                useCreateIndex: true,
             })
         console.log('MongoDB its connected');
 
