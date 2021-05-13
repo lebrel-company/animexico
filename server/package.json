@@ -8,7 +8,7 @@
     "dev": "nodemon --exec babel-node src -L",
     "restart": "yarn run rimraf dist && yarn run build && yarn run start",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "test": "mocha --require esm --timeout 5000"
+    "test": "mocha --recursive --require esm --exit"
   },
   "license": "MIT",
   "dependencies": {

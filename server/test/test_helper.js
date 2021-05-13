@@ -7,7 +7,7 @@ mongoose.connection
     .once('open', () => {
         console.log('Mongoose its good to go')
     })
-    .on('error', (_error)=>{
+    .on('error', (_error) => {
         console.warn('Error:', _error)
     })
 

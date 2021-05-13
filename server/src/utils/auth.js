@@ -123,14 +123,12 @@ export function authorized(role, nextResolver) {
 
 export function addUserWithRole(role) {
     return async function _resolver(parent, {input}, context, info) {
-        console.log(input)
         if (!input.lastName) {
             throw new UserInputError('Missing lastName field');
         }
 
         try {
             let age = getAge(input.birthday)
-            console.log('AGE:', age)
             if (age < 18) {
                 throw new UserInputError(messages.signup.errors.age)
             }

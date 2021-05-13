@@ -1,4 +1,3 @@
-
 type SignedURL{
     key: String!
     url: String!
@@ -6,4 +5,6 @@ type SignedURL{
 
 extend type Query {
     awsSignedUrl: SignedURL
+    listOfSignedUrls(input: Int!) : [SignedURL!]!
 }
+

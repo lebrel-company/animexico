@@ -7,51 +7,30 @@ import {gql} from 'apollo-server'
 import _ from 'lodash'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
-import {UserModel} from '../src/types/user/user.model'
+import {UserModel} from '../../src/types/user/user.model'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {values} from './user_data'
-import messages from '../src/types/user/user.messages';
+import {values} from '../user_data'
+import {signupMutationString} from '../signup.mutation';
+import {axiosConfig, hostname} from '../constants';
 //==============================================================================
 
-var _ax = {
-    headers: {
-        'Content-Type': 'application/json'
-    }
-}
-
-var HOST = 'http://localhost:5000/api'
-
 describe('User signup', () => {
-    var signupMutationGql = gql`
-        mutation signup($input: SignupInput!){
-            signup(input: $input){
-                token
-                userInfo{
-                    firstName
-                    middleName
-                    lastName
-                    secondLastName
-                }
-            }
-        }
-    `
-    var signupMutation = signupMutationGql.loc.source.body
-    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
     beforeEach(async function () {
         await UserModel.deleteOne({email: 'jairanpo@gmail.com'})
     })
-    after(async function () {
-        await mongoose.connection.close()
-    })
+
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
     it('Register a user', async () => {
         var response;
         var user = values
         try {
             response = await axios.post(
-                HOST,
-                {query: signupMutation, variables: {input: user}}, _ax
+                hostname,
+                {query: signupMutationString, variables: {input: user}},
+                axiosConfig
             )
         } catch (_e) {
             console.log(_e)
@@ -71,7 +50,7 @@ describe('User signup', () => {
     ]
     listOfRequiredFields.forEach(function (element) {
         it(`${_rej} ${element}`, async () => {
-            await missingRequiredFields(signupMutation, element);
+            await missingRequiredFields(element);
         })
     })
 
@@ -80,20 +59,24 @@ describe('User signup', () => {
         let user = _.cloneDeep(values)
         user.birthday = '2019-10-24'
         var _r = await axios.post(
-            HOST,
-            {query: signupMutation, variables: {input: user}}, _ax
+            hostname,
+            {query: signupMutationString, variables: {input: user}}, axiosConfig
         )
         assert.match(_r.data.errors[0].message, /UserInputError/)
     })
 })
 
-async function missingRequiredFields(signupMutation, field) {
+async function missingRequiredFields(field) {
     let user = _.cloneDeep(values)
     delete user[field]
     await assert.rejects(async () => {
             await axios.post(
-                HOST,
-                {query: signupMutation, variables: {input: user}}, _ax
+                hostname,
+                {
+                    query: signupMutationString,
+                    variables: {input: user}
+                },
+                axiosConfig
             )
         }
     )

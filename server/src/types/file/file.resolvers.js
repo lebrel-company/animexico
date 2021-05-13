@@ -7,7 +7,7 @@ import {v4 as uuidv4} from 'uuid'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import keys from '../../config/keys'
-import {authenticated} from "../../utils/auth";
+import {authenticated} from '../../utils/auth';
 //==============================================================================
 
 const S3 = new AWS.S3({
@@ -16,7 +16,7 @@ const S3 = new AWS.S3({
 })
 
 async function awsSignedUrl(parent, args, context, info) {
-    var _file_key = `${context.user.id}/${uuidv4()}.jpeg`
+    var _file_key = `${context.userInfo.id}/${uuidv4()}.jpeg`
 
     function getSignedUrl() {
         return new Promise(
@@ -48,5 +48,5 @@ async function awsSignedUrl(parent, args, context, info) {
 export default {
     Query: {
         awsSignedUrl: authenticated(awsSignedUrl)
-    },
+    }
 }

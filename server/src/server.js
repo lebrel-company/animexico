@@ -35,13 +35,13 @@ export async function Server() {
             user,
             order,
             address,
-            file,
+            file
         ),
         context: ({req, connection}) => {
             let token = req?.headers?.authorization
             let userInfo = userFromToken(token)
             return {userInfo}
-        },
+        }
     });
 }
 
