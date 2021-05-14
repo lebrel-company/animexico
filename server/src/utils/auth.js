@@ -121,6 +121,7 @@ export function authorized(role, nextResolver) {
 
 //==============================================================================
 
+
 export function addUserWithRole(role) {
     return async function _resolver(parent, {input}, context, info) {
         if (!input.lastName) {
@@ -133,29 +134,7 @@ export function addUserWithRole(role) {
                 throw new UserInputError(messages.signup.errors.age)
             }
             const hashedPassword = await hashPassword(input.password)
-            const userData = {
-                email: input.email,
-                firstName: input.firstName,
-                middleName: input.middleName,
-                lastName: input.lastName,
-                secondLastName: input.secondLastName,
-                birthday: input.birthday,
-                cellphone: input.cellphone,
-                password: hashedPassword,
-                role: role,
-                mapOfAddresses: {
-                    primary: {
-                        country: input.mapOfAddresses.primary.country,
-                        city: input.mapOfAddresses.primary.city,
-                        state: input.mapOfAddresses.primary.state,
-                        zipcode: input.mapOfAddresses.primary.zipcode,
-                        neighbourhood: input.mapOfAddresses.primary.neighbourhood,
-                        street: input.mapOfAddresses.primary.street,
-                        buildingNumber: input.mapOfAddresses.primary.buildingNumber,
-                        apartmentNumber: input.mapOfAddresses.primary.apartmentNumber
-                    }
-                }
-            };
+            const userData = mapOfValues(input, hashedPassword, role);
 
             const existingEmail = await UserModel.findOne({
                 email: userData.email
@@ -195,4 +174,48 @@ export function addUserWithRole(role) {
             throw new Error(err)
         }
     }
+}
+
+function mapOfValues(input, hashedPassword, role) {
+    var userData;
+    if (role === 'MEMBER') {
+        userData = {
+            email: input.email,
+            firstName: input.firstName,
+            middleName: input.middleName,
+            lastName: input.lastName,
+            secondLastName: input.secondLastName,
+            birthday: input.birthday,
+            cellphone: input.cellphone,
+            password: hashedPassword,
+            role: role,
+            mapOfAddresses: {
+                primary: {
+                    country: input.mapOfAddresses.primary.country,
+                    city: input.mapOfAddresses.primary.city,
+                    state: input.mapOfAddresses.primary.state,
+                    zipcode: input.mapOfAddresses.primary.zipcode,
+                    neighbourhood: input.mapOfAddresses.primary.neighbourhood,
+                    street: input.mapOfAddresses.primary.street,
+                    buildingNumber: input.mapOfAddresses.primary.buildingNumber,
+                    apartmentNumber: input.mapOfAddresses.primary.apartmentNumber
+                }
+            }
+        };
+    }
+
+    if (role === 'ADMIN') {
+        userData = {
+            email: input.email,
+            firstName: input.firstName,
+            middleName: input.middleName,
+            lastName: input.lastName,
+            secondLastName: input.secondLastName,
+            cellphone: input.cellphone,
+            password: hashedPassword,
+            role: role
+        };
+    }
+
+    return userData;
 }

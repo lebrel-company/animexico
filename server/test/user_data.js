@@ -6,7 +6,7 @@
 // project:
 //==============================================================================
 
-export var values = {
+export var mapUserRegister = {
     firstName: 'Jesus',
     middleName: 'Jair',
     lastName: 'Anguiano',
@@ -24,7 +24,17 @@ export var values = {
             zipcode: '44130',
             neighbourhood: 'Arcos Vallarta',
             buildingNumber: '22A',
-            apartmentNumber: '1',
-        },
-    },
+            apartmentNumber: '1'
+        }
+    }
+}
+
+export var mapAdminRegister = {
+    firstName: 'Sofia',
+    middleName: '',
+    lastName: 'López',
+    secondLastName: 'Figueroa',
+    email: 'sofia@gmail.com',
+    password: 'tamashii',
+    cellphone: '3325366927'
 }

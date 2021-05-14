@@ -16,7 +16,7 @@ import {
     getAge,
     verifyPassword,
     createToken,
-    hashPassword,
+    hashPassword
 } from '../../utils/auth';
 import messages from './user.messages';
 
@@ -40,7 +40,7 @@ function me(parent, args, context, info) {
 function mapOfAddresses(parent, args, context, info) {
     return {
         primary: parent.mapOfAddresses.get('primary'),
-        secondary: parent.mapOfAddresses.get('secondary'),
+        secondary: parent.mapOfAddresses.get('secondary')
     };
 }
 
@@ -51,7 +51,6 @@ function signup(parent, {input}, context, info) {
 }
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
-
 
 function adminSignup(parent, {input}, context, info) {
     return addUserWithRole('ADMIN')(parent, {input}, context, info);
@@ -78,8 +77,7 @@ async function signin(parent, {input}, context, info) {
                 lastName,
                 secondLastName,
                 email,
-                mapOfAddresses,
-                role,
+                role
             } = user;
 
             const userInfo = Object.assign(
@@ -90,8 +88,8 @@ async function signin(parent, {input}, context, info) {
                     lastName,
                     secondLastName,
                     email,
-                    role,
-                },
+                    role
+                }
             );
 
             const token = createToken(userInfo);
@@ -113,14 +111,14 @@ export default {
     Query: {
         queryUserInfo: authenticated(queryUserInfo),
         queryUserByToken: authenticated(queryUserByToken),
-        me: authenticated(me),
+        me: authenticated(me)
     },
     User: {
-        mapOfAddresses: mapOfAddresses,
+        mapOfAddresses: mapOfAddresses
     },
     Mutation: {
         adminSignup,
         signup,
-        signin,
-    },
+        signin
+    }
 };

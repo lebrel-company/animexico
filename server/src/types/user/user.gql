@@ -44,6 +44,27 @@ input SignupInput{
     mapOfAddresses: MapOfAddressesInput!
 }
 
+type AdminSignup{
+    firstName: String
+    middleName: String
+    lastName: String
+    secondLastName: String
+    password: String
+    email: String
+    cellphone: String
+    role: String
+}
+
+input AdminSignupInput{
+    firstName: String!
+    middleName: String
+    lastName: String!
+    secondLastName: String!
+    password: String!
+    email: String!
+    cellphone: String!
+}
+
 input SigninInput{
     email: String!
     password: String!
@@ -98,7 +119,7 @@ type Query {
 
 type Mutation {
     signup(input: SignupInput!): AuthUser!
-    adminSignup(input: SignupInput!): AuthUser!
+    adminSignup(input: AdminSignupInput!): AuthUser!
     signin(input: SigninInput!): AuthUser!
     deleteUser( id : ID!) : String
     updateUser( input: UpdateUserInput ) : User

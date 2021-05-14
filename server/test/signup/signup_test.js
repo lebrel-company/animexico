@@ -10,8 +10,11 @@ import _ from 'lodash'
 import {UserModel} from '../../src/types/user/user.model'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {values} from '../user_data'
-import {signupMutationString} from '../signup.mutation';
+import {mapUserRegister, mapAdminRegister} from '../user_data'
+import {
+    strAdminSignupMutation,
+    strUserSignupMutation
+} from './signup.mutation';
 import {axiosConfig, hostname} from '../constants';
 //==============================================================================
 
@@ -25,11 +28,11 @@ describe('User signup', () => {
 
     it('Register a user', async () => {
         var response;
-        var user = values
+        var user = mapUserRegister
         try {
             response = await axios.post(
                 hostname,
-                {query: signupMutationString, variables: {input: user}},
+                {query: strUserSignupMutation, variables: {input: user}},
                 axiosConfig
             )
         } catch (_e) {
@@ -56,24 +59,41 @@ describe('User signup', () => {
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     it('Register not allow for users under 18', async () => {
-        let user = _.cloneDeep(values)
+        let user = _.cloneDeep(mapUserRegister)
         user.birthday = '2019-10-24'
         var _r = await axios.post(
             hostname,
-            {query: signupMutationString, variables: {input: user}}, axiosConfig
+            {
+                query: strUserSignupMutation,
+                variables: {input: user}
+            }, axiosConfig
         )
         assert.match(_r.data.errors[0].message, /UserInputError/)
     })
+
+    describe('Create user as admin', async () => {
+        let res = await axios.post(
+            hostname,
+            {
+                query: strAdminSignupMutation,
+                variables: mapAdminRegister
+            },
+            axiosConfig
+        )
+
+        assert.strictEqual(1, 1)
+    })
 })
 
+
 async function missingRequiredFields(field) {
-    let user = _.cloneDeep(values)
+    let user = _.cloneDeep(mapUserRegister)
     delete user[field]
     await assert.rejects(async () => {
             await axios.post(
                 hostname,
                 {
-                    query: signupMutationString,
+                    query: strUserSignupMutation,
                     variables: {input: user}
                 },
                 axiosConfig
@@ -81,3 +101,5 @@ async function missingRequiredFields(field) {
         }
     )
 }
+
+

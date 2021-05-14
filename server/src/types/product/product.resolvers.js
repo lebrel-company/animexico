@@ -1,7 +1,7 @@
 'use strict';
 // libraries:
-import { ProductModel } from './product.model';
-import { authenticated, authorized } from '../../utils/auth';
+import {ProductModel} from './product.model';
+import {authenticated, authorized} from '../../utils/auth';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --

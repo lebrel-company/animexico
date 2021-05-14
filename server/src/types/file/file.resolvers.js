@@ -15,7 +15,7 @@ const S3 = new AWS.S3({
     secretAccessKey: keys.secretAccessKey
 })
 
-async function awsSignedUrl(parent, args, context, info) {
+async function signedAwsUrl(parent, args, context, info) {
     var _file_key = `${context.userInfo.id}/${uuidv4()}.jpeg`
 
     function getSignedUrl() {
@@ -45,8 +45,24 @@ async function awsSignedUrl(parent, args, context, info) {
     return result
 }
 
+async function listOfSignedAwsUrls(parent, args, context, info) {
+    let intAmount = args.input
+    let result = []
+    for (let i = 0; i <= intAmount; i++) {
+        let data
+        try {
+            data = await signedAwsUrl(parent, args, context, info)
+            result.push(data)
+        } catch (_e) {
+            throw Error('Unable to request signed url from S3 bucket')
+        }
+    }
+    return result
+}
+
 export default {
     Query: {
-        awsSignedUrl: authenticated(awsSignedUrl)
+        signedAwsUrl: authenticated(signedAwsUrl),
+        listOfSignedAwsUrls: authenticated(listOfSignedAwsUrls)
     }
 }

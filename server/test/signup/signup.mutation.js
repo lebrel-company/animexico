@@ -17,9 +17,25 @@ var signupGQL = gql`
                 middleName
                 lastName
                 secondLastName
+                role
             }
         }
     }
 `
+export var strUserSignupMutation = signupGQL.loc.source.body
 
-export var signupMutationString = signupGQL.loc.source.body
+var adminSignupGQL = gql`
+    mutation signup($input: AdminSignupInput!){
+        adminSignup(input: $input){
+            token
+            userInfo{
+                firstName
+                middleName
+                lastName
+                secondLastName
+                role
+            }
+        }
+    }
+`
+export var strAdminSignupMutation = adminSignupGQL.loc.source.body

@@ -42,7 +42,7 @@ const UserSchema = mongoose.Schema({
     },
     birthday:{
         type: Date,
-        required: true,
+        required: false,
         trim: true,
         default: null
     },
@@ -53,6 +53,7 @@ const UserSchema = mongoose.Schema({
     },
     mapOfAddresses: {
         type: Map,
+        required: false,
         of: AddressSchema
     },
     role:{

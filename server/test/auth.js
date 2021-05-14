@@ -6,18 +6,42 @@ import axios from 'axios'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {axiosConfig, hostname} from './constants';
-import {signupMutationString} from './signup.mutation';
-import {values} from './user_data';
+import {
+    strAdminSignupMutation,
+    strUserSignupMutation
+} from './signup/signup.mutation';
+import {mapUserRegister, mapAdminRegister} from './user_data';
+
 //==============================================================================
 
-export async function authenticateAsUser() {
+async function authenticateAsUser() {
     let result = await axios.post(
         hostname,
         {
-            query: signupMutationString,
-            variables: {input: values}
+            query: strUserSignupMutation,
+            variables: {input: mapUserRegister}
         },
         axiosConfig
     )
     return result.data.data.signup
+}
+
+
+async function authenticateAsAdmin() {
+    let result = await axios.post(
+        hostname,
+        {
+            query: strAdminSignupMutation,
+            variables: {input: mapAdminRegister}
+        },
+        axiosConfig
+    )
+    return result.data.data.adminSignup
+}
+
+
+export async function authData(role = '') {
+    let _auth = role === 'admin' ? authenticateAsAdmin : authenticateAsUser
+    let authData = await _auth()
+    return authData
 }
