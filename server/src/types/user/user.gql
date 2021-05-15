@@ -65,7 +65,7 @@ input AdminSignupInput{
     cellphone: String!
 }
 
-input SigninInput{
+input LoginInput{
     email: String!
     password: String!
 }
@@ -115,12 +115,12 @@ type Query {
     queryUserByToken(token: String!) : QueryUser!
     queryUserInfo: QueryUser!
     me: QueryUser!
+    login(input: LoginInput!): AuthUser!
 }
 
 type Mutation {
     signup(input: SignupInput!): AuthUser!
     adminSignup(input: AdminSignupInput!): AuthUser!
-    signin(input: SigninInput!): AuthUser!
     deleteUser( id : ID!) : String
     updateUser( input: UpdateUserInput ) : User
     resetPassword(input: ResetPasswordInput) : User

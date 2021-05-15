@@ -10,7 +10,7 @@ const MapOfAddresses = {
         neighbourhood: 'Ladrón de Guevara',
         street: 'Av. Mexico',
         buildingNumber: '2286',
-        apartmentNumber: '1',
+        apartmentNumber: '1'
     },
     secondary: {
         city: 'Queretaro',
@@ -19,8 +19,8 @@ const MapOfAddresses = {
         neighbourhood: 'Las Margaritas',
         street: 'primavera',
         buildingNumber: '87',
-        apartmentNumber: 'D 15',
-    },
+        apartmentNumber: 'D 15'
+    }
 }
 
 
@@ -35,14 +35,14 @@ export default function AddressEditor() {
     }
 
 
-    function toggleAddress(event) {
-        event.preventDefault()
-        if (address === 'primary') {
-            setAddress('secondary')
-            setToggleText('Dirección primaria')
-        } else {
-            setAddress('primary')
-            setToggleText('Dirección secundaria')
+    function selectAddress(address) {
+        return function switchAddressData(event) {
+            event.preventDefault()
+            if (address === 'primary') {
+                setAddress('secondary')
+            } else {
+                setAddress('primary')
+            }
         }
     }
 
@@ -52,11 +52,20 @@ export default function AddressEditor() {
                 <div className="form-dark w-full h-5/5 m-auto">
                     <div className="flex justify-center pb-4">
                         <button
-                            onClick={toggleAddress}
+                            onClick={selectAddress('primary')}
                             className="
-                            bg-grayblue rounded-sm font-deco w-72 mr-2
-                            text-2xl shadow-lg
-                        ">{toggleText}
+                            font-deco p-2
+                            border-pale border-b-2 w-40
+                            text-2xl shadow-lg text-pale
+                        ">Principal
+                        </button>
+                        <button
+                            onClick={selectAddress('secondary')}
+                            className="
+                            font-deco p-2 mx-10
+                            border-pale border-b-2 w-40
+                            text-2xl shadow-lg text-pale
+                        ">Secundaria
                         </button>
                     </div>
                     <div className="grid grid-cols-2 gap-2 container">

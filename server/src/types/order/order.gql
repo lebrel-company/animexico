@@ -4,6 +4,7 @@ type Order{
     listOfProducts: [OrderProduct]
     total: Float
     shippingAddress: OrderShippingAddress
+    address: String!
     status: OrderStatus
 }
 
@@ -11,7 +12,7 @@ input OrderInput{
     idUser: ID!,
     listOfProducts: [OrderProductInput!]!
     total: Float!
-    shippingAddress: OrderShippingAddressInput!
+    address: String!
     status: OrderStatus!
 }
 
@@ -28,13 +29,8 @@ type OrderProduct{
 }
 
 input OrderProductInput{
-    code: String!
-    name: String!
-    description: String
+    id: ID!
     quantity: Int!
-    thumbnail: String!
-    price: Float!
-    currency: String
 }
 
 type OrderShippingAddress{

@@ -11,6 +11,7 @@ import {AuthContext} from '../../context/AuthContext'
 import ClientLayout from '../../layout/Client';
 import AddressEditor from '../../components/client/addressEditor'
 import Orders from '../../components/client/orders'
+import Footer from '../../components/Footer';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================
@@ -26,10 +27,18 @@ export default function Profile() {
         let result = null
         switch (componentTag) {
             case 'orders':
-                result = <Orders/>
+                result = (
+                    <div className={`container mx-auto`}>
+                        <Orders/>
+                    </div>
+                )
                 break;
             default:
-                result = <AddressEditor/>
+                result = (
+                    <div className={`container mx-auto`}>
+                        <AddressEditor/>
+                    </div>
+                )
         }
         return result
     }
@@ -43,44 +52,50 @@ export default function Profile() {
 
     return (
         <ClientLayout>
-            <div className="container">
-                <div
-                    className="
-                    font-deco h-1/5 text-4xl font-bold flex items-center
-                    justify-center col-span-1
-                    ">
-                    <div
-                        className="
-                        w-2/5 h-24 rounded-lg flex
-                        items-center text-dark">
+            <div className={`w-full`}>
+                <div className="h-full">
+                    <div className="container mx-auto flex justify-center m-10">
+                        <div className="text-4xl font-deco font-dark">
+                            {
+                                `Bienvenido Jair Anguiano Porras`
+                            }
+                        </div>
+                    </div>
+                    <div className="">
+                        <div className="flex justify-center p-4">
+
+                            <button
+                                onClick={switchComponent('address')}
+                                className="
+                                bg-lightpale border-2 border-dark py-4 mx-1
+                                rounded-md font-deco w-72 shadow-lg
+                                text-2xl"
+                            >
+                                Direcciones
+                            </button>
+
+
+                            <button
+                                onClick={switchComponent('orders')}
+                                className="
+                                bg-lightpale border-2 border-dark
+                                rounded-md font-deco w-72 shadow-lg
+                                text-2xl"
+                            >
+                                Historial de pedidos
+                            </button>
+                        </div>
+
                         {
-                            `${_u.firstName} ` +
-                            `${_u.middleName + ' ' ? _u.middleName : ''}` +
-                            `${_u.lastName ? _u.lastName : ''} ` +
-                            `${_u.secondLastName ? _u.secondLastName : ''}`}
+                            componentSelection(component)
+                        }
+
                     </div>
                 </div>
-                <div className="py-26">
-                    <div className="flex justify-center h-14">
-                        <button
-                            onClick={switchComponent('address')}
-                            className="
-                            bg-grayblue rounded-sm font-deco w-72 ml-2 shadow-lg
-                            text-2xl">Direcciones
-                        </button>
-                        <button
-                            onClick={switchComponent('orders')}
-                            className="bg-grayblue rounded-sm font-deco
-                            w-72 ml-2 shadow-lg text-2xl">
-                            Historial de pedidos
-                        </button>
-                    </div>
-
-                    {
-                        componentSelection(component)
-                    }
-
+                <div className="w-screen relative z-30 bottom-0 flex-none">
+                    <Footer/>
                 </div>
+
             </div>
         </ClientLayout>
     )

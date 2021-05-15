@@ -38,11 +38,11 @@ export default function SignupForm(props) {
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     return (
-        <ClientLayout>
+        <ClientLayout pattern={`bg-temple`}>
             <div className="
-            md:flex justify-center
+            md:flex justify-center w-screen
             ">
-                <form className="form-dark my-auto"
+                <form className="form-dark my-auto container md:w-1/2"
                       onSubmit={formik.handleSubmit}>
                     <div className="text-pale text-5xl font-deco my-6">
                         {formTexts.header.text}
@@ -298,7 +298,6 @@ export default function SignupForm(props) {
                     </div>
                 </form>
             </div>
-            }
         </ClientLayout>
     )
 }

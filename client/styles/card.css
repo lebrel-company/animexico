@@ -1,11 +1,15 @@
 
 .card-product {
     @apply
-        bg-dark
+        bg-pale
+        text-dark
         font-simp
         cursor-pointer
         shadow-md
         rounded-md
+        border-2
+        border-opacity-25
+        border-darkblue
         md:m-auto
         p-3
         transition

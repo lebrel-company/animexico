@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
-import ErrorModalDialog from "../../components/modal/ErrorModalDialog";
+import ErrorModalDialog from '../../components/modal/ErrorModalDialog';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {userFields} from '../../utils/fields/user'
@@ -13,7 +13,7 @@ import {userFields} from '../../utils/fields/user'
 //==============================================================================
 
 
-export function signinFormik(mutation, states, contexts, route) {
+export function loginFormik(mutation, states, contexts, route) {
     return useFormik(
         {
             initialValues:
@@ -27,7 +27,7 @@ export function signinFormik(mutation, states, contexts, route) {
             validationSchema:
                 Yup.object({
                     email: Yup.string(),
-                    password: Yup.string(),
+                    password: Yup.string()
                 }),
 
             //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -
@@ -45,7 +45,7 @@ export function signinFormik(mutation, states, contexts, route) {
                                 }
                             }
                         });
-                        contexts.authContext.setAuthState(data.signin)
+                        contexts.authContext.setAuthState(data.login)
 
                         setTimeout(() => {
                             route.hook.push(route.path);

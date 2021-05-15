@@ -1,27 +1,30 @@
 import Sidebar from '../components/Sidebar'
-import Reports from "../components/admin/reports";
-import Products from "../components/admin/products";
+import Reports from '../components/admin/reports';
+import Products from '../components/admin/products';
 
 
-export default function AdministratorLayout(props){
+export default function AdministratorLayout(props) {
 
-    return(
+    return (
         <div className="w-screen h-screen">
-            <img className='
-                fixed bg-cover bg-center
-                z-0 opacity-20 transform
-                md:scale-150 rotate-12 xl:translate-x-1/2
-                -translate-y-20
-            ' src='/background/tamashii_vignettes.png'/>
-
-            <div className='flex h-screen'>
-                <div className='w-1/6'>
-                    <Sidebar states={props.states}/>
+            <div className={` 
+            ${props.hasOwnProperty('pattern') ? props.pattern : 'bg-clouds'} 
+            flex flex-col h-screen relative z-50 
+            `}
+            >
+                <div className="flex h-screen fixed">
+                    <div className="w-1/6">
+                        <Sidebar states={props.states}/>
+                    </div>
+                    <div
+                        className={`
+                    w-full container mx-auto h-screen p-5  w-screen
+                `}
+                    >
+                        {props.children}
+                    </div>
                 </div>
-                <div className='w-full h-screen p-5 container-scrollbar overflow-y-scroll'>
-                    {props.children}
-                </div>
-            </div>               
+            </div>
         </div>
     )
 };

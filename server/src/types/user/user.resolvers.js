@@ -58,7 +58,7 @@ function adminSignup(parent, {input}, context, info) {
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
-async function signin(parent, {input}, context, info) {
+async function login(parent, {input}, context, info) {
     try {
         const user = await UserModel.findOne({email: input.email}).lean();
         if (!user) {
@@ -111,7 +111,8 @@ export default {
     Query: {
         queryUserInfo: authenticated(queryUserInfo),
         queryUserByToken: authenticated(queryUserByToken),
-        me: authenticated(me)
+        me: authenticated(me),
+        login: login
     },
     User: {
         mapOfAddresses: mapOfAddresses
@@ -119,6 +120,5 @@ export default {
     Mutation: {
         adminSignup,
         signup,
-        signin
     }
 };

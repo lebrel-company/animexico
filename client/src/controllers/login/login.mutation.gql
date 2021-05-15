@@ -1,5 +1,5 @@
-mutation signin($input: SigninInput!){
-    signin(input: $input){
+mutation login($input: LoginInput!){
+    login(input: $input){
         token
         userInfo{
             id

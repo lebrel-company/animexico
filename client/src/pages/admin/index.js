@@ -6,11 +6,11 @@ import {useRouter} from 'next/router'
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
-import AdministratorLayout from "../../layout/Admin";
+import AdministratorLayout from '../../layout/Admin';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
 import Products from '../../components/admin/products'
-import Reports from "../../components/admin/reports";
+import Reports from '../../components/admin/reports';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================
@@ -39,7 +39,7 @@ export default function Admin() {
     }
 
     return (
-        <AdministratorLayout states={states}>
+        <AdministratorLayout states={states} pattern={`bg-bevel`}>
             {
                 renderComponent(component)
             }

@@ -57,7 +57,6 @@ async function updateProduct(parent, args, context, info) {
             listOfTags: args.listOfTags
         }
     );
-
 }
 
 //==============================================================================

@@ -8,6 +8,7 @@ type Product {
     available: Boolean
     publishDate: String
     listOfImages: [String]
+    purchaseLimit: Int
     listOfTags: [String]
 }
 
@@ -17,6 +18,7 @@ input ProductInput {
     description: String!
     code: String!
     stock: Int!
+    purchaseLimit: Int!
     available: Boolean!
     publishDate: String!
     listOfImages: [String!]!

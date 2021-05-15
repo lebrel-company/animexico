@@ -16,8 +16,8 @@ import ErrorModalDialog from '../../components/modal/ErrorModalDialog'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {userFields} from '../../utils/fields/user'
-import {signinFormik} from '../../controllers/signin/signin.formik'
-import signinMutationString from '../../controllers/signin/signin.mutation.gql'
+import {loginFormik} from '../../controllers/login/login.formik'
+import signinMutationString from '../../controllers/login/login.mutation.gql'
 import {mapOfRoutes} from '../../utils/routes';
 //==============================================================================
 
@@ -49,10 +49,10 @@ export default function Login() {
         },
     ]
 
-    let formik = signinFormik(mutation, states, contexts, router)
+    let formik = loginFormik(mutation, states, contexts, router)
 
     return (
-        <ClientLayout>
+        <ClientLayout pattern={`bg-temple`}>
             <div className="
             container m-auto md:flex justify-center
             ">

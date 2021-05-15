@@ -13,6 +13,7 @@ import SliderText from '../../components/SliderText';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {sliderTexts, aboutUs} from '../../utils/texts/homepage.texts'
+
 //==============================================================================
 
 
@@ -23,10 +24,10 @@ function Homepage() {
         infinite: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1,
+        slidesToScroll: 1
     }
     return (
-        <ClientLayout>
+        <ClientLayout pattern={`bg-clouds`}>
             <div className={`py-10`}>
                 <div className="w-full flex justify-center container mx-auto">
                     <div className="h-1/3 flex items-center relative">
@@ -49,7 +50,7 @@ function Homepage() {
                     <div className="z-30 absolute">
                         <SliderText listOfTexts={sliderTexts}/>
                     </div>
-                    <div className={`w-screen`}>
+                    <div className={`w-screen container`}>
                         <video autoPlay muted loop className="myVideo w-full">
                             <source
                                 src="/tamashiBackgroundVideo.mp4"

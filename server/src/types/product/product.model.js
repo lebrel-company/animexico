@@ -42,6 +42,10 @@ const ProductSchema = mongoose.Schema({
             type: Date,
             required: true
         },
+        purchaseLimit:{
+            type: Number,
+            required: true,
+        },
         listOfImages: [{
             type: String,
             required: true,

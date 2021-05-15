@@ -5,9 +5,9 @@ export default function ClientLayout(props) {
     return (
         <div>
             <div className={` 
-            bg-clouds flex flex-col h-screen relative z-50 
+            ${props.hasOwnProperty('pattern') ? props.pattern : 'bg-clouds'} 
+            flex flex-col h-screen relative z-50 
             `}
-
             >
                 <div className="w-full relative z-30 flex-none">
                     <Header/>
