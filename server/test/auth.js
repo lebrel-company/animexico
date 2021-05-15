@@ -9,7 +9,7 @@ import {axiosConfig, hostname} from './constants';
 import {
     strAdminSignupMutation,
     strUserSignupMutation
-} from './signup/signup.mutation';
+} from './signup/signup_gql';
 import {mapUserRegister, mapAdminRegister} from './user_data';
 
 //==============================================================================

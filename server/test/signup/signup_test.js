@@ -14,11 +14,14 @@ import {mapUserRegister, mapAdminRegister} from '../user_data'
 import {
     strAdminSignupMutation,
     strUserSignupMutation
-} from './signup.mutation';
+} from './signup_gql';
 import {axiosConfig, hostname} from '../constants';
 //==============================================================================
 
 describe('User signup', () => {
+    before(async () => {
+        await UserModel.collection.drop()
+    })
 
     beforeEach(async function () {
         await UserModel.deleteOne({email: 'jairanpo@gmail.com'})

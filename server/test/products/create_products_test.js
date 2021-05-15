@@ -15,14 +15,13 @@ import {ProductModel} from '../../src/types/product/product.model';
 import {axiosConfig, hostname} from '../constants';
 import {strCreateProductMutation} from './create_products_gql';
 import {listOfProducts} from './create_products_data';
+import {UserModel} from '../../src/types/user/user.model';
 //==============================================================================
 
 describe('Create product', () => {
 
     before(async () => {
-        try{
-            await ProductModel.collection.drop()
-        }catch(_e){console.log('No database found')}
+        await UserModel.collection.drop()
     })
 
     it('AD-AUTH: Create one product', async () => {
