@@ -17,7 +17,9 @@ delete:
 	docker container rm $$(docker container ls -aq)
 
 tc:
+	cls
 	yarn --cwd client run test
 
 ts:
+	cls
 	yarn --cwd server run test

@@ -18,7 +18,7 @@ import {
 //==============================================================================
 
 
-describe('AWS S3 single signed URLs', () => {
+describe('AWS S3 SIGNED URL', () => {
         beforeEach(async () => {
             await UserModel.deleteOne({email: 'jairanpo@gmail.com'})
             await UserModel.deleteOne({email: 'sofia@gmail.com'})

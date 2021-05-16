@@ -8,19 +8,21 @@ import _ from 'lodash'
 // models:
 import {ProductModel} from '../../src/types/product/product.model';
 import {UserModel} from '../../src/types/user/user.model';
+import {OrdersModel} from '../../src/types/order/order.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {strCreateOrder} from './create_orders_gql';
 import {axiosConfig, hostname} from '../constants';
 import {listOfProducts} from '../product_data';
-import {mapAdminRegister} from '../user_data';
+import {mapAdminRegister, mapUserRegister} from '../user_data';
 import {authData} from '../auth';
-import {strCreateProductMutation} from '../products/create_products_gql';
-import order from '../../../client/src/components/client/order';
-//==============================================================================
+
 chai.use(chaiGraphQL)
 var assert = chai.assert
+var expect = chai.expect
+var should = chai.should
 var cl = console.log
+//==============================================================================
 
 
 describe('ORDER CREATION', function () {
@@ -34,6 +36,7 @@ describe('ORDER CREATION', function () {
     beforeEach(async () => {
         try {
             await UserModel.collection.drop()
+            await OrdersModel.collection.drop()
         } catch (e) {
         }
     })
@@ -57,46 +60,46 @@ describe('ORDER CREATION', function () {
         }
     )
 
-    it('ME-AUTH: Reject create order',
-        async () => {
-            var userData;
-            try {
-                userData = await authData()
-            } catch (e) {
-                cl(e)
-            }
-            let config = _.cloneDeep(axiosConfig)
-            config.headers.authorization = userData.token
+    // it('ME-AUTH: Reject create order',
+    //     async () => {
+    //         var userData;
+    //         try {
+    //             userData = await authData()
+    //         } catch (e) {
+    //             cl(e)
+    //         }
+    //         let config = _.cloneDeep(axiosConfig)
+    //         config.headers.authorization = userData.token
+    //
+    //         var res;
+    //         try {
+    //             res = await axios.post(
+    //                 hostname,
+    //                 {
+    //                     query: strCreateOrder,
+    //                     variables: {input: listOfProducts[0]}
+    //                 },
+    //                 config
+    //             )
+    //         } catch (e) {
+    //             assert.graphQLError(e.response.data)
+    //         }
+    //     }
+    // )
 
-            var res;
-            try {
-                res = await axios.post(
-                    hostname,
-                    {
-                        query: strCreateOrder,
-                        variables: {input: listOfProducts[0]}
-                    },
-                    config
-                )
-            } catch (e) {
-                assert.graphQLError(e.response.data)
-            }
-        }
-    )
-
-    it('AD-AUTH: Create order',
+    it('CL-AUTH: Create order',
         async () => {
             let config = _.cloneDeep(axiosConfig)
-            config.headers.authorization = (await authData('admin')).token
-            let _u = await UserModel.findOne({email: mapAdminRegister.email})
+            config.headers.authorization = (await authData()).token
+            let _u = await UserModel.findOne({email: mapUserRegister.email})
             let _p = await ProductModel.find()
             let listOfProductIds = _p.map((el) => {
                 return el.id
             })
 
+            var res;
             try {
-
-                let res = await axios.post(
+                res = await axios.post(
                     hostname,
                     {
                         query: strCreateOrder,
@@ -113,6 +116,8 @@ describe('ORDER CREATION', function () {
             } catch (e) {
                 cl(e.response.data)
             }
+            cl(res.data)
+            expect(1).to.equal(2)
         }
     )
 

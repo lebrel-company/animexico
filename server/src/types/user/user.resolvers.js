@@ -47,7 +47,7 @@ function mapOfAddresses(parent, args, context, info) {
 //============================   MUTATIONS   ===================================
 
 function signup(parent, {input}, context, info) {
-    return addUserWithRole('MEMBER')(parent, {input}, context, info);
+    return addUserWithRole('CLIENT')(parent, {input}, context, info);
 }
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --

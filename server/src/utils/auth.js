@@ -178,7 +178,7 @@ export function addUserWithRole(role) {
 
 function mapOfValues(input, hashedPassword, role) {
     var userData;
-    if (role === 'MEMBER') {
+    if (role === 'CLIENT') {
         userData = {
             email: input.email,
             firstName: input.firstName,

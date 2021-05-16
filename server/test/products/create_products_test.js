@@ -23,9 +23,18 @@ chai.use(chaiGraphQL)
 //==============================================================================
 
 
-describe('PROJECT CREATION', () => {
+describe('PRODUCT CREATION', () => {
     before(async () => {
-        await UserModel.collection.drop()
+        try {
+            await UserModel.collection.drop()
+        } catch (_e) {
+            // Handle error here
+        }
+        try {
+            await ProductModel.collection.drop()
+        } catch (_e) {
+            // Handle error here
+        }
         listOfProducts.forEach((e) => {
             delete e._id
         })
@@ -72,7 +81,7 @@ describe('PROJECT CREATION', () => {
         })
     })
 
-    it('ME-AUTH: Reject create one product', async () => {
+    it('CL-AUTH: Reject create one product', async () => {
         let userData = await authData()
         let config = _.cloneDeep(axiosConfig)
         config.headers.authorization = userData.token
@@ -91,6 +100,7 @@ describe('PROJECT CREATION', () => {
             )
         })
     })
+
 })
 
 
