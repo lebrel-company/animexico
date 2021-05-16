@@ -1,5 +1,6 @@
 'use strict';
 // libraries:
+import mongoose from 'mongoose'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -8,13 +9,14 @@
 
 export var listOfProducts = [
     {
+        _id: mongoose.Types.ObjectId(),
         name: 'Goku',
         price: {
             amount: 7000,
             currency: 'MXN'
         },
         description: 'Dragon Ball Z figuart',
-        code: '137498374218901',
+        code: '123456',
         stock: 200,
         available: true,
         publishDate: '2021-04-13',
@@ -27,13 +29,14 @@ export var listOfProducts = [
         listOfTags: ['']
     },
     {
+        _id: mongoose.Types.ObjectId(),
         name: 'Guts',
         price: {
             amount: 73030,
             currency: 'MXN'
         },
         description: 'Guts from Berserk',
-        code: '9384dvsdifvsojdvc034',
+        code: '12345',
         stock: 323,
         available: true,
         purchaseLimit: 1,
@@ -46,13 +49,14 @@ export var listOfProducts = [
         listOfTags: ['']
     },
     {
+        _id: mongoose.Types.ObjectId(),
         name: 'Kenshin Himura',
         price: {
             amount: 7000,
             currency: 'MXN'
         },
         description: 'Kenshing amazing figure',
-        code: '137498374218901',
+        code: '12345678',
         stock: 2343,
         available: true,
         purchaseLimit: 5,
@@ -65,3 +69,4 @@ export var listOfProducts = [
         listOfTags: ['april']
     }
 ]
+

@@ -41,8 +41,7 @@ export var OrdersSchema = mongoose.Schema({
     status: {
         type: String,
         enum: ['PENDING', 'IN_TRANSIT', 'COMPLETED', 'CANCELED'],
-        default: 'PENDING',
-        required: true
+        default: 'PENDING'
     }
 });
 

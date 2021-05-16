@@ -9,10 +9,9 @@ type Order{
 }
 
 input OrderInput{
-    idUser: ID!,
-    listOfProducts: [OrderProductInput!]!
+    idUser: ID!
+    listOfProductIds: [ID!]!
     address: String!
-    status: OrderStatus!
 }
 
 type OrderProduct{

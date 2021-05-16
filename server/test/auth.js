@@ -28,6 +28,7 @@ async function authenticateAsUser() {
 
 
 async function authenticateAsAdmin() {
+    delete mapAdminRegister.role
     let result = await axios.post(
         hostname,
         {

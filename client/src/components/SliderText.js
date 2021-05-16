@@ -15,11 +15,11 @@ export default function SliderText(props) {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        className: 'container',
+        className: 'container mx-auto w-1/2'
     }
 
     return (
-        <div className="flex justify-center">
+        <div>
             <Slider {...settings}>
                 {
                     props.listOfTexts.map((element) => {
@@ -27,16 +27,16 @@ export default function SliderText(props) {
                             <div
                                 key={uuid()}
                                 className="text-white text-center font-deco">
-                                    <span
-                                        className="font-black text-9xl">
-                                        {element.title}
-                                    </span>
-                                <span className="text-3xl">
-                                        {element.text}
-                                    </span>
+                                <div
+                                    className="font-black text-xl md:text-6xl">
+                                    {element.title}
+                                </div>
+                                <div className="text-md md:text-2xl">
+                                    {element.text}
+                                </div>
                                 {
                                     <div
-                                        className="w-1/2 text-3xl m-auto
+                                        className="text-lg md:text-3xl
                                         ">
                                         {element.description}
                                     </div>
@@ -45,7 +45,6 @@ export default function SliderText(props) {
                         )
                     })
                 }
-
             </Slider>
         </div>
     )

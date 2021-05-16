@@ -23,6 +23,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  @apply
+    bg-dark
 }
 
 .footer img {

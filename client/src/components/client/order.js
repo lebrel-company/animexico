@@ -38,14 +38,25 @@ function orders() {
                         <div>$7,500 MXN</div>
                     </div>
                 </div>
-                <div className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2"><Product/></div>
-                <div className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2"><Product/></div>
-                <div className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2"><Product/></div>
-                <div className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2"><Product/></div>
-                <div className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2"><Product/></div>
-                <div className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2"><Product/></div>
+                <div
+                    className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2">
+                    <Product/></div>
+                <div
+                    className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2">
+                    <Product/></div>
+                <div
+                    className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2">
+                    <Product/></div>
+                <div
+                    className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2">
+                    <Product/></div>
+                <div
+                    className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2">
+                    <Product/></div>
+                <div
+                    className="bg-grayblue m-2 border-2 border-dark rounded-md m-4 p-2">
+                    <Product/></div>
             </div>
-
         </div>
 
 

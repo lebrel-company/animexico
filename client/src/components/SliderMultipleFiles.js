@@ -1,6 +1,6 @@
 'use strict';
 // libraries:
-import Slider from "react-slick";
+import Slider from 'react-slick';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -33,35 +33,41 @@ const photos = [
     {
         name: 'Photo 5',
         url: 'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013333_rsqWpdMA_03.jpg'
-    },    
+    }
 ]
 
-export default function Carousel(props){
+export default function Carousel(props) {
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 3,
         slidesToScroll: 4,
-        className: 'container m-auto font-deco'
+        adaptiveHeight: true,
+        className: 'font-deco'
     }
 
-    return(
+    return (
         <div>
-            <Slider {...settings}>
-               
-                {
-                    photos.map((element) => {
-                        return(
-                            <div key={element.name} className='p-2'>
-                                <Card image={element.url}/>
-                            </div>)
+            <div
+                className={`
+                `}
+            >
+                <Slider {...settings}>
+
+                    {
+                        photos.map((element) => {
+                            return (
+                                <div key={element.name} className="p-2">
+                                    <Card image={element.url}/>
+                                </div>)
                         })
-                }
-                               
-            </Slider>
+                    }
+
+                </Slider>
+            </div>
         </div>
     )
-    
-    
+
+
 }

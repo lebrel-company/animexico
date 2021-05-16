@@ -28,9 +28,9 @@ function Homepage() {
     }
     return (
         <ClientLayout pattern={`bg-clouds`}>
-            <div className={`py-10`}>
-                <div className="w-full flex justify-center container mx-auto">
-                    <div className="h-1/3 flex items-center relative">
+            <div className={`py-10 container mx-auto`}>
+                <div>
+                    <div>
                         <div>
                             <button
                                 className="button-blue top-44 h-16 w-64
@@ -50,8 +50,10 @@ function Homepage() {
                     <div className="z-30 absolute">
                         <SliderText listOfTexts={sliderTexts}/>
                     </div>
-                    <div className={`w-screen container`}>
-                        <video autoPlay muted loop className="myVideo w-full">
+                    <div>
+                        <video autoPlay muted loop
+                               className="myVideo w-full rounded-md"
+                        >
                             <source
                                 src="/tamashiBackgroundVideo.mp4"
                                 type="video/mp4"
@@ -59,24 +61,22 @@ function Homepage() {
                         </video>
                     </div>
                 </div>
-                <div className="text-dark text-center font-deco p-20">
+                <div
+                    className="text-dark text-center font-deco p-20 relative z-10">
                     <div
                         className="container m-auto flex justify-center p-6">
                         <img className="h-44 w-44"
                              src="/tamashiiNationsQuality.png"/>
                     </div>
                     <div>
-                        <span className="font-black text-4xl"></span>
+                        <div
+                            className="font-black text-4xl relative z-20"></div>
                         <pre className="font-deco font-semibold text-2xl p-6">
                             {aboutUs.text}
                         </pre>
                     </div>
                 </div>
-                <div className="w-screen relative z-30 bottom-0 flex-none">
-                    <Footer/>
-                </div>
             </div>
-
         </ClientLayout>
     )
 }

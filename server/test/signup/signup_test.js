@@ -18,7 +18,7 @@ import {
 import {axiosConfig, hostname} from '../constants';
 //==============================================================================
 
-describe('User signup', () => {
+describe('SIGNUP', () => {
     before(async () => {
         await UserModel.collection.drop()
     })
