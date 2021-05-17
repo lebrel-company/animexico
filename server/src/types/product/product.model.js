@@ -1,6 +1,30 @@
 const mongoose = require('mongoose');
 
-const ProductSchema = mongoose.Schema({
+
+var PublishSchema = mongoose.Schema({
+        date: {
+            type: Date,
+            required: true,
+            trim: true
+        }
+    }
+)
+
+var listOfMonths = [
+    'JANUARY', 'FEBRUARY', 'MARCH',
+    'APRIL', 'MAY', 'JUNE',
+    'JULY', 'AUGUST', 'SEPTEMBER',
+    'OCTOBER', 'NOVEMBER', 'DECEMBER'
+]
+
+PublishSchema.virtual('month').get(function releaseMonth() {
+        let _d = new Date(this.date)
+        return listOfMonths[_d.getMonth()]
+    }
+)
+
+
+var ProductSchema = mongoose.Schema({
         name: {
             type: String,
             required: true,
@@ -39,13 +63,13 @@ const ProductSchema = mongoose.Schema({
             required: true,
             trim: true
         },
-        publishDate: {
-            type: Date,
+        purchaseLimit: {
+            type: Number,
             required: true
         },
-        purchaseLimit:{
-            type: Number,
-            required: true,
+        publish: {
+            type: PublishSchema,
+            required: true
         },
         listOfImages: [{
             type: String,
@@ -57,6 +81,7 @@ const ProductSchema = mongoose.Schema({
             required: false,
             trim: true
         }]
+
     },
     {timestamps: true}
 );

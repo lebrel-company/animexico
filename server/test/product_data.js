@@ -19,7 +19,9 @@ export var listOfProducts = [
         code: '123456',
         stock: 200,
         available: true,
-        publishDate: '2021-04-13',
+        publish: {
+            date: '2021-04-13'
+        },
         purchaseLimit: 3,
         listOfImages: [
             'https://omochanoruumu.com/wp-content/uploads/2018/01/gh0.jpg',
@@ -40,7 +42,9 @@ export var listOfProducts = [
         stock: 323,
         available: true,
         purchaseLimit: 1,
-        publishDate: '2021-03-23',
+        publish: {
+            date: '2021-02-01'
+        },
         listOfImages: [
             'https://images-na.ssl-images-amazon.com/images/I/71-iF8CS68L._AC_SL1391_.jpg',
             'https://www.animecollection.es/wp-content/uploads/2020/03/x_3z0041_dretocada.jpg',
@@ -60,7 +64,9 @@ export var listOfProducts = [
         stock: 2343,
         available: true,
         purchaseLimit: 5,
-        publishDate: '2021-04-01',
+        publish: {
+            date: '2021-04-13'
+        },
         listOfImages: [
             'https://images-na.ssl-images-amazon.com/images/I/71qPAzt74DL._AC_SL1500_.jpg',
             'https://toydistrictmanila.com/wp-content/uploads/2021/04/cc9203295cebd1b0d83b445d500aaebd.jpg',

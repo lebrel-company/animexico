@@ -24,30 +24,20 @@ async function queryOrder(parent, args, context, info) {
 
 async function createOrder(parent, args, context, info) {
     cl('>'.repeat(40))
+
     let _i = args.input
     let _u = await UserModel.findById(_i.idUser)
-    let _p = await ProductModel.find({_id: {$in: _i.listOfProductIds}})
-    let listOfIdObjects = _i.listOfProductIds.map((el) => {
+    let listProductIdObjects = _i.listOfProductIds.map((el) => {
         return mongoose.Types.ObjectId(el)
     })
-    let _fp = await ProductModel.aggregate([
-        {
-            $match: {
-                _id: {$in: listOfIdObjects}
-            }
-        },
-        {
-            $group: {
-                _id: '$_id',
-                month: '$publishDate'
-            }
-        }
-    ])
+    let _p = await ProductModel.find({_id: {$in: listProductIdObjects}})
 
-    // cl(_p)
-    cl('FILTERED:', _fp)
+    cl(_i)
+
     cl('>'.repeat(40))
 }
+
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
 async function updateOrder(parent, arts, context, info) {
     return {}

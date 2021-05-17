@@ -50,7 +50,7 @@ function signup(parent, {input}, context, info) {
     return addUserWithRole('CLIENT')(parent, {input}, context, info);
 }
 
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
+// --   --   --   --   --   --      --   --   --   --   --   --   --   --   --
 
 function adminSignup(parent, {input}, context, info) {
     return addUserWithRole('ADMIN')(parent, {input}, context, info);

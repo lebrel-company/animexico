@@ -22,10 +22,3 @@ export var strCreateOrder = gql`
 `.loc.source.body
 
 
-// input OrderInput{
-//     idUser: ID!,
-//     listOfProducts: [OrderProductInput!]!
-//     total: Float!
-//     address: String!
-//     status: OrderStatus!
-// }

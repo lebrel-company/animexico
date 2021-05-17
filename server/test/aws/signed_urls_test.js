@@ -1,8 +1,10 @@
 'use strict';
 // libraries:
-const axios = require('axios')
-const assert = require('assert')
+import chai from 'chai'
+import chaiGraphQL from 'chai-graphql'
+
 const mongoose = require('mongoose')
+const axios = require('axios')
 import _ from 'lodash'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
@@ -15,9 +17,13 @@ import {
     strSingleUrlMutationString,
     listOfSignedUrlMutation
 } from './signed_urls_gql';
+
+var cl = console.log
+chai.use(chaiGraphQL)
+var assert = chai.assert
+var expect = chai.expect
+var should = chai.should
 //==============================================================================
-
-
 describe('AWS S3 SIGNED URL', () => {
         beforeEach(async () => {
             await UserModel.deleteOne({email: 'jairanpo@gmail.com'})
@@ -41,15 +47,20 @@ describe('AWS S3 SIGNED URL', () => {
         })
 
         it('NO_AUTH: Reject for single signed URL not authenticated', async () => {
-            let res = await axios.post(
-                hostname,
-                {
-                    query: strSingleUrlMutationString
-                },
-                axiosConfig
-            )
-            assert.strictEqual(res.data.errors[0].message, 'Not authorized')
+            try {
+                await axios.post(
+                    hostname,
+                    {
+                        query: strSingleUrlMutationString
+                    },
+                    axiosConfig
+                )
+            } catch (_e) {
+                assert.graphQLError(_e.response, 'Not authorized')
+            }
+
         })
+
 
         //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
@@ -69,7 +80,7 @@ describe('AWS S3 SIGNED URL', () => {
 
             let listOfUrls = res.data.data.listOfSignedAwsUrls
 
-            listOfUrls.forEach((element)=>{
+            listOfUrls.forEach((element) => {
                 assert.match(element.url, /https:\/\/s3.amazonaws.com/)
             })
         })

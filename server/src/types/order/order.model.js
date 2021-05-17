@@ -24,7 +24,7 @@ OrderProductSchema.virtual('subtotal').get(function getSubtotal() {
     return this.quantity * this.price;
 });
 
-export var OrdersSchema = mongoose.Schema({
+export var OrderSchema = mongoose.Schema({
     idUser: {
         type: mongoose.Types.ObjectId,
         required: true
@@ -32,10 +32,6 @@ export var OrdersSchema = mongoose.Schema({
     listOfProducts: {
         type: [OrderProductSchema],
         require: true
-    },
-    total: {
-        type: Number,
-        required: true
     },
     shippingAddress: AddressSchema,
     status: {
@@ -45,4 +41,14 @@ export var OrdersSchema = mongoose.Schema({
     }
 });
 
-export var OrdersModel = mongoose.model('Orders', OrdersSchema);
+OrderSchema.virtual('total').get(
+    function sumSubtotal() {
+        return this.listOfProducts.reduce(
+            function functionName(store, element) {
+                return store + element.subtotal
+            }
+        )
+    }
+)
+
+export var OrdersModel = mongoose.model('Orders', OrderSchema);

@@ -1,4 +1,5 @@
 up:
+	cls
 	docker-compose up
 
 build:

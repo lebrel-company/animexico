@@ -19,7 +19,10 @@ export var strCreateProductMutation = gql`
             code
             stock
             available
-            publishDate
+            publish{
+                date
+                month
+            }
             purchaseLimit
             listOfImages
             listOfTags

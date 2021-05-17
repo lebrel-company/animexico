@@ -6,10 +6,15 @@ type Product {
     code: String
     stock: Int
     available: Boolean
-    publishDate: String
+    publish: ProductPublish
     listOfImages: [String]
     purchaseLimit: Int
     listOfTags: [String]
+}
+
+type ProductPublish{
+    date: String
+    month: String
 }
 
 input ProductInput {
@@ -20,10 +25,15 @@ input ProductInput {
     stock: Int!
     purchaseLimit: Int!
     available: Boolean!
-    publishDate: String!
+    publish: ProductPublishInput!
     listOfImages: [String!]!
     listOfTags: [String!]!
 }
+
+input ProductPublishInput {
+    date: String!
+}
+
 
 type Price{
     amount: Float
