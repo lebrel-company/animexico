@@ -1,15 +1,23 @@
 'use strict';
 // libraries:
+import util from 'util'
 import mongoose from 'mongoose'
+import _ from 'lodash'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 import {UserModel} from '../user/user.model';
 import {ProductModel} from '../product/product.model';
+import {OrdersModel} from './order.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {authenticated, authorized} from '../../utils/auth';
+import helpers from './order.helpers';
+//==============================================================================
+var pp = (el) => {
+    console.log(util.inspect(el, false, 5, true))
+}
 
-var cl = console.log
+
 //==============================================================================
 
 
@@ -23,19 +31,47 @@ async function queryOrder(parent, args, context, info) {
 //============================   MUTATIONS   ===================================
 
 async function createOrder(parent, args, context, info) {
-    cl('>'.repeat(40))
-
     let _i = args.input
-    let _u = await UserModel.findById(_i.idUser)
-    let listProductIdObjects = _i.listOfProductIds.map((el) => {
-        return mongoose.Types.ObjectId(el)
+    let listProductIdObjects = _i.listOfProducts.map((el) => {
+        return mongoose.Types.ObjectId(el.id)
     })
+
     let _p = await ProductModel.find({_id: {$in: listProductIdObjects}})
+    let listOfProducts = helpers.mapInputQuantityWithProductList(
+        _i.listOfProducts, _p
+    )
+    let listOfSegregatedProducts = (
+        helpers.segregateProductsByMonth(listOfProducts)
+    )
 
-    cl(_i)
+    let mapBaseObject = {
+        idUser: _i.idUser,
+        address: _i.address,
+        status: 'PENDING',
+        shippingAddress: {}
+    }
 
-    cl('>'.repeat(40))
+    let result = []
+    listOfSegregatedProducts.forEach(function createOrderEntries(el) {
+        let base = _.cloneDeep(mapBaseObject)
+        let listOfProducts = helpers.filterListOfProductFields(el)
+        base.listOfProducts = listOfProducts
+        base.total = helpers.calculateTotalFromListOfProducts(listOfProducts)
+        result.push(base)
+    })
+
+    try {
+        await OrdersModel.insertMany(result)
+        return result
+    } catch (_e) {
+        throw new Error(
+            'Unable to create order, please ' +
+            'try again later or contact us for support'
+        )
+    }
+
 }
+
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 

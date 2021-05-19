@@ -1,9 +1,10 @@
 'use strict';
 // libraries:
-import axios from 'axios'
+import util from 'util'
 import chai from 'chai'
 import chaiGraphQL from 'chai-graphql'
 import _ from 'lodash'
+import axios from 'axios'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 import {ProductModel} from '../../src/types/product/product.model';
@@ -14,14 +15,16 @@ import {OrdersModel} from '../../src/types/order/order.model';
 import {strCreateOrder} from './create_orders_gql';
 import {axiosConfig, hostname} from '../constants';
 import {listOfProducts} from '../product_data';
-import {mapAdminRegister, mapUserRegister} from '../user_data';
+import {mapUserRegister} from '../user_data';
 import {authData} from '../auth';
 
+var pp = (el) => {
+    console.log(util.inspect(el, false, 5, true))
+}
 chai.use(chaiGraphQL)
 var assert = chai.assert
 var expect = chai.expect
 var should = chai.should
-var cl = console.log
 //==============================================================================
 
 
@@ -60,43 +63,18 @@ describe('ORDER CREATION', function () {
         }
     )
 
-    // it('ME-AUTH: Reject create order',
-    //     async () => {
-    //         var userData;
-    //         try {
-    //             userData = await authData()
-    //         } catch (e) {
-    //             cl(e)
-    //         }
-    //         let config = _.cloneDeep(axiosConfig)
-    //         config.headers.authorization = userData.token
-    //
-    //         var res;
-    //         try {
-    //             res = await axios.post(
-    //                 hostname,
-    //                 {
-    //                     query: strCreateOrder,
-    //                     variables: {input: listOfProducts[0]}
-    //                 },
-    //                 config
-    //             )
-    //         } catch (e) {
-    //             assert.graphQLError(e.response.data)
-    //         }
-    //     }
-    // )
-
     it('CL-AUTH: Create order',
         async () => {
             let config = _.cloneDeep(axiosConfig)
             config.headers.authorization = (await authData()).token
             let _u = await UserModel.findOne({email: mapUserRegister.email})
             let _p = await ProductModel.find()
-            let listOfProductIds = _p.map((el) => {
-                return el.id
+            let mapOfOrderProducts = _p.map((el) => {
+                return {
+                    id: el.id,
+                    quantity: 1
+                }
             })
-
             var res;
             try {
                 res = await axios.post(
@@ -106,7 +84,7 @@ describe('ORDER CREATION', function () {
                         variables: {
                             input: {
                                 idUser: _u._id,
-                                listOfProductIds: listOfProductIds,
+                                listOfProducts: mapOfOrderProducts,
                                 address: 'primary'
                             }
                         }
@@ -114,13 +92,46 @@ describe('ORDER CREATION', function () {
                     config
                 )
             } catch (e) {
-                cl(e.response.data)
+                pp(e.response.data)
             }
-            cl(res.data)
-            expect(1).to.equal(2)
+
+            let result = {
+                data: res.data.data.createOrder
+            }
+
+            assert.graphQL(
+                result,
+                [
+                    {
+                        idUser: _u.id,
+                        address: 'primary',
+                        status: 'PENDING',
+                        total: 14000,
+                        listOfProducts: [
+                            {
+                                name: 'Goku'
+                            },
+                            {
+                                name: 'Kenshin Himura'
+                            }
+                        ]
+                    },
+
+                    {
+                        idUser: _u.id,
+                        address: 'primary',
+                        status: 'PENDING',
+                        total: 73030,
+                        listOfProducts: [
+                            {
+                                name: 'Guts'
+                            }
+                        ]
+                    }
+                ]
+            )
         }
     )
-
 });
 
 

@@ -8,7 +8,7 @@
     "dev": "nodemon --exec babel-node src -L",
     "restart": "yarn run rimraf dist && yarn run build && yarn run start",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "test": "mocha --recursive --require esm --exit"
+    "test": "mocha --recursive --require esm --exit --colors"
   },
   "license": "MIT",
   "dependencies": {

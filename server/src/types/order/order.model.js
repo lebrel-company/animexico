@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // schemas:
 import AddressSchema from '../address/address.schema';
+import {ProductPriceSchema} from '../product/product.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================
@@ -17,12 +18,23 @@ let OrderProductSchema = new mongoose.Schema({
     currency: {type: String, default: 'MXN', required: false},
     quantity: {type: Number, required: true},
     thumbnail: {type: String, required: true},
-    price: {type: Number, required: true}
+    price: {
+        amount: {
+            type: Number,
+            required: true
+        },
+        currency: {
+            type: String,
+            required: true,
+            trim: true
+        }
+    },
+    subtotal: {
+        type: Number,
+        required: true
+    }
 });
 
-OrderProductSchema.virtual('subtotal').get(function getSubtotal() {
-    return this.quantity * this.price;
-});
 
 export var OrderSchema = mongoose.Schema({
     idUser: {
@@ -33,22 +45,21 @@ export var OrderSchema = mongoose.Schema({
         type: [OrderProductSchema],
         require: true
     },
+    address: {
+        type: String,
+        required: true
+    },
     shippingAddress: AddressSchema,
     status: {
         type: String,
-        enum: ['PENDING', 'IN_TRANSIT', 'COMPLETED', 'CANCELED'],
+        enum: ['PENDING', 'READY', 'IN_TRANSIT', 'COMPLETED', 'CANCELED'],
         default: 'PENDING'
+    },
+    total: {
+        type: Number,
+        required: true
     }
 });
 
-OrderSchema.virtual('total').get(
-    function sumSubtotal() {
-        return this.listOfProducts.reduce(
-            function functionName(store, element) {
-                return store + element.subtotal
-            }
-        )
-    }
-)
 
 export var OrdersModel = mongoose.model('Orders', OrderSchema);

@@ -12,7 +12,7 @@ function loadSchemaType(type) {
             pathToSchema,
             {encoding: 'utf-8'},
             function (err, schema) {
-                if (err){
+                if (err) {
                     return reject(err)
                 }
                 resolve(schema)

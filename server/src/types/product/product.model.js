@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
-
-var PublishSchema = mongoose.Schema({
-        date: {
-            type: Date,
-            required: true,
-            trim: true
-        }
-    }
-)
-
 var listOfMonths = [
     'JANUARY', 'FEBRUARY', 'MARCH',
     'APRIL', 'MAY', 'JUNE',
     'JULY', 'AUGUST', 'SEPTEMBER',
     'OCTOBER', 'NOVEMBER', 'DECEMBER'
 ]
+
+export var PublishSchema = mongoose.Schema({
+    date: {
+        type: Date,
+        required: true,
+        trim: true
+    }
+})
+
+export var ProductPriceSchema = mongoose.Schema({})
 
 PublishSchema.virtual('month').get(function releaseMonth() {
         let _d = new Date(this.date)
@@ -33,8 +33,7 @@ var ProductSchema = mongoose.Schema({
         price: {
             amount: {
                 type: Number,
-                required: true,
-                trim: true
+                required: true
             },
             currency: {
                 type: String,

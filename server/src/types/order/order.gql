@@ -2,15 +2,15 @@ type Order{
     id: ID
     idUser: ID,
     listOfProducts: [OrderProduct]
-    total: Float
     shippingAddress: OrderShippingAddress
-    address: String!
+    address: String
     status: OrderStatus
+    total: Float
 }
 
 input OrderInput{
     idUser: ID!
-    listOfProductIds: [ID!]!
+    listOfProducts: [OrderProductDataInput!]!
     address: String!
 }
 
@@ -18,13 +18,22 @@ type OrderProduct{
     id: ID
     code: String
     name: String
-    description: String
     quantity: Int
     thumbnail: String
-    price: Float
+    price: Price
     subtotal: Float
-    currency: String
 }
+
+input OrderProductDataInput{
+    id: ID
+    code: String
+    name: String
+    quantity: Int
+    thumbnail: String
+    price: PriceInput
+    subtotal: Float
+}
+
 
 input OrderProductInput{
     id: ID!
@@ -63,6 +72,6 @@ extend type Query{
 }
 
 extend type Mutation {
-    createOrder(input: OrderInput!): Order
+    createOrder(input: OrderInput!): [Order!]
     updateOrder(id: ID!, input: OrderInput!): Order
 }
