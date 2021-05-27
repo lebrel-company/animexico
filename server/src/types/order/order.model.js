@@ -50,7 +50,7 @@ export var OrderSchema = mongoose.Schema({
         required: true
     },
     shippingAddress: AddressSchema,
-    status: {
+    orderStatus: {
         type: String,
         enum: ['PENDING', 'READY', 'IN_TRANSIT', 'COMPLETED', 'CANCELED'],
         default: 'PENDING'

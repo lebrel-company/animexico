@@ -10,12 +10,23 @@ import {gql} from 'apollo-server'
 export var strCreateOrder = gql`
     mutation createOrder($input: OrderInput!){
         createOrder(input: $input){
-            idUser
-            address
-            status
-            total
-            listOfProducts{
-                name
+            __typename
+            ... on OrderAccepted{
+                status
+                listOfOrders{
+                    idUser
+                    address
+                    orderStatus
+                    total
+                    listOfProducts{
+                        name
+                    }
+                }
+            }
+            ... on OrderInvalid{
+                status
+                message
+                listOfErrors
             }
         }
     }

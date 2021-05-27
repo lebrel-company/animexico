@@ -2,6 +2,7 @@
 // libraries:
 import util from 'util'
 import _ from 'lodash';
+import {listOfProducts} from '../../../test/product_data';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -76,8 +77,23 @@ function calculateTotalFromListOfProducts(listOfProducts) {
     return result
 }
 
+function listOfProductsFromListOfOrders(listOfOrders) {
+    let result = []
+    let listOfOrderProducts = listOfOrders.map((el) => {
+        return el.listOfProducts
+    })
+
+    listOfOrderProducts.forEach((listOfProducts) => {
+        listOfProducts.forEach((product) => {
+            result.push(product)
+        })
+    })
+    return result
+}
+
 
 export default {
+    listOfProductsFromListOfOrders,
     segregateProductsByMonth,
     filterProductFields,
     filterListOfProductFields,

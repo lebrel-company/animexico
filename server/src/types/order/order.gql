@@ -4,9 +4,22 @@ type Order{
     listOfProducts: [OrderProduct]
     shippingAddress: OrderShippingAddress
     address: String
-    status: OrderStatus
+    orderStatus: OrderStatus
     total: Float
 }
+type OrderAccepted{
+    status: String
+    message: String
+    listOfOrders: [Order]
+}
+
+type OrderInvalid{
+    status: String
+    message: String
+    listOfErrors: [String]
+}
+
+union OrderResult = OrderAccepted | OrderInvalid
 
 input OrderInput{
     idUser: ID!
@@ -72,6 +85,6 @@ extend type Query{
 }
 
 extend type Mutation {
-    createOrder(input: OrderInput!): [Order!]
+    createOrder(input: OrderInput!): OrderResult
     updateOrder(id: ID!, input: OrderInput!): Order
 }

@@ -115,7 +115,6 @@ describe('PRODUCT CREATION', () => {
         } catch (_e) {
             assert.graphQLError(_e.response.data)
         }
-
     })
 
 })

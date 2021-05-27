@@ -118,8 +118,35 @@ describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
             expect(result).to.be.equal(5590)
         })
 
+        it('Get name id and amount from li', function calculate() {
+            let data = [{subtotal: 1200}, {subtotal: 4390}]
+            let result = helpers.calculateTotalFromListOfProducts(data)
+            expect(result).to.be.equal(5590)
+        })
+
+        it('Extract flattened list of products from list of orders',
+            () => {
+                let source = [
+                    {
+                        id: 1234,
+                        listOfProducts: ['a', 'b']
+                    },
+                    {
+                        id: 1234,
+                        listOfProducts: ['c', 'd']
+                    }
+                ]
+
+                let result = helpers.listOfProductsFromListOfOrders(source)
+                expect(result).to.be.deep.equal(['a', 'b', 'c', 'd'])
+
+            }
+        )
+
     }
 )
+
+
 
 
 

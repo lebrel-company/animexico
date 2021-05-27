@@ -28,19 +28,42 @@ var should = chai.should
 //==============================================================================
 
 
+var CLIENT_AUTH_CONFIG;
+
+async function createMapOfProducts(quantity, filter = {}) {
+    let _p = await ProductModel.find(filter)
+
+    let result = _p.map((el) => {
+        return {
+            id: el.id,
+            quantity: quantity
+        }
+    })
+    return result
+}
+
 describe('ORDER CREATION', function () {
     var _listOfProducts;
     var _user;
     before(async () => {
         await ProductModel.collection.drop()
-        _listOfProducts = await ProductModel.create(listOfProducts)
+        CLIENT_AUTH_CONFIG = _.cloneDeep(axiosConfig)
+        CLIENT_AUTH_CONFIG.headers.authorization = (await authData()).token
     })
 
     beforeEach(async () => {
         try {
-            await UserModel.collection.drop()
             await OrdersModel.collection.drop()
         } catch (e) {
+        }
+    })
+    after(async () => {
+        try {
+            await ProductModel.collection.drop()
+            await OrdersModel.collection.drop()
+            await UserModel.collection.drop()
+        } catch (e) {
+            //
         }
     })
 
@@ -64,17 +87,13 @@ describe('ORDER CREATION', function () {
     )
 
     it('CL-AUTH: Create order',
-        async () => {
-            let config = _.cloneDeep(axiosConfig)
-            config.headers.authorization = (await authData()).token
+        async function userAuthenticatedOrderCreation() {
+            _listOfProducts = await ProductModel.create(listOfProducts)
             let _u = await UserModel.findOne({email: mapUserRegister.email})
             let _p = await ProductModel.find()
-            let mapOfOrderProducts = _p.map((el) => {
-                return {
-                    id: el.id,
-                    quantity: 1
-                }
-            })
+
+            let _mapOfOrderProducts = await createMapOfProducts(1)
+
             var res;
             try {
                 res = await axios.post(
@@ -84,61 +103,140 @@ describe('ORDER CREATION', function () {
                         variables: {
                             input: {
                                 idUser: _u._id,
-                                listOfProducts: mapOfOrderProducts,
+                                listOfProducts: _mapOfOrderProducts,
                                 address: 'primary'
                             }
                         }
                     },
-                    config
+                    CLIENT_AUTH_CONFIG
+                )
+            } catch (e) {
+                pp(e)
+            }
+
+            assert.graphQL(
+                {data: res.data.data.createOrder},
+                {
+                    __typename: 'OrderAccepted',
+                    status: 'success',
+                    listOfOrders: [
+                        {
+                            idUser: _u.id,
+                            address: 'primary',
+                            orderStatus: 'PENDING',
+                            total: 14000,
+                            listOfProducts: [
+                                {
+                                    name: 'Goku'
+                                },
+                                {
+                                    name: 'Kenshin Himura'
+                                }
+                            ]
+                        },
+                        {
+                            idUser: _u.id,
+                            address: 'primary',
+                            orderStatus: 'PENDING',
+                            total: 73030,
+                            listOfProducts: [
+                                {
+                                    name: 'Guts'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            )
+        }
+    )
+
+    it('CL-AUTH: Reject order creation for product amount over the allowed limit',
+        async function rejectOrderWithProductsOverTheLimit() {
+            let _u = await UserModel.findOne({email: mapUserRegister.email})
+            let _mapOfOrderProducts = await createMapOfProducts(5)
+            var res;
+            try {
+                res = await axios.post(
+                    hostname,
+                    {
+                        query: strCreateOrder,
+                        variables: {
+                            input: {
+                                idUser: _u._id,
+                                listOfProducts: _mapOfOrderProducts,
+                                address: 'primary'
+                            }
+                        }
+                    },
+                    CLIENT_AUTH_CONFIG
                 )
             } catch (e) {
                 pp(e.response.data)
             }
 
-            let result = {
-                data: res.data.data.createOrder
+            assert.graphQLSubset(
+                {data: res.data.data.createOrder},
+                {
+                    __typename: 'OrderInvalid',
+                    status: 'invalid',
+                    message: 'Lo sentimos, hubo un error al procesar tu orden',
+                    listOfErrors: [
+                        'El limite de compra de Goku es de 3',
+                        'El limite de compra de Guts es de 1'
+                    ]
+                }
+            )
+        }
+    )
+
+    it('CL-AUTH: Reject order creation for out of stock products',
+        async function rejectOrderOutOfStock() {
+            await ProductModel.collection.drop()
+            let listOfOutOfStockProducts = []
+            listOfProducts.forEach((product) => {
+                    product.stock = 0
+                    listOfOutOfStockProducts.push(product)
+                }
+            )
+            await ProductModel.create(listOfOutOfStockProducts)
+
+            let _u = await UserModel.findOne({email: mapUserRegister.email})
+            let _mapOfOrderProducts = await createMapOfProducts(5)
+            var res;
+            try {
+                res = await axios.post(
+                    hostname,
+                    {
+                        query: strCreateOrder,
+                        variables: {
+                            input: {
+                                idUser: _u._id,
+                                listOfProducts: _mapOfOrderProducts,
+                                address: 'primary'
+                            }
+                        }
+                    },
+                    CLIENT_AUTH_CONFIG
+                )
+            } catch (e) {
+                pp(e.response.data)
             }
 
-            assert.graphQL(
-                result,
-                [
-                    {
-                        idUser: _u.id,
-                        address: 'primary',
-                        status: 'PENDING',
-                        total: 14000,
-                        listOfProducts: [
-                            {
-                                name: 'Goku'
-                            },
-                            {
-                                name: 'Kenshin Himura'
-                            }
-                        ]
-                    },
-
-                    {
-                        idUser: _u.id,
-                        address: 'primary',
-                        status: 'PENDING',
-                        total: 73030,
-                        listOfProducts: [
-                            {
-                                name: 'Guts'
-                            }
-                        ]
-                    }
-                ]
+            assert.graphQLSubset(
+                {data: res.data.data.createOrder},
+                {
+                    __typename: 'OrderInvalid',
+                    status: 'invalid',
+                    message: 'Lo sentimos, hubo un error al procesar tu orden',
+                    listOfErrors: [
+                        'Quedan 0 piezas de Goku',
+                        'Quedan 0 piezas de Guts'
+                    ]
+                }
             )
         }
     )
 });
-
-
-
-
-
-
-
 
 
