@@ -1,7 +1,6 @@
 'use strict';
 // libraries:
 import axios from 'axios'
-import mongoose from 'mongoose'
 import {gql} from 'apollo-server'
 import util from 'util'
 import chai from 'chai'
@@ -9,14 +8,10 @@ import chaiGraphQL from 'chai-graphql'
 import _ from 'lodash'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
-import {UserModel} from '../../src/types/user/user.model';
 import {ProductModel} from '../../src/types/product/product.model';
-import {CartModel} from '../../src/types/cart/cart.model';
-import {mapUserRegister} from '../../seed/user_data';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {hostname, axiosConfig} from '../constants';
-import {hashPassword} from '../../src/utils/auth';
 import {dropAll} from '../cleanup';
 import {listOfProducts} from '../../seed/product_data';
 import {authData} from '../auth';
@@ -31,7 +26,7 @@ var should = chai.should
 export var CART = {
     mutations: {
         createCart: gql`
-            mutation createCart($input: CartInput!){
+            mutation updateCart($input: CartInput!){
                 updateCart(input: $input){
                     __typename
                     ... on MyCart{
@@ -40,12 +35,17 @@ export var CART = {
                         cart{
                             id
                             idUser
+                            timeout
                             listOfProducts{
                                 id
                                 code
+                                name
+                                price{
+                                    amount
+                                    currency
+                                }
                                 quantity
                             }
-                            timeout
                         }
                     }
                     ... on InvalidCart{
@@ -54,7 +54,7 @@ export var CART = {
                         listOfErrors
                     }
                 }
-            }
+            } 
         `.loc.source.body
     }
 }
@@ -67,8 +67,14 @@ describe('CART', function cartTests() {
         dropAll()
     })
 
+    let goku = listOfProducts[0]
     let cartInput = {
-        product: {id: listOfProducts[0]._id.toString(), quantity: 1}
+        product: {
+            id: goku._id.toString(),
+            quantity: 1,
+            price: goku.price,
+            name: goku.name
+        }
     }
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -123,7 +129,6 @@ describe('CART', function cartTests() {
             pp(_e.message)
         }
         assert.graphQL(res.data)
-
     })
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

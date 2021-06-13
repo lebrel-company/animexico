@@ -27,7 +27,7 @@ async function updateCart(parent, args, context, info) {
         message: status.messages.cart.creation.success,
         cart: null
     }
-
+    pp(context)
     let cart = CartModel.findOneAndUpdate(
         {idUser: context.userInfo.id},
         {
@@ -36,12 +36,15 @@ async function updateCart(parent, args, context, info) {
                 {
                     code: context.product.code,
                     id: context.product._id,
-                    quantity: context.cartProduct.quantity
+                    quantity: context.cartProduct.quantity,
+                    name: context.product.name,
+                    price: context.product.price
                 }
             ],
             timeout: SETTINGS.cartTimeout
         },
         {
+            new: true,
             upsert: true
         }
     )
@@ -91,7 +94,7 @@ export default {
     Mutation: {
         updateCart: authenticated(authorized(
             'CLIENT',
-            updateCart
+            validate.products(updateCart)
         ))
     },
     CartResult: {

@@ -11,6 +11,7 @@ type CartProducts{
     code: String!
     quantity: Int!
     price: Price
+    name: String
 }
 
 #---------------------------------------------------------------------------
@@ -22,6 +23,8 @@ input CartInput{
 input CartProductInput{
     id: ID!
     quantity: Int!
+    name: String!
+    price: PriceInput!
 }
 
 #---------------------------------------------------------------------------
