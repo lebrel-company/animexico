@@ -1,20 +1,22 @@
 
 .card-product {
     @apply
-        bg-pale
-        text-dark
-        font-simp
-        cursor-pointer
-        shadow-md
-        rounded-md
-        border-2
-        border-opacity-25
-        border-darkblue
-        md:m-auto
-        p-3
-        transition
-        duration-200
-        ease-in-out
-        transform
-        hover:scale-101
+    bg-lightpale
+    text-dark
+    font-simp
+    cursor-pointer
+    shadow-md
+    rounded-md
+    border-2
+    border-opacity-25
+    border-darkblue
+    md:m-auto
+    transition
+    duration-200
+    ease-in-out
+    transform
+    hover:scale-101
+    hover:border-darkblue
+    hover:shadow-2xl
+    hover:border-opacity-40
 }

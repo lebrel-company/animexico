@@ -74,10 +74,11 @@ input OrderShippingAddressInput{
 }
 
 enum OrderStatus{
-    PENDING
-    IN_TRANSIT
-    COMPLETED
-    CANCELED
+    pending
+    packaged
+    in_transit
+    delivered
+    cancelled
 }
 
 extend type Query{

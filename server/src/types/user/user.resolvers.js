@@ -2,6 +2,7 @@
 // libraries:
 import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
+import util from 'util'
 
 const jsonWebToken = require('jsonwebtoken');
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -9,34 +10,23 @@ const jsonWebToken = require('jsonwebtoken');
 import {UserModel} from './user.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {
-    authenticated,
-    addUserWithRole,
-    authorized,
-    getAge,
-    verifyPassword,
-    createToken,
-    hashPassword
-} from '../../utils/auth';
 import messages from './user.messages';
+import {
+    addUserWithRole,
+    verifyPassword,
+    createToken
+} from '../../utils/auth';
+import status from '../../utils/status'
+
+var pp = (el) => {
+    console.log(util.inspect(el, false, 5, true))
+}
+//==============================================================================
+
 
 require('dotenv').config({path: 'variables.env'});
 
-//=============================   QUERIES   ====================================
 
-async function queryUserByToken(_, {token}) {
-    return await jsonWebToken.verify(token, process.env.SECRET);
-}
-
-async function queryUserInfo(parent, {}, context, info) {
-    return await UserModel.findById(context.user.id).exec();
-}
-
-function me(parent, args, context, info) {
-    return context.user;
-}
-
-//==============================   TYPES   =====================================
 function mapOfAddresses(parent, args, context, info) {
     return {
         primary: parent.mapOfAddresses.get('primary'),
@@ -44,29 +34,27 @@ function mapOfAddresses(parent, args, context, info) {
     };
 }
 
-//============================   MUTATIONS   ===================================
 
-function signup(parent, {input}, context, info) {
-    return addUserWithRole('CLIENT')(parent, {input}, context, info);
+function signup(parent, args, context, info) {
+    return addUserWithRole('CLIENT')(parent, args, context, info);
 }
 
-// --   --   --   --   --   --      --   --   --   --   --   --   --   --   --
 
-function adminSignup(parent, {input}, context, info) {
-    return addUserWithRole('ADMIN')(parent, {input}, context, info);
+function adminSignup(parent, args, context, info) {
+    return addUserWithRole('ADMIN')(parent, args, context, info);
 }
 
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
-async function login(parent, {input}, context, info) {
+async function login(parent, args, context, info) {
     try {
-        const user = await UserModel.findOne({email: input.email}).lean();
+        const user = await UserModel.findOne({email: args.input.email}).lean();
         if (!user) {
             throw Error(messages.signin.errors.noRegisteredEmail);
         }
 
+
         const passwordValid = (
-            await verifyPassword(input.password, user.password)
+            await verifyPassword(args.input.password, user.password)
         );
 
         if (passwordValid) {
@@ -96,9 +84,21 @@ async function login(parent, {input}, context, info) {
             const decodedToken = jwtDecode(token);
             const expiresIn = decodedToken.exp;
 
-            return {token, userInfo, expiresIn};
+            return {
+                status: status.success,
+                message: status.messages.auth.login.success,
+                authInfo: {
+                    token: token,
+                    userInfo: userInfo,
+                    expiresIn: expiresIn
+                }
+            }
         } else {
-            throw Error(messages.signin.errors.credentials);
+            return {
+                status: status.invalid,
+                message: status.messages.auth.login.invalid,
+                listOfErrors: []
+            }
         }
     } catch (err) {
         throw Error(err);
@@ -109,9 +109,6 @@ async function login(parent, {input}, context, info) {
 
 export default {
     Query: {
-        queryUserInfo: authenticated(queryUserInfo),
-        queryUserByToken: authenticated(queryUserByToken),
-        me: authenticated(me),
         login: login
     },
     User: {
@@ -119,6 +116,16 @@ export default {
     },
     Mutation: {
         adminSignup,
-        signup,
+        signup
+    },
+    UserAuthResult: {
+        __resolveType(obj, context, info) {
+            if (obj.status === status.success){
+                return 'SuccessfulUserAuth'
+            }
+            if(obj.status === status.invalid){
+                return 'InvalidUserAuth'
+            }
+        }
     }
 };

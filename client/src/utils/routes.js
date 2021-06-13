@@ -9,42 +9,42 @@
 export var mapOfRoutes = {
     homepage: {
         route: '/',
-        text: 'Inicio',
+        text: 'Inicio'
     },
     account: {
         route: '/profile',
-        text: 'Mi cuenta',
+        text: 'Mi cuenta'
     },
     store: {
         route: '/store',
-        text: 'Tienda',
+        text: 'Tienda'
     },
     faqs: {
         route: '/faqs',
-        text: 'FAQs',
+        text: 'FAQs'
     },
     terms: {
         route: '/terms',
-        text: 'Términos y condiciones',
+        text: 'Términos y condiciones'
     },
     privacy: {
         route: '/privacy',
-        text: 'Política de privacidad',
+        text: 'Política de privacidad'
     },
     restorePassword: {
         route: '/password_recovery',
-        text: 'Restaurar contraseña',
+        text: 'Restaurar contraseña'
     },
     login: {
         route: '/login',
-        text: 'Ingresar',
+        text: 'Ingresar'
     },
     signup: {
         route: '/signup',
-        text: 'Registrarme',
+        text: 'Registrarme'
     },
     profile: {
         route: '/profile',
-        text: 'Mi perfil',
-    },
+        text: 'Mi perfil'
+    }
 }

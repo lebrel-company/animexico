@@ -1,5 +1,6 @@
 'use strict';
 // libraries:
+import util from 'util'
 import bcrypt from 'bcryptjs'
 import jsonWebToken from 'jsonwebtoken'
 import jwtDecode from 'jwt-decode';
@@ -12,8 +13,12 @@ import messages from '../types/user/user.messages';
 // project:
 require('dotenv').config({path: 'variables.env'});
 const __JWT_SECRET = process.env.JWT_SECRET
+var pp = (el) => {
+    console.log(util.inspect(el, false, 5, true))
+}
 
 //==============================================================================
+
 
 export function createToken(user) {
     // Sign the JWT
@@ -121,9 +126,9 @@ export function authorized(role, nextResolver) {
 
 //==============================================================================
 
-
 export function addUserWithRole(role) {
     return async function _resolver(parent, {input}, context, info) {
+
         if (!input.lastName) {
             throw new UserInputError('Missing lastName field');
         }

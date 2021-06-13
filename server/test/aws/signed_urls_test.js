@@ -24,7 +24,7 @@ var assert = chai.assert
 var expect = chai.expect
 var should = chai.should
 //==============================================================================
-describe('AWS S3 SIGNED URL', () => {
+describe('FILE.AWS_S3_SIGNED_URL', () => {
         beforeEach(async () => {
             await UserModel.deleteOne({email: 'jairanpo@gmail.com'})
             await UserModel.deleteOne({email: 'sofia@gmail.com'})

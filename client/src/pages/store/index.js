@@ -1,19 +1,40 @@
 // libraries:
 import {useRouter} from 'next/router'
 import Link from 'next/link';
+import {useQuery, gql} from '@apollo/client'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 import ClientLayout from '../../layout/Client';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
 import Card from '../../components/Card'
-import Footer from '../../components/Footer';
+import Loading from '../../components/loading';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================
 
+var QUERY_ALL_AVAILABLE_PRODUCTS = gql`
+    {
+        queryAllAvailableProducts{
+            id
+            name
+            description
+            listOfImages
+            price{
+                amount
+                currency
+            }
+        }
+    }
+`
 
-function Homepage() {
+export default function Store() {
+    var {loading, error, data} = useQuery(QUERY_ALL_AVAILABLE_PRODUCTS)
+
+
+    if (loading) return <Loading/>
+    if (error) return `Error!: ${error.message}`
+
     return (
         <ClientLayout pattern={`bg-circles`}>
             <div className={`flex justify-center w-full h-full`}>
@@ -21,63 +42,22 @@ function Homepage() {
 
                     <div
                         className="
-                        py-20 grid md:grid-cols-2  lg:grid-cols-3 gap-10
+                        py-20 grid md:grid-cols-3  lg:grid-cols-4 gap-10
+                        container m-auto
                         "
                     >
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000012161_Gxr51siy_05_900x.jpg?v=1610144452"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013312_LclgAvZO_12_300x.jpg?v=1610152217"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013366_e7UQ33wD_04.jpg?v=1610951550"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013333_rsqWpdMA_01.jpg?v=1610985628D"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/SOC-GX-93-SB-Arcadia-TV-Ver.-03_900x.jpg?v=1610142906"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000012161_Gxr51siy_05_900x.jpg?v=1610144452"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013312_LclgAvZO_12_300x.jpg?v=1610152217"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013366_e7UQ33wD_04.jpg?v=1610951550"
-                        />
-                        <Card
-                            name="Godzilla"
-                            price={200}
-                            image="https://cdn.shopify.com/s/files/1/0065/2535/4073/products/SOC-GX-93-SB-Arcadia-TV-Ver.-03_900x.jpg?v=1610142906"
-                        />
-
+                        {
+                            data.queryAllAvailableProducts.map(
+                                function _query(_p) {
+                                    return <Card product={_p}
+                                                 scrollableInnerImages={true}/>
+                                }
+                            )
+                        }
                     </div>
                 </div>
-
-
             </div>
         </ClientLayout>
     )
 }
 
-
-export default Homepage;

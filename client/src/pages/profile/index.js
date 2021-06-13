@@ -21,7 +21,6 @@ export default function Profile() {
     var [component, setComponent] = useState('address')
     var authContext = useContext(AuthContext)
     var _u = authContext.authState.userInfo
-    console.log(_u)
 
     function componentSelection(componentTag) {
         let result = null
@@ -52,8 +51,8 @@ export default function Profile() {
 
     return (
         <ClientLayout>
-            <div className={`w-full`}>
-                <div className="h-full">
+            <div className={`w-full h-full m-10`}>
+                <div className="">
                     <div className="container mx-auto flex justify-center m-10">
                         <div className="text-4xl font-deco font-dark">
                             {
@@ -92,10 +91,6 @@ export default function Profile() {
 
                     </div>
                 </div>
-                <div className="w-screen relative z-30 bottom-0 flex-none">
-                    <Footer/>
-                </div>
-
             </div>
         </ClientLayout>
     )

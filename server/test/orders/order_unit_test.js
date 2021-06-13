@@ -7,14 +7,12 @@ import chaiGraphQL from 'chai-graphql'
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-var pp = (el) => {
-    console.log(util.inspect(el, false, 5, true))
-}
 chai.use(chaiGraphQL)
 var assert = chai.assert
 var expect = chai.expect
 var should = chai.should
 import helpers from '../../src/types/order/order.helpers'
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //==============================================================================
 
 

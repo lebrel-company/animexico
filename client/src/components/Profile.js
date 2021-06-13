@@ -1,6 +1,6 @@
 import React from 'react'
 
-function profile() {
+export default function profile() {
     return (
         <div className='border-2'>
             Perfil
@@ -8,4 +8,3 @@ function profile() {
     )
 }
 
-export default profile

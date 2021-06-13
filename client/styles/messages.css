@@ -9,3 +9,15 @@
         border-palered
         p-2
 }
+
+.message-success{
+    @apply
+    text-sm
+    bg-green
+    text-pale
+    bg-opacity-10
+    my-3
+    border-l-4
+    border-green
+    p-2
+}

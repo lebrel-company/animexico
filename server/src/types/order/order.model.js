@@ -36,7 +36,7 @@ let OrderProductSchema = new mongoose.Schema({
 });
 
 
-export var OrderSchema = mongoose.Schema({
+export var OrderSchema = new mongoose.Schema({
     idUser: {
         type: mongoose.Types.ObjectId,
         required: true
@@ -52,8 +52,8 @@ export var OrderSchema = mongoose.Schema({
     shippingAddress: AddressSchema,
     orderStatus: {
         type: String,
-        enum: ['PENDING', 'READY', 'IN_TRANSIT', 'COMPLETED', 'CANCELED'],
-        default: 'PENDING'
+        enum: ['pending', 'ready', 'in_transit', 'delivered', 'cancelled'],
+        default: 'pending'
     },
     total: {
         type: Number,

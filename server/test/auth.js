@@ -1,28 +1,33 @@
 'use strict';
 // libraries:
 import axios from 'axios'
+import util from 'util'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {axiosConfig, hostname} from './constants';
-import {
-    strAdminSignupMutation,
-    strUserSignupMutation
-} from './signup/signup_gql';
-import {mapUserRegister, mapAdminRegister} from './user_data';
+import {SIGNUP} from './signup/signup_int_test';
+import {mapUserRegister, mapAdminRegister} from '../seed/user_data';
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
 
 //==============================================================================
 
+
 async function authenticateAsUser() {
-    let result = await axios.post(
-        hostname,
-        {
-            query: strUserSignupMutation,
-            variables: {input: mapUserRegister}
-        },
-        axiosConfig
-    )
+    var result
+    try {
+        result = await axios.post(
+            hostname,
+            {
+                query: SIGNUP.mutations.signup,
+                variables: {input: mapUserRegister}
+            },
+            axiosConfig
+        )
+    } catch (_e) {
+        pp(_e)
+    }
     return result.data.data.signup
 }
 
@@ -32,7 +37,7 @@ async function authenticateAsAdmin() {
     let result = await axios.post(
         hostname,
         {
-            query: strAdminSignupMutation,
+            query: SIGNUP.mutations.adminSignup,
             variables: {input: mapAdminRegister}
         },
         axiosConfig

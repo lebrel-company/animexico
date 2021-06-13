@@ -88,15 +88,15 @@ input UpdateUserInput{
 
 type QueryUser{
     id: ID
-    firstName: String!
+    firstName: String
     middleName: String
-    lastName: String!
-    secondLastName: String!
-    email: String!
+    lastName: String
+    secondLastName: String
+    email: String
     birthday: String
     cellphone: String
-    role: Role!
-    mapOfAddresses: MapOfAddresses!
+    role: Role
+    mapOfAddresses: MapOfAddresses
 }
 
 type AuthUser {
@@ -104,6 +104,23 @@ type AuthUser {
     userInfo: QueryUser
     expiresIn: Int!
 }
+
+
+#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+union UserAuthResult = SuccessfulUserAuth | InvalidUserAuth
+type InvalidUserAuth{
+    status: String
+    message: String
+    listOfErrors: [String]
+}
+type SuccessfulUserAuth{
+    status: String
+    message: String
+    authInfo: AuthUser
+}
+
+#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 input ResetPasswordInput{
     email: String!
@@ -113,9 +130,7 @@ input ResetPasswordInput{
 
 type Query {
     queryUserByToken(token: String!) : QueryUser!
-    queryUserInfo: QueryUser!
-    me: QueryUser!
-    login(input: LoginInput!): AuthUser!
+    login(input: LoginInput!): UserAuthResult
 }
 
 type Mutation {

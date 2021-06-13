@@ -1,5 +1,7 @@
 'use strict';
 // libraries:
+import mongoose from 'mongoose'
+import _ from 'lodash'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -7,6 +9,7 @@
 //==============================================================================
 
 export var mapUserRegister = {
+    _id: mongoose.Types.ObjectId(),
     firstName: 'Jesus',
     middleName: 'Jair',
     lastName: 'Anguiano',
@@ -30,6 +33,7 @@ export var mapUserRegister = {
 }
 
 export var mapAdminRegister = {
+    _id: mongoose.Types.ObjectId(),
     firstName: 'Sofia',
     middleName: '',
     lastName: 'López',
@@ -38,3 +42,15 @@ export var mapAdminRegister = {
     password: 'tamashii',
     cellphone: '3325366927'
 }
+
+function addRole(map, role) {
+    let result
+    result = _.cloneDeep(map)
+    result.role = role
+    return result
+}
+
+export var listOfUsers = [
+    addRole(mapAdminRegister, 'ADMIN'),
+    addRole(mapUserRegister, 'CLIENT')
+]

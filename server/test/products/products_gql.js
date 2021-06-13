@@ -29,3 +29,20 @@ export var strCreateProductMutation = gql`
         }
     }
 `.loc.source.body
+
+
+export var strQueryAllActiveProducts = gql`
+    {
+        data:queryAllAvailableProducts{
+            id
+            name
+            description
+            listOfImages
+            price{
+                amount
+                currency
+            }
+            purchaseLimit
+        }
+    }
+`.loc.source.body

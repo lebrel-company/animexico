@@ -1,0 +1,23 @@
+query login($input: LoginInput!){
+    login(input: $input){
+        __typename
+        ... on SuccessfulUserAuth{
+            status
+            message
+            authInfo{
+                token
+                userInfo{
+                    firstName
+                    lastName
+                }
+                expiresIn
+            }
+        }
+        ... on InvalidUserAuth{
+            status
+            message
+            listOfErrors
+        }
+    }
+}
+

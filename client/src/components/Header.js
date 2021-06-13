@@ -5,7 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import {useContext} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
-import {AuthContext} from '../context/AuthContext';
+// import {AuthContext} from '../context/AuthContext'; !!!
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -18,12 +18,12 @@ import {generalButtons} from '../utils/buttons/general';
 
 
 export default function Header() {
-    var authContext = useContext(AuthContext);
+    // var authContext = useContext(AuthContext); !!!
     var listOfMenuLinks = ['homepage', 'store', 'faqs'];
 
-    if (authContext.isAuthenticated()) {
-        listOfMenuLinks = listOfMenuLinks.push('profile')
-    }
+    // if (authContext.isAuthenticated()) { !!!
+    //     listOfMenuLinks = listOfMenuLinks.push('profile')
+    // }
 
     return (
         <div
@@ -44,8 +44,8 @@ export default function Header() {
                     ">
                         <Link
                             href={
-                                authContext.isAuthenticated() ?
-                                    mapOfRoutes.account.route :
+                                // authContext.isAuthenticated() ? !!!
+                                //     mapOfRoutes.account.route :
                                     mapOfRoutes.signup.route
                             }>
                             <a className={`
@@ -60,8 +60,8 @@ export default function Header() {
                         </Link>
                         <Link
                             href={
-                                authContext.isAuthenticated() ?
-                                    mapOfRoutes.account.route :
+                                // authContext.isAuthenticated() ? !!!
+                                //     mapOfRoutes.account.route :
                                     mapOfRoutes.login.route
                             }>
                             <a className={`
@@ -75,7 +75,7 @@ export default function Header() {
                             </a>
                         </Link>
                         {
-                            authContext.isAuthenticated() &&
+                            // authContext.isAuthenticated() && !!!
                             <Link href={generalButtons.cart.href}>
                                 <button className={`
                                 button-red button-cart
@@ -126,7 +126,7 @@ function createRoutes(mapOfRoutes, listOfKeys) {
                     </Link>
                 </div>
             );
-        },
+        }
     );
 }
 

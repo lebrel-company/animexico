@@ -36,6 +36,11 @@ async function queryProduct(parent, args, context, info) {
     return product;
 }
 
+async function queryAllAvailableProducts() {
+    var _p = await ProductModel.find({'available': true})
+    return _p
+}
+
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 async function updateProduct(parent, args, context, info) {
     const _product = await ProductModel.findOneAndUpdate(
@@ -59,12 +64,24 @@ async function updateProduct(parent, args, context, info) {
     );
 }
 
+async function queryProductById(parent, args, context, info) {
+    var result;
+    try {
+        result = await ProductModel.findOne({_id: args.input})
+        console.log(result)
+    } catch (_e) {
+        console.log(_e)
+    }
+
+    return result
+}
+
 //==============================================================================
 
 export default {
     Query: {
-        queryListOfProducts,
-        queryProduct
+        queryAllAvailableProducts: queryAllAvailableProducts,
+        queryProductById: queryProductById
     },
     Mutation: {
         createProduct: authenticated(

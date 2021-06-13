@@ -46,14 +46,15 @@ input PriceInput{
 }
 
 extend type Query {
+    queryAllAvailableProducts: [Product!]
     queryListOfProducts:[Product]
-    queryProduct(id : ID!) : Product
+    queryProductById(input: ID!): Product
 }
 
 extend type Mutation {
     createProduct(input: ProductInput!) : Product
-    updateProduct( id: ID!, input: ProductInput) : Product
-    deleteProduct( id : ID! ): String
+    updateProduct(input: ID!, input: ProductInput) : Product
+    deleteProduct(input: ID! ): String
 }
 
 

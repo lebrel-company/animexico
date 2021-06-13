@@ -1,5 +1,7 @@
 'use strict';
 // libraries:
+import lodash from 'lodash';
+
 const axios = require('axios')
 const mongoose = require('mongoose')
 import {gql} from 'apollo-server'
@@ -13,8 +15,8 @@ import {ProductModel} from '../../src/types/product/product.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {axiosConfig, hostname} from '../constants';
-import {strCreateProductMutation} from './create_products_gql';
-import {listOfProducts} from '../product_data';
+import {strCreateProductMutation} from './products_gql';
+import {listOfProducts} from '../../seed/product_data';
 import {authData} from '../auth';
 
 var cl = console.log
@@ -25,7 +27,8 @@ var should = chai.should
 //==============================================================================
 
 
-describe('PRODUCT CREATION', () => {
+describe('PRODUCT.CREATION', () => {
+    var _listOfProducts = lodash.cloneDeep(listOfProducts)
     before(async () => {
         try {
             await UserModel.collection.drop()
@@ -37,7 +40,7 @@ describe('PRODUCT CREATION', () => {
         } catch (_e) {
             // Handle error here
         }
-        listOfProducts.forEach((e) => {
+        _listOfProducts.forEach((e) => {
             delete e._id
         })
     })
@@ -53,7 +56,7 @@ describe('PRODUCT CREATION', () => {
                     hostname,
                     {
                         query: strCreateProductMutation,
-                        variables: {input: listOfProducts[0]}
+                        variables: {input: _listOfProducts[0]}
                     },
                     config
                 )
@@ -61,7 +64,7 @@ describe('PRODUCT CREATION', () => {
                 console.error('WARNING:', _e)
             }
 
-            let sourceProduct = _.cloneDeep(listOfProducts[0])
+            let sourceProduct = _.cloneDeep(_listOfProducts[0])
             sourceProduct.publish.date = (
                 (new Date(sourceProduct.publish.date).getTime()).toString()
             )
@@ -83,7 +86,7 @@ describe('PRODUCT CREATION', () => {
                 {
                     query: strCreateProductMutation,
                     variables: {
-                        input: listOfProducts[0]
+                        input: _listOfProducts[0]
 
                     }
                 },
@@ -106,7 +109,7 @@ describe('PRODUCT CREATION', () => {
                 {
                     query: strCreateProductMutation,
                     variables: {
-                        input: listOfProducts[0]
+                        input: _listOfProducts[0]
 
                     }
                 },

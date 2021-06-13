@@ -4,6 +4,7 @@ import {v4 as uuidv4} from 'uuid'
 import React, {useContext} from 'react';
 import {useMutation} from '@apollo/client';
 import {useRouter} from 'next/router'
+import {v4 as uuid} from 'uuid'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // contexts
 import {AuthContext} from '../../context/AuthContext';
@@ -19,6 +20,7 @@ import signupMutationString from '../../controllers/signup/signup.mutation.gql';
 import {userFields} from '../../utils/fields/user'
 import {formTexts, spanishButtons} from '../../utils/texts/signup.texts';
 import {listOfStates} from '../../utils/location/mexico';
+import {appendWarningMessage} from '../../utils/formUtils';
 //==============================================================================
 
 
@@ -200,7 +202,8 @@ export default function SignupForm(props) {
                                 {
                                     listOfStates.map(function (element) {
                                         return (
-                                            <option value={element}>
+                                            <option key={uuid()}
+                                                    value={element}>
                                                 {element}
                                             </option>
                                         )
@@ -302,20 +305,3 @@ export default function SignupForm(props) {
     )
 }
 
-function appendWarningMessage(formik, value) {
-    return (
-        <div className="text-sm text-palered">
-            {
-                function () {
-                    return (
-                        formik.touched[value] && formik.errors[value] ? (
-                            <div className="text-red-400">
-                                {formik.errors[value]}
-                            </div>
-                        ) : null
-                    )
-                }()
-            }
-        </div>
-    )
-}

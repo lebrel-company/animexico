@@ -2,6 +2,7 @@
 // libraries:
 import {ApolloProvider} from '@apollo/client'
 import 'react-awesome-slider/dist/styles.css';
+import {Provider as ReduxProvider} from 'react-redux'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -14,10 +15,11 @@ import '../../styles/tailwind.css'
 import '../../styles/globals.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import client from '../config/apollo';
+import {client} from '../config/apollo';
 import {AuthProvider} from '../context/AuthContext';
 
 //==============================================================================
+
 
 function MyApp({Component, pageProps}) {
     return (

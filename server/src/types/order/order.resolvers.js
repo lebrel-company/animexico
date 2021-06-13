@@ -13,13 +13,14 @@ import {OrdersModel} from './order.model';
 import {authenticated, authorized} from '../../utils/auth';
 import helpers from './order.helpers';
 import status from '../../utils/status'
-import validations from './order.validations'
-//==============================================================================
+import validate from './order.validations'
+
 var pp = (el) => {
     console.log(util.inspect(el, false, 5, true))
 }
 
 //==============================================================================
+
 
 async function queryOrder(parent, args, context, info) {
     return {}
@@ -34,13 +35,16 @@ async function createOrder(parent, args, context, info) {
     })
     let _p = await ProductModel.find({_id: {$in: listProductIdObjects}})
 
-    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // VALIDATE:
-    let validationResults = validations.validateOrders(_i.listOfProducts, _p)
-    if (validationResults.status === status.invalid) {
-        return validationResults
+    let listOfErrors = validate.order(_i.listOfProducts, _p)
+
+    if (listOfErrors.length > 0) {
+        return {
+            status: status.invalid,
+            message: status.messages.order.creation.invalid,
+            listOfErrors: listOfErrors
+        }
     }
-    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
     let listOfProducts = helpers.mapInputQuantityWithProductList(
         _i.listOfProducts, _p
     )
@@ -57,7 +61,7 @@ async function createOrder(parent, args, context, info) {
     let mapBaseObject = {
         idUser: _i.idUser,
         address: _i.address,
-        orderStatus: 'PENDING',
+        orderStatus: status.order.pending,
         shippingAddress: {}
     }
 
@@ -73,10 +77,7 @@ async function createOrder(parent, args, context, info) {
         await OrdersModel.insertMany(result.listOfOrders)
         return result
     } catch (_e) {
-        throw new Error(
-            'Unable to create order, please ' +
-            'try again later or contact us for support.'
-        )
+        throw new Error(_e.message)
     }
 
 }

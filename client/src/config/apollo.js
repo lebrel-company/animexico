@@ -1,6 +1,17 @@
-import { ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client';
-import { setContext } from 'apollo-link-context';
+'use strict';
+// libraries:
+import util from 'util'
 import fetch from 'node-fetch'
+import {setContext} from 'apollo-link-context';
+import {ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+var pp = (el) => {
+    console.log(util.inspect(el, false, 5, true))
+}
+//==============================================================================
 
 
 const httpLink = createHttpLink({
@@ -9,24 +20,23 @@ const httpLink = createHttpLink({
 });
 
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext((_, {headers}) => {
     //Read the token storage
     const token = localStorage.getItem('token');
-    return{
-        headers:{
+    return {
+        headers: {
             ...headers,
             authorization: token ? `Bearer ${token}` : ''
-            
+
         }
     }
 });
 
-
-const client = new ApolloClient({
+export const client = new ApolloClient({
     connectToDevTools: true,
     cache: new InMemoryCache(),
-    link: authLink.concat( httpLink )
+    link: authLink.concat(httpLink)
 });
 
-export default client;
+
 

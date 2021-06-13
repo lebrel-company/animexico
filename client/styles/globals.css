@@ -1,9 +1,9 @@
+@import url('./patterns.css');
 @import url('./buttons.css');
 @import url('./messages.css');
 @import url('./card.css');
 @import url('./checkbox.css');
 @import url('./textarea.css');
-@import url('./patterns.css');
 
 :root {
     --transparent: 'transparent';

@@ -2,7 +2,7 @@
 // libraries:
 import util from 'util'
 import _ from 'lodash';
-import {listOfProducts} from '../../../test/product_data';
+import {listOfProducts} from '../../../seed/product_data';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --

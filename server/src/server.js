@@ -2,6 +2,7 @@
 // libraries:
 const {ApolloServer} = require('apollo-server')
 const {merge} = require('lodash')
+import util from 'util'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -14,9 +15,15 @@ import user from './types/user/user.resolvers'
 import order from './types/order/order.resolvers'
 import address from './types/address/address.resolvers'
 import file from './types/file/file.resolvers'
+import cart from './types/cart/cart.resolvers'
+
+var pp = (el) => {
+    console.log(util.inspect(el, false, 5, true))
+}
 //==============================================================================
 
-const types = ['product', 'toy', 'user', 'order', 'address', 'file'];
+
+const types = ['product', 'cart', 'user', 'order', 'address', 'file'];
 
 export async function Server() {
     let schemaTypes = await Promise.all(types.map(loadSchemaType));
@@ -32,6 +39,7 @@ export async function Server() {
         resolvers: merge(
             {},
             product,
+            cart,
             user,
             order,
             address,
@@ -46,7 +54,7 @@ export async function Server() {
 }
 
 
-async function start() {
+export default async function start() {
     mongoConnection()
     let _server = await Server()
     _server.listen().then(({url}) => {
@@ -54,7 +62,3 @@ async function start() {
     });
 
 }
-
-
-//==============================================================================
-export default start

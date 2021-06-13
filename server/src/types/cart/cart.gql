@@ -1,0 +1,49 @@
+type Cart {
+    id: ID
+    idUser: ID
+    Status: String
+    listOfProducts: [CartProducts!]
+    timeout: Int
+}
+
+type CartProducts{
+    id: ID
+    code: String!
+    quantity: Int!
+    price: Price
+}
+
+#---------------------------------------------------------------------------
+
+input CartInput{
+    product: CartProductInput!
+}
+
+input CartProductInput{
+    id: ID!
+    quantity: Int!
+}
+
+#---------------------------------------------------------------------------
+
+type MyCart{
+    status: String
+    message: String
+    cart: Cart
+}
+
+type InvalidCart{
+    status: String
+    message: String
+    listOfErrors: [String]
+}
+
+#---------------------------------------------------------------------------
+
+union CartResult = MyCart | InvalidCart
+
+
+#---------------------------------------------------------------------------
+extend type Mutation {
+    updateCart(input: CartInput!): CartResult
+}

@@ -13,38 +13,17 @@ import Card from '../components/Card'
 //==============================================================================
 
 
-const photos = [
-    {
-        name: 'Photo 1',
-        url: 'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/SOC-GX-93-SB-Arcadia-TV-Ver.-03_1200x.jpg'
-    },
-    {
-        name: 'Photo 2',
-        url: 'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000012161_Gxr51siy_01_900x.jpg'
-    },
-    {
-        name: 'Photo 3',
-        url: 'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013312_LclgAvZO_03.jpg'
-    },
-    {
-        name: 'Photo 4',
-        url: 'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013366_e7UQ33wD_07_1200x.jpg'
-    },
-    {
-        name: 'Photo 5',
-        url: 'https://cdn.shopify.com/s/files/1/0065/2535/4073/products/item_0000013333_rsqWpdMA_03.jpg'
-    }
-]
-
 export default function Carousel(props) {
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 4,
+        slidesToShow: 4,
+        slidesToScroll: 1,
         adaptiveHeight: true,
-        className: 'font-deco'
+        centerMode: true,
+        className: '',
+        easing: 'linear'
     }
 
     return (
@@ -56,14 +35,14 @@ export default function Carousel(props) {
                 <Slider {...settings}>
 
                     {
-                        photos.map((element) => {
+                        props.listOfProducts.map((el) => {
                             return (
-                                <div key={element.name} className="p-2">
-                                    <Card image={element.url}/>
-                                </div>)
+                                <div key={el.id} className={`p-5`}>
+                                    <Card product={el}/>
+                                </div>
+                            )
                         })
                     }
-
                 </Slider>
             </div>
         </div>
