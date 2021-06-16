@@ -72,8 +72,6 @@ export default function Profile() {
                             >
                                 Direcciones
                             </button>
-
-
                             <button
                                 onClick={switchComponent('orders')}
                                 className="

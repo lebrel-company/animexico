@@ -46,8 +46,13 @@ export async function Server() {
             file
         ),
         context: ({req, connection}) => {
-            let token = req?.headers?.authorization
-            let userInfo = userFromToken(token)
+            let token = req.headers.authorization
+
+            if (!token){
+                return {userInfo: null}
+            }
+
+            let userInfo = userFromToken(token.slice(7))
             return {userInfo}
         }
     });

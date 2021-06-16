@@ -1,0 +1,13 @@
+{
+    queryAllAvailableProducts{
+        id
+        name
+        description
+        listOfImages
+        purchaseLimit
+        price{
+            amount
+            currency
+        }
+    }
+}

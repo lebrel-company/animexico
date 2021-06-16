@@ -14,7 +14,7 @@
 export var generalButtons = {
     cart: {
         href: '/cart',
-        text: 'Mi carrito'
+        text: 'mi carrito'
     },
     delete: {
         text: 'X'

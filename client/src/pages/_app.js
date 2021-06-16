@@ -17,6 +17,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {client} from '../config/apollo';
 import {AuthProvider} from '../context/AuthContext';
+import {CartProvider} from '../context/CartContext';
 
 //==============================================================================
 
@@ -25,7 +26,9 @@ function MyApp({Component, pageProps}) {
     return (
         <ApolloProvider client={client}>
             <AuthProvider>
-                <Component {...pageProps}/>
+                <CartProvider>
+                    <Component {...pageProps}/>
+                </CartProvider>
             </AuthProvider>
         </ApolloProvider>
     )

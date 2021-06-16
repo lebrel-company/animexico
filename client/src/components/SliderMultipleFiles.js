@@ -17,13 +17,38 @@ export default function Carousel(props) {
     const settings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 800,
         slidesToShow: 4,
         slidesToScroll: 1,
         adaptiveHeight: true,
         centerMode: true,
         className: '',
-        easing: 'linear'
+        easing: 'linear',
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     }
 
     return (
@@ -37,7 +62,7 @@ export default function Carousel(props) {
                     {
                         props.listOfProducts.map((el) => {
                             return (
-                                <div key={el.id} className={`p-5`}>
+                                <div key={el.id} className="">
                                     <Card product={el}/>
                                 </div>
                             )

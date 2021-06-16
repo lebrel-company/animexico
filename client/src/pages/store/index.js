@@ -11,22 +11,9 @@ import Card from '../../components/Card'
 import Loading from '../../components/loading';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+import QUERY_ALL_AVAILABLE_PRODUCTS
+    from '../../graphql/queryAllAvailableProducts.gql'
 //==============================================================================
-
-var QUERY_ALL_AVAILABLE_PRODUCTS = gql`
-    {
-        queryAllAvailableProducts{
-            id
-            name
-            description
-            listOfImages
-            price{
-                amount
-                currency
-            }
-        }
-    }
-`
 
 export default function Store() {
     var {loading, error, data} = useQuery(QUERY_ALL_AVAILABLE_PRODUCTS)

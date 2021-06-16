@@ -39,7 +39,9 @@ export var CART = {
                             listOfProducts{
                                 id
                                 code
+                                purchaseLimit
                                 name
+                                thumbnail
                                 price{
                                     amount
                                     currency
@@ -54,9 +56,23 @@ export var CART = {
                         listOfErrors
                     }
                 }
-            } 
+            }
         `.loc.source.body
     }
+}
+
+var goku = listOfProducts[0]
+var cartInput = {
+    listOfProducts: [
+        {
+            id: goku._id.toString(),
+            quantity: 1,
+            price: goku.price,
+            name: goku.name,
+            thumbnail: goku.listOfImages[0],
+            purchaseLimit: goku.purchaseLimit
+        }
+    ]
 }
 
 describe('CART', function cartTests() {
@@ -66,16 +82,6 @@ describe('CART', function cartTests() {
     beforeEach(async function () {
         dropAll()
     })
-
-    let goku = listOfProducts[0]
-    let cartInput = {
-        product: {
-            id: goku._id.toString(),
-            quantity: 1,
-            price: goku.price,
-            name: goku.name
-        }
-    }
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
@@ -110,7 +116,8 @@ describe('CART', function cartTests() {
 
     it('CL-AUTH.Cart: Successful cart creation', async function () {
         var CLIENT_AUTH_CONFIG = _.cloneDeep(axiosConfig)
-        CLIENT_AUTH_CONFIG.headers.authorization = (await authData()).token
+        let {token} = await authData()
+        CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
         let _listOfProducts = _.cloneDeep(listOfProducts)
         let res;
         try {
@@ -128,6 +135,7 @@ describe('CART', function cartTests() {
         } catch (_e) {
             pp(_e.message)
         }
+
         assert.graphQL(res.data)
     })
 
@@ -135,7 +143,8 @@ describe('CART', function cartTests() {
 
     it('CL-AUTH.Cart: Cart already exists', async function () {
         var CLIENT_AUTH_CONFIG = _.cloneDeep(axiosConfig)
-        CLIENT_AUTH_CONFIG.headers.authorization = (await authData()).token
+        let {token} = await authData()
+        CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
         let _listOfProducts = _.cloneDeep(listOfProducts)
         let res_01;
         let res_02;

@@ -71,7 +71,8 @@ describe('ORDER.CREATION', function () {
     beforeEach(async () => {
         await dropAll()
         CLIENT_AUTH_CONFIG = _.cloneDeep(axiosConfig)
-        CLIENT_AUTH_CONFIG.headers.authorization = (await authData()).token
+        let {token} = await authData()
+        CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
     })
 
     it('NO-AUTH.Order: Reject create order',

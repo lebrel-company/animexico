@@ -27,7 +27,7 @@ var should = chai.should
 //==============================================================================
 
 
-describe('PRODUCT.CREATION', () => {
+describe('PRODUCT CREATION', () => {
     var _listOfProducts = lodash.cloneDeep(listOfProducts)
     before(async () => {
         try {
@@ -49,7 +49,7 @@ describe('PRODUCT.CREATION', () => {
         async function createOneProductAsAdmin() {
             let userData = await authData('admin')
             let config = _.cloneDeep(axiosConfig)
-            config.headers.authorization = userData.token
+            config.headers.authorization = `Bearer ${userData.token}`
             var res;
             try {
                 res = await axios.post(
@@ -101,7 +101,7 @@ describe('PRODUCT.CREATION', () => {
     it('CL-AUTH: Reject create one product', async () => {
         let userData = await authData()
         let config = _.cloneDeep(axiosConfig)
-        config.headers.authorization = userData.token
+        config.headers.authorization = `Bearer ${userData.token}`
 
         try {
             await axios.post(

@@ -4,9 +4,11 @@ import Slider from 'react-slick';
 import {v4 as uuidv4} from 'uuid';
 import {useRouter} from 'next/router'
 import {useContext} from 'react';
+import {useState} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {AuthContext} from '../context/AuthContext';
+import {CartContext} from '../context/CartContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -16,16 +18,19 @@ import {AuthContext} from '../context/AuthContext';
 var pp = (el) => console.log(el)
 //==============================================================================
 
+var TEXTS = {
+    addToCart: 'Agregar'
+}
+
 
 export default function Card(props) {
-    var authState = useContext(AuthContext)
+    let authState = useContext(AuthContext)
+    let cartState = useContext(CartContext)
+    let [productData, setProductData] = useState(props.product)
     let _p = props.product
     let _scr = props.scrollableInnerImages || false
     let router = useRouter()
 
-    let texts = {
-        addToCart: 'Agregar'
-    }
 
     function goToProductDetails(idProduct) {
         return function inner(e) {
@@ -41,9 +46,8 @@ export default function Card(props) {
             if (auth === false) {
                 router.push('/login')
             } else {
-                pp('Producto agregado')
+                cartState.addProduct(productData)
             }
-
         }
     }
 
@@ -56,17 +60,10 @@ export default function Card(props) {
                     <div className={`p-4 flex justify-center`}>
                         <div className={`w-full h-full`}>
                             {
-                                _scr ?
-                                    <ImageScroll
-                                        listOfImages={_p.listOfImages}/> :
-                                    <img
-                                        className={`
-                                        block m-auto rounded-md 
-                                        object-contain h-72
-                                    `}
-                                        src={_p.listOfImages[0]}
-                                    />
-
+                                <img
+                                    className={`card-image`}
+                                    src={_p.listOfImages[0]}
+                                />
                             }
                         </div>
                     </div>
@@ -80,12 +77,13 @@ export default function Card(props) {
                         {
                             authState.isAuthenticated() ?
                                 <button onClick={addToCart(true)}
-                                        className="button-add">
-                                    {texts.addToCart}
+                                        className="button-add"
+                                >
+                                    {TEXTS.addToCart}
                                 </button> :
                                 <button onClick={addToCart(false)}
-                                        className="button-add">
-                                    {texts.addToCart}
+                                        className="button-locked">
+                                    ingresar
                                 </button>
                         }
                     </div>
@@ -139,9 +137,3 @@ function ImageScroll(props) {
     )
 }
 
-
-var texts = {
-    addToCart: {
-        title: 'agregar'
-    }
-}

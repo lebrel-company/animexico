@@ -20,3 +20,17 @@
     hover:shadow-2xl
     hover:border-opacity-40
 }
+
+.card-image {
+    max-height: 300px;
+    @apply
+    m-auto
+}
+
+
+.cart-card-product {
+    @apply
+    rounded
+    bg-lightpale
+    p-2
+}

@@ -6,18 +6,20 @@ type Cart {
     timeout: Int
 }
 
-type CartProducts{
+type CartProducts {
     id: ID
-    code: String!
-    quantity: Int!
+    code: String
+    quantity: Int
     price: Price
     name: String
+    thumbnail: String
+    purchaseLimit: Int
 }
 
 #---------------------------------------------------------------------------
 
 input CartInput{
-    product: CartProductInput!
+    listOfProducts: [CartProductInput!]!
 }
 
 input CartProductInput{
@@ -25,6 +27,12 @@ input CartProductInput{
     quantity: Int!
     name: String!
     price: PriceInput!
+    thumbnail: String!
+    purchaseLimit: Int!
+}
+
+input DeleteCartInput{
+    idUser: String
 }
 
 #---------------------------------------------------------------------------
@@ -41,12 +49,22 @@ type InvalidCart{
     listOfErrors: [String]
 }
 
+type DeletedCart{
+    status: String
+    message: String
+
+}
+
 #---------------------------------------------------------------------------
 
-union CartResult = MyCart | InvalidCart
-
+union CartResult = MyCart | InvalidCart | DeletedCart
 
 #---------------------------------------------------------------------------
 extend type Mutation {
     updateCart(input: CartInput!): CartResult
+    deleteCart: CartResult
+}
+
+extend type Query {
+    queryCartWithToken: CartResult
 }

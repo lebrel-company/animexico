@@ -10,15 +10,13 @@ import * as Yup from 'yup';
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import LOGIN from './login.query.gql'
 import {userFields} from '../../utils/fields/user';
 
 var pp = (el) => console.log(el)
-
 //==============================================================================
 
 
-export default function loginFormik(graphql, states, contexts, route) {
+export default function loginFormik(loginQuery) {
 
     function requiredMessage(field_name) {
         return `${field_name} es requerido`
@@ -40,41 +38,14 @@ export default function loginFormik(graphql, states, contexts, route) {
             }),
 
             onSubmit:
-                async function submit_data(values) {
-
+                function submit_data(values) {
                     const {email, password} = values;
-
-                    try {
-                        pp(states)
-
-                        await graphql.query({
-                            variables: {
-                                input: {email, password}
-                            }
-                        });
-
-                        if (graphql.data.login.status === 'invalid') {
-                            states.activateMessage.setter(true)
-                            states.message.setter(graphql.data.login.message)
+                    loginQuery({
+                        variables: {
+                            input: {email, password}
                         }
-
-                        if (graphql.data.login.status === 'success') {
-                            states.activateMessage.setter(true)
-                            states.message.setter(graphql.data.login.message)
-                            contexts.authContext.setAuthState(
-                                graphql.data.login.authInfo
-                            )
-                            setTimeout(() => {
-                                route.hook.push(route.path);
-                            }, 2000);
-                        }
-
-
-                    } catch (error) {
-                        states.activateMessage.setter(true)
-                        states.message.setter(error.message)
-                    }
+                    })
                 }
         }
-    );
+    )
 }

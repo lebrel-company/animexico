@@ -1,11 +1,15 @@
+'use strict';
 // libraries:
 import { useState, createContext, useEffect } from 'react';
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+var pp = (el)=>console.log(el)
 //==============================================================================
 
 
@@ -42,6 +46,9 @@ function AuthProvider(props) {
             expiresIn: null,
             userInfo: {}
         });
+        localStorage.removeItem('token')
+        localStorage.removeItem('expiresIn')
+        localStorage.removeItem('userInfo')
     }
 
     function populateAuthData(data) {
@@ -59,6 +66,7 @@ function AuthProvider(props) {
         if (!authState.token || !authState.expiresIn) {
             return false;
         }
+
         return (new Date().getTime() / 1000) < authState.expiresIn;
     }
 

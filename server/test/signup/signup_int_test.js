@@ -120,25 +120,25 @@ describe('SIGNUP', () => {
         assert.match(_r.data.errors[0].message, /UserInputError/)
     })
 
-    it('AD-AUTH.Signup: Create user as admin', async () => {
-        let ADMIN_AUTH_CONFIG = _.cloneDeep(axiosConfig)
-        ADMIN_AUTH_CONFIG.headers.authorization = (await authData('ADMIN')).token
-        var res;
-        try {
-            res = await axios.post(
-                hostname,
-                {
-                    query: SIGNUP.mutations.adminSignup,
-                    variables: {input: mapAdminRegister}
-                },
-                ADMIN_AUTH_CONFIG
-            )
-        } catch (_e) {
-            pp(_e.message)
-        }
-
-        // assert.strictEqual(1, 2)
-    })
+    // it('AD-AUTH.Signup: Create user as admin', async () => {
+    //     let ADMIN_AUTH_CONFIG = _.cloneDeep(axiosConfig)
+    //     ADMIN_AUTH_CONFIG.headers.authorization = (await authData('ADMIN')).token
+    //     var res;
+    //     try {
+    //         res = await axios.post(
+    //             hostname,
+    //             {
+    //                 query: SIGNUP.mutations.adminSignup,
+    //                 variables: {input: mapAdminRegister}
+    //             },
+    //             ADMIN_AUTH_CONFIG
+    //         )
+    //     } catch (_e) {
+    //         pp(_e.message)
+    //     }
+    //
+    //     assert.strictEqual(1, 2)
+    // })
 })
 
 

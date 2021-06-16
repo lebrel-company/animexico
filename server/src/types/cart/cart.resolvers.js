@@ -7,95 +7,94 @@ import _ from 'lodash'
 // models:
 import {ProductModel} from '../product/product.model';
 import {CartModel} from './cart.model';
-import {authenticated, authorized} from '../../utils/auth';
+import {authenticated, authorized, userFromToken} from '../../utils/auth';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import status from '../../utils/status';
 import {globalSettings} from '../../config/settings';
-import validate from './cart.validations'
+import {validateCart} from './cart.validations'
 
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
-
 //==============================================================================
-
 
 const SETTINGS = globalSettings()
 
 async function updateCart(parent, args, context, info) {
-    let result = {
-        status: status.success,
-        message: status.messages.cart.creation.success,
-        cart: null
+    if (context.listOfErrors) {
+        return {
+            status: status.invalid,
+            message: status.messages.cart.update.invalid,
+            listOfErrors: context.listOfErrors
+        }
     }
-    pp(context)
+
+    let {product, cartProduct} = context
+
+
     let cart = CartModel.findOneAndUpdate(
         {idUser: context.userInfo.id},
-        {
-            status: status.active,
-            listOfProducts: [
-                {
-                    code: context.product.code,
-                    id: context.product._id,
-                    quantity: context.cartProduct.quantity,
-                    name: context.product.name,
-                    price: context.product.price
-                }
-            ],
-            timeout: SETTINGS.cartTimeout
-        },
+        context.newCartData,
         {
             new: true,
             upsert: true
         }
     )
-    result.cart = cart
-    return result
+
+    return {
+        status: status.success,
+        message: status.messages.cart.update.success,
+        cart: cart
+    }
+
 }
 
-// async function __findExistingCart(context) {
-//     try {
-//         let cart = await CartModel.findOne({idUser: context.userInfo.id})
-//         if (cart === null) return null
-//         if (cart.status === status.inactive) {
-//             await CartModel.deleteOne({idUser: context.userInfo.id})
-//             return null
-//         }
-//         return cart
-//     } catch (_e) {
-//         throw Error(_e.message)
-//     }
-// }
-//
-//
-// async function __createCart(context) {
-//     try {
-//         let cart = await CartModel.create({
-//             idUser: context.userInfo.id,
-//             status: status.active,
-//             listOfProducts: [
-//                 {
-//                     code: context.product.code,
-//                     id: context.product._id,
-//                     quantity: context.cartProduct.quantity
-//                 }
-//             ],
-//             timeout: SETTINGS.cartTimeout
-//         })
-//         return cart
-//     } catch (_e) {
-//         pp(_e)
-//         throw Error(_e.message)
-//     }
-// }
+async function queryCartWithToken(parent, args, context, info) {
+    let idUser = context.userInfo.id
+    let cart = await CartModel.findOne({idUser: idUser})
+    if (cart === null) {
+        return {
+            status: status.invalid,
+            message: status.messages.cart.query.invalid,
+            listOfErrors: [
+                `No existe un carrito de compras para usuario ${idUser}`
+            ]
+        }
+    } else {
+        return {
+            status: status.success,
+            message: status.messages.cart.query.success,
+            cart: cart
+        }
+    }
+}
 
+async function deleteCart(parent, args, context, input) {
+    let {idUser} = context.userInfo
+    try {
+        let cart = await CartModel.findOneAndDelete({idUser})
+        if (cart) {
+            return {
+                status: status.deleted,
+                message: status.messages.cart.delete.exists
+            }
+        } else {
+            return {
+                status: status.deleted,
+                message: status.messages.cart.delete.notExists
+            }
+        }
+    } catch (_e) {
+        throw Error(_e.message)
+    }
+}
 
 export default {
-    Query: {},
+    Query: {
+        queryCartWithToken: authenticated(queryCartWithToken)
+    },
     Mutation: {
-        updateCart: authenticated(authorized(
-            'CLIENT',
-            validate.products(updateCart)
-        ))
+        updateCart: authenticated(authorized('CLIENT', validateCart(updateCart))),
+        deleteCart: deleteCart
     },
     CartResult: {
         __resolveType: function (obj, context, info) {
@@ -104,6 +103,8 @@ export default {
                     return 'MyCart'
                 case status.invalid:
                     return 'InvalidCart'
+                case status.deleted:
+                    return 'DeletedCart'
                 default:
                     return null
             }

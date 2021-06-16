@@ -20,9 +20,31 @@ let CartProductSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        thumbnail: {
+            type: String,
+            required: true
+        },
+        purchaseLimit:{
+            type: Number,
+            required: true
+        },
+        name: {
+            type: String,
+            required: false
+        },
         quantity: {
             type: Number,
             required: true
+        },
+        price: {
+            amount: {
+                type: Number,
+                required: true
+            },
+            currency: {
+                type: String,
+                required: true
+            }
         }
     },
     {

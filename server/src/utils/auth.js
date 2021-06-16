@@ -38,7 +38,7 @@ export function createToken(user) {
     );
 }
 
-//==============================================================================
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
 export function getAge(dateString) {
     let today = new Date();
@@ -51,7 +51,6 @@ export function getAge(dateString) {
     return age;
 }
 
-//==============================================================================
 
 export function hashPassword(password) {
     return new Promise((resolve, reject) => {
@@ -69,13 +68,12 @@ export function hashPassword(password) {
     });
 }
 
-//==============================================================================
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
 
 export function verifyPassword(passwordAttempt, hashedPassword) {
     return bcrypt.compare(passwordAttempt, hashedPassword);
 }
 
-//==============================================================================
 
 export function requireAdmin(req, res, next) {
     if (!req.user) {
@@ -115,6 +113,7 @@ export function authenticated(nextResolver) {
 
 //==============================================================================
 export function authorized(role, nextResolver) {
+    console.log('authorized nextResolver: ', typeof nextResolver, nextResolver.name)
     return async function inner(root, args, context, info) {
         const _user = await UserModel.findById(context.userInfo.id)
         if (_user.role !== role) {

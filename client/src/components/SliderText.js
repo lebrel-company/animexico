@@ -28,15 +28,15 @@ export default function SliderText(props) {
                                 key={uuid()}
                                 className="text-white text-center font-deco">
                                 <div
-                                    className="font-black text-xl md:text-6xl">
+                                    className="font-black text-2xl lg:text-6xl">
                                     {element.title}
                                 </div>
-                                <div className="text-md md:text-2xl">
+                                <div className="text-lg md:text-2xl">
                                     {element.text}
                                 </div>
                                 {
                                     <div
-                                        className="text-lg md:text-3xl
+                                        className="text-md lg:text-3xl
                                         ">
                                         {element.description}
                                     </div>

@@ -34,7 +34,7 @@ describe('FILE.AWS_S3_SIGNED_URL', () => {
         it('AD-AUTH: Reach for single signed URL', async () => {
             let _userData = await authData('admin')
             let _config = _.cloneDeep(axiosConfig)
-            _config.headers.authorization = _userData.token
+            _config.headers.authorization = `Bearer ${_userData.token}`
             let res = await axios.post(
                 hostname,
                 {
@@ -67,7 +67,7 @@ describe('FILE.AWS_S3_SIGNED_URL', () => {
         it('AD_AUTH: Reach for multiple signed URL', async () => {
             let _userData = await authData('admin')
             let _config = _.cloneDeep(axiosConfig)
-            _config.headers.authorization = _userData.token
+            _config.headers.authorization = `Bearer ${_userData.token}`
 
             let res = await axios.post(
                 hostname,

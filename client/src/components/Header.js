@@ -5,7 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import {useContext} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
-// import {AuthContext} from '../context/AuthContext'; !!!
+import {AuthContext} from '../context/AuthContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -14,17 +14,16 @@ import {useContext} from 'react';
 // project:
 import {mapOfRoutes} from '../utils/routes'
 import {generalButtons} from '../utils/buttons/general';
+
+var pp = (el) => console.log(el)
 //==============================================================================
 
 
 export default function Header() {
-    // var authContext = useContext(AuthContext); !!!
+    var authState = useContext(AuthContext);
     var listOfMenuLinks = ['homepage', 'store', 'faqs'];
 
-    // if (authContext.isAuthenticated()) { !!!
-    //     listOfMenuLinks = listOfMenuLinks.push('profile')
-    // }
-
+    if (authState.isAuthenticated()) listOfMenuLinks.push('profile');
     return (
         <div
             className="bg-black-gradient">
@@ -39,50 +38,9 @@ export default function Header() {
                     {
                         createRoutes(mapOfRoutes, listOfMenuLinks)
                     }
-                    <div className="
-                    relative py-4 z-20 md:py-0
-                    ">
-                        <Link
-                            href={
-                                // authContext.isAuthenticated() ? !!!
-                                //     mapOfRoutes.account.route :
-                                    mapOfRoutes.signup.route
-                            }>
-                            <a className={`
-                                button-signup
-                                m-2
-                                button-pale-outline
-                            `}>
-                                {
-                                    mapOfRoutes.signup.text
-                                }
-                            </a>
-                        </Link>
-                        <Link
-                            href={
-                                // authContext.isAuthenticated() ? !!!
-                                //     mapOfRoutes.account.route :
-                                    mapOfRoutes.login.route
-                            }>
-                            <a className={`
-                            button-login
-                            m-2
-                            button-pale-outline
-                            `}>
-                                {
-                                    mapOfRoutes.login.text
-                                }
-                            </a>
-                        </Link>
+                    <div>
                         {
-                            // authContext.isAuthenticated() && !!!
-                            <Link href={generalButtons.cart.href}>
-                                <button className={`
-                                button-red button-cart
-                                `}>
-                                    {generalButtons.cart.text}
-                                </button>
-                            </Link>
+                            createAuthButtons(authState)
                         }
                     </div>
                 </div>
@@ -90,6 +48,65 @@ export default function Header() {
         </div>
     );
 }
+
+function createAuthButtons(authState) {
+
+    function logout(e) {
+        e.preventDefault()
+        authState.logout()
+    }
+
+    if (authState.isAuthenticated()) {
+        return (
+            <div className="flex flex-row items-center h-full w-full">
+                <div className="h-full m-1">
+                    <Link href={generalButtons.cart.href}>
+                        <button className="button-red">
+                            {generalButtons.cart.text}
+                        </button>
+                    </Link>
+                </div>
+                <div className="h-full m-1">
+                    <button onClick={logout}>
+                        <a
+                            className="button-pale-outline">
+                            logout
+                        </a>
+                    </button>
+                </div>
+            </div>
+        )
+    }
+    return (
+        <>
+            <Link
+                href={
+                    authState.isAuthenticated() ?
+                        mapOfRoutes.account.route :
+                        mapOfRoutes.signup.route
+                }>
+                <a className={` button-signup m-1 button-pale-outline`}>
+                    {
+                        mapOfRoutes.signup.text
+                    }
+                </a>
+            </Link>
+            <Link
+                href={
+                    authState.isAuthenticated() ?
+                        mapOfRoutes.account.route :
+                        mapOfRoutes.login.route
+                }>
+                <a className={`button-login m-1 button-pale-outline`}>
+                    {
+                        mapOfRoutes.login.text
+                    }
+                </a>
+            </Link>
+        </>
+    )
+}
+
 
 function createRoutes(mapOfRoutes, listOfKeys) {
     return listOfKeys.map(function createLinks(value, index) {
