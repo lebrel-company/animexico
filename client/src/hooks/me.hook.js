@@ -1,30 +1,27 @@
 'use strict';
 // libraries:
+import {useState, useEffect} from 'react'
+import {useLazyQuery, useQuery} from '@apollo/client'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
-import CheckoutComponent from '../../components/checkout/checkout.comp'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+import ME from '../operations/queryMe.gql'
+
 var pp = (el) => console.log(el)
 
 //==============================================================================
 
-function cart() {
-    return (
-        <ClientLayout>
+export function useMe() {
+    let [me, setMe] = useState({})
+    let {loading, error, data} = useQuery(ME)
 
-            <div className="flex flex-row w-full justify-center pt-20">
-                <div>
-                    <CheckoutComponent/>
-                </div>
-            </div>
+    if (!loading && !error && data ) return {loading: false, me: data.me.me}
 
-        </ClientLayout>
-    )
+    return {loading: true, me: {}}
+
 }
-
-export default cart

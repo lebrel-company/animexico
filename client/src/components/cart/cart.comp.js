@@ -19,7 +19,7 @@ import CartProduct from './cartProduct';
 import Loading from '../loading';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import QUERY_CART from './queryCart.gql'
+import QUERY_CART from '../../operations/myCart.gql'
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -32,25 +32,13 @@ var texts = {
 export default function CartComponent() {
     let authState = useContext(AuthContext)
     let cartState = useContext(CartContext)
-    let {loading, error, data} = useQuery(
-        QUERY_CART,
-        {
-            onCompleted: function _onCompleted(data) {
-                if (!cartState.cartExists()) {
-                    let cartResult = data.queryCartWithToken
-                    cartState.updateCart(cartResult.cart)
-                }
-            }
-        }
-    )
-
 
     function deleteCart(event) {
         event.preventDefault()
         pp('Deleting cart')
     }
 
-    if (!cartState.hasProducts()) {
+    if (!cartState.product.exists()) {
         return (
             <ClientLayout>
                 <div
@@ -68,44 +56,45 @@ export default function CartComponent() {
 
     return (
         <ClientLayout>
-            <div className="container mx-auto flex justify-center">
+            <div className="container m-auto h-full flex items-center">
                 {
                     !authState.isAuthenticated() ? <Error401/>
-                        : loading ? <Loading/>
-                        : error ?
-                            <div className="text-2xl font-bold font-deco">
-                                Oops... something went wrong please try again in
-                                a few minutes or contact support for help.
+                        : !cartState.exists() ? <NoProducts/>
+                        : <div
+                            className="grid lg:grid-cols-3 gap-4 items-center h-full">
+                            <div>
+                                <AddressPicker/>
                             </div>
-                            : !cartState.cartExists() ?
-                                <div className="text-2xl font-bold font-deco">
-                                    No tienes ningun producto en tu carrito.
+                            <div className="h-5/6 flex flex-col">
+                                <div
+                                    className="overflow-y-scroll h-full">
+                                    {mapProducts(cartState.cart.listOfProducts)}
                                 </div>
-                                : <div className="
-                            grid lg:grid-cols-3 gap-4 items-center py-5
-                            ">
-                                    <div>
-                                        <AddressPicker/>
-                                    </div>
-                                    <div>
-                                        {mapProducts(cartState.cart.listOfProducts)}
-                                        <div
-                                            className="w-full flex justify-center my-5">
-                                            <button
-                                                onClick={deleteCart}
-                                                className="button-underline">
-                                                {texts.deleteButton}
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <ContinueToPayment
-                                            total={cartState.total()}/>
-                                    </div>
+                                <div
+                                    className="w-full flex justify-center">
+                                    <button
+                                        onClick={deleteCart}
+                                        className="button-red mt-4">
+                                        {texts.deleteButton}
+                                    </button>
                                 </div>
+                            </div>
+                            <div>
+                                <ContinueToPayment
+                                    total={cartState.total()}/>
+                            </div>
+                        </div>
                 }
             </div>
         </ClientLayout>
+    )
+}
+
+function NoProducts() {
+    return (
+        <div className="text-xl font-bold font-deco">
+            No tienes ningun producto en tu carrito.
+        </div>
     )
 }
 
@@ -130,7 +119,12 @@ function ContinueToPayment({total}) {
             <div className="text-5xl">Total</div>
             <div className="divide-y divide-pale">
                 <div className="text-3xl">
-                    {`$${total} MXN`}
+                    {
+                        new Intl.NumberFormat(
+                            'es-MX',
+                            {style: 'currency', currency: 'MXN'}
+                        ).format(total)
+                    }
                 </div>
                 <div className="text-lg">Envio Incluido</div>
             </div>
@@ -141,7 +135,7 @@ function ContinueToPayment({total}) {
             </div>
             <div className="pt-8">
                 <Link href="/checkout">
-                    <a className={`button-blue text-3xl p-2`}>Continuar</a>
+                    <a className={`button-blue text-xl p-2`}>Continuar</a>
                 </Link>
             </div>
         </div>

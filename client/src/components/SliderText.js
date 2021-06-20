@@ -31,12 +31,12 @@ export default function SliderText(props) {
                                     className="font-black text-2xl lg:text-6xl">
                                     {element.title}
                                 </div>
-                                <div className="text-lg md:text-2xl">
+                                <div className="text-lg md:text-xl">
                                     {element.text}
                                 </div>
                                 {
                                     <div
-                                        className="text-md lg:text-3xl
+                                        className="text-md lg:text-lg
                                         ">
                                         {element.description}
                                     </div>

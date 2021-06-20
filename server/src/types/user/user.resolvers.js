@@ -3,6 +3,7 @@
 import bcrypt from 'bcryptjs';
 import jwtDecode from 'jwt-decode';
 import util from 'util'
+import produce from 'immer'
 
 const jsonWebToken = require('jsonwebtoken');
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -14,7 +15,7 @@ import messages from './user.messages';
 import {
     addUserWithRole,
     verifyPassword,
-    createToken
+    createToken, authenticated
 } from '../../utils/auth';
 import status from '../../utils/status'
 
@@ -105,10 +106,39 @@ async function login(parent, args, context, info) {
     }
 }
 
+
+async function me(parent, args, context, info) {
+    let {id} = context.userInfo
+
+    let me = await UserModel.findById(id, [
+            'id', 'firstName', 'middleName', 'lastName', 'secondLastName',
+            'mapOfAddresses', 'email', 'birthday', 'role', 'cellphone'
+        ]
+    ).lean()
+
+
+    if (!me) {
+        return {
+            status: status.invalid,
+            message: status.messages.user.query.invalid,
+            listOfErrors: ['Something went wrong when trying to find user.']
+        }
+    }
+
+    return {
+        status: status.success,
+        message: status.messages.user.query.success,
+        me: me
+    }
+
+}
+
+
 //==============================================================================
 
 export default {
     Query: {
+        me: authenticated(me),
         login: login
     },
     User: {
@@ -120,12 +150,26 @@ export default {
     },
     UserAuthResult: {
         __resolveType(obj, context, info) {
-            if (obj.status === status.success){
+            if (obj.status === status.success) {
                 return 'SuccessfulUserAuth'
             }
-            if(obj.status === status.invalid){
+            if (obj.status === status.invalid) {
                 return 'InvalidUserAuth'
             }
         }
+    },
+    UserResult: {
+        __resolveType: function resolveType(obj, context, info) {
+            switch (obj.status) {
+                case status.success:
+                    return 'Me'
+                case status.invalid:
+                    return 'InvalidUser'
+                default:
+                    return null
+
+            }
+        }
     }
+
 };

@@ -28,9 +28,11 @@
     text-lg
     hover:underline
     bg-pale
-    bg-opacity-70
-    p-2
+    bg-opacity-80
+    shadow-xl
+    px-2
     rounded-md
+    my-2
 }
 
 .button-blue {
@@ -67,28 +69,15 @@
     font-simp
 }
 
-.button-add {
-    @apply
-    text-center
-    m-auto
-    px-2
-    border-2
-    border-red
-    text-red
-    rounded-md
-    font-bold
-    font-simp
-}
 
 .button-locked {
     @apply
     text-center
     m-auto
     px-2
-    border-2
+    border-b-2
     border-dark
     text-dark
-    rounded-md
     font-bold
     font-simp
 }
@@ -160,3 +149,13 @@
 }
 
 
+.button-product-amount {
+    @apply
+    w-4
+    h-4
+    absolute
+    right-1
+    bg-red
+    rounded-full
+    text-xs
+}

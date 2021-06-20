@@ -1,10 +1,12 @@
-{
+query queryAllAvailableProducts{
     queryAllAvailableProducts{
         id
         name
+        code
         description
         listOfImages
         purchaseLimit
+        codeWithName @client
         price{
             amount
             currency

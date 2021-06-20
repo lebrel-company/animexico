@@ -23,7 +23,7 @@ export default function CartProduct({product}) {
 
     function removeFromCart(e) {
         e.preventDefault()
-        cartState.removeProduct(productData)
+        cartState.product.remove(productData)
     }
 
 
@@ -33,7 +33,14 @@ export default function CartProduct({product}) {
             p.quantity = e.target.value
         })
         setProductData(newProduct)
-        cartState.updateProduct(newProduct)
+        cartState.product.update(newProduct)
+    }
+
+    function subtotal() {
+        return new Intl.NumberFormat(
+            'es-MX',
+            {style: 'currency', currency: 'MXN'}
+        ).format(price.amount * productData.quantity)
     }
 
     function QuantityPicker({limit}) {
@@ -60,29 +67,32 @@ export default function CartProduct({product}) {
 
 
     return (
-        <div className="cart-card-product relative border">
-            <div className="
+        <div className="cart-card-product relative border shadow-md">
+            <div className="bg-cross h-full w-full absolute z-10"/>
+            <div className='p-2 relative z-20'>
+                <div className="
             flex justify-between font-deco text-lg font-black items-center
             ">
-                <div className="text-dark">
-                    {name}
-                </div>
-                <button
-                    onClick={removeFromCart}
-                    className="
+                    <div className="text-dark">
+                        {name}
+                    </div>
+                    <button
+                        onClick={removeFromCart}
+                        className="
                     bg-red text-white rounded px-2
                     ">X
-                </button>
-            </div>
-            <div className="flex font-simp">
-                <div className="w-1/3">
-                    <img className="rounded border border-dark"
-                         src={thumbnail}/>
+                    </button>
                 </div>
-                <div className="mx-8">
-                    <QuantityPicker limit={productData.purchaseLimit}/>
-                    <div className="text-lg">
-                        {`$${price.amount * productData.quantity} ${price.currency}`}
+                <div className="flex font-simp flex items-center">
+                    <div className="w-1/3">
+                        <img className="rounded border border-dark"
+                             src={thumbnail}/>
+                    </div>
+                    <div className="mx-8">
+                        <QuantityPicker limit={productData.purchaseLimit}/>
+                        <div className="text-lg p-2">
+                            {subtotal()}
+                        </div>
                     </div>
                 </div>
             </div>

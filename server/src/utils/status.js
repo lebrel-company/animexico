@@ -27,6 +27,12 @@ var status = {
                 invalid: 'No fue posible ingresar con ese correo o contraseña.'
             }
         },
+        user:{
+            query: {
+                success: 'Datos de usuario disponibles.',
+                invalid: 'No fue posible encontrar tus datos.'
+            }
+        },
         cart: {
             update: {
                 success: 'Carrito de compras creado.',

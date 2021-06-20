@@ -113,7 +113,7 @@ export function authenticated(nextResolver) {
 
 //==============================================================================
 export function authorized(role, nextResolver) {
-    console.log('authorized nextResolver: ', typeof nextResolver, nextResolver.name)
+
     return async function inner(root, args, context, info) {
         const _user = await UserModel.findById(context.userInfo.id)
         if (_user.role !== role) {

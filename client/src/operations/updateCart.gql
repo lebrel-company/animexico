@@ -1,0 +1,31 @@
+mutation updateCart($input: CartInput!){
+    updateCart(input: $input){
+        __typename
+        ... on MyCart{
+            status
+            message
+            cart{
+                id
+                idUser
+                timeout
+                listOfProducts{
+                    id
+                    code
+                    purchaseLimit
+                    name
+                    thumbnail
+                    price{
+                        amount
+                        currency
+                    }
+                    quantity
+                }
+            }
+        }
+        ... on InvalidCart{
+            status
+            message
+            listOfErrors
+        }
+    }
+}

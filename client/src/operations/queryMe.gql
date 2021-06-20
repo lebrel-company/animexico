@@ -1,0 +1,44 @@
+query me{
+    me{
+        __typename
+        ... on Me{
+            status
+            message
+            me {
+                id
+                firstName
+                middleName
+                lastName
+                secondLastName
+                email
+                birthday
+                cellphone
+                role
+                mapOfAddresses{
+                    primary{
+                        ...address
+                    }
+                    secondary{
+                        ...address
+                    }
+                }
+            }
+        }
+        ... on InvalidUser{
+            status
+            message
+            listOfErrors
+        }
+    }
+}
+
+fragment address on Address{
+    country
+    state
+    city
+    neighbourhood
+    zipcode
+    street
+    buildingNumber
+    apartmentNumber
+}

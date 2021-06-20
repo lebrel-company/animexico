@@ -20,7 +20,8 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 const SETTINGS = globalSettings()
 
 async function updateCart(parent, args, context, info) {
-    if (context.listOfErrors) {
+
+    if (context.listOfErrors.length > 0) {
         return {
             status: status.invalid,
             message: status.messages.cart.update.invalid,
@@ -28,24 +29,21 @@ async function updateCart(parent, args, context, info) {
         }
     }
 
-    let {product, cartProduct} = context
-
-
-    let cart = CartModel.findOneAndUpdate(
+    let cart = await CartModel.findOneAndUpdate(
         {idUser: context.userInfo.id},
         context.newCartData,
         {
             new: true,
             upsert: true
         }
-    )
+    ).lean()
+
 
     return {
         status: status.success,
         message: status.messages.cart.update.success,
         cart: cart
     }
-
 }
 
 async function queryCartWithToken(parent, args, context, info) {

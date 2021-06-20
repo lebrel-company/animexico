@@ -1,12 +1,13 @@
 'use strict';
 // libraries:
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useLazyQuery} from '@apollo/client';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {AuthContext} from '../../context/AuthContext';
+import {CartContext} from '../../context/CartContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 import ClientLayout from '../../layout/Client';
@@ -29,12 +30,12 @@ var pp = (el) => console.log(el)
 
 export default function Login() {
     var authState = useContext(AuthContext)
+    var cartState = useContext(CartContext)
     var _router = useRouter();
     var [message, setMessage] = useState(null);
     var [activateMessage, setActivateMessage] = useState(false);
 
     function handleOnCompletedQuery(data) {
-        pp(data)
         if (data.login.status === 'success') {
             setActivateMessage(true)
             setMessage(data.login.message)

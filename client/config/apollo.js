@@ -1,5 +1,5 @@
-import { ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client';
-import { setContext } from 'apollo-link-context';
+import {ApolloClient, createHttpLink, InMemoryCache} from '@apollo/client';
+import {setContext} from 'apollo-link-context';
 import fetch from 'node-fetch'
 
 
@@ -10,23 +10,38 @@ const httpLink = createHttpLink({
 });
 
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext((_, {headers}) => {
     //Read the token storage
     const token = localStorage.getItem('token');
-    return{
-        headers:{
+    return {
+        headers: {
             ...headers,
             authorization: token ? `Bearer ${token}` : ''
-            
         }
     }
 });
 
 
 const client = new ApolloClient({
+    ssrMode: true,
     connectToDevTools: true,
-    cache: new InMemoryCache(),
-    link: authLink.concat( httpLink )
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache({
+        typePolicies: {
+            Product: {
+                fields: {
+                    codeWithName: {
+                        read(_, {readField}) {
+                            let code = readField('code')
+                            let name = readField('name')
+                            pp('Executing type policies')
+                            return `${code}_${name}`
+                        }
+                    }
+                }
+            }
+        }
+    })
 });
 
 export default client;

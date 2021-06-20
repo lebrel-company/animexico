@@ -5,10 +5,12 @@ import {v4 as uuidv4} from 'uuid';
 import {useRouter} from 'next/router'
 import {useContext} from 'react';
 import {useState} from 'react';
+import Image from 'next/image'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {AuthContext} from '../context/AuthContext';
 import {CartContext} from '../context/CartContext';
+import {mapOfRoutes} from '../utils/routes';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -19,7 +21,8 @@ var pp = (el) => console.log(el)
 //==============================================================================
 
 var TEXTS = {
-    addToCart: 'Agregar'
+    addToCart: 'Agregar',
+    goToCart: 'En carrito'
 }
 
 
@@ -40,15 +43,43 @@ export default function Card(props) {
         }
     }
 
-    function addToCart(auth = false) {
-        return function inner(event) {
-            event.preventDefault()
-            if (auth === false) {
-                router.push('/login')
-            } else {
-                cartState.addProduct(productData)
-            }
+    function cardButton() {
+        let inCart = cartState.product.inCart(productData.id)
+
+        if (inCart) {
+            return (
+                <button
+                    className="button-cart"
+                    onClick={(e) => {
+                        e.preventDefault()
+                        router.push(mapOfRoutes.cart.route)
+                    }}>
+                    {TEXTS.goToCart}
+                </button>
+            )
         }
+
+        if (authState.isAuthenticated()) {
+            return (
+                <button onClick={(e) => {
+                    e.preventDefault()
+                    cartState.product.add(productData)
+                }}
+                        className="button-add">
+                    {TEXTS.addToCart}
+                </button>
+            )
+        }
+
+        return (
+            <button onClick={(e) => {
+                e.preventDefault()
+                router.push(mapOfRoutes.login.route)
+            }}
+                    className="button-locked">
+                ingresar
+            </button>
+        )
     }
 
     return (
@@ -56,36 +87,27 @@ export default function Card(props) {
             <div className="card-product"
                  onDoubleClick={goToProductDetails(_p.id)}>
                 <div className={`bg-cross absolute z-20 w-full h-full`}/>
-                <div className={`relative z-30`}>
-                    <div className={`p-4 flex justify-center`}>
-                        <div className={`w-full h-full`}>
-                            {
-                                <img
-                                    className={`card-image`}
-                                    src={_p.listOfImages[0]}
-                                />
-                            }
-                        </div>
-                    </div>
-                    <div className="flex flex-row mx-4 my-2 font-bold">
-                        <div className="flex-1">
-                            <div className="text-lg">{_p.name}</div>
-                            <p className="">
-                                {`\$${_p.price.amount} ${_p.price.currency}`}
-                            </p>
-                        </div>
+                <div className="
+                relative z-30 h-full flex flex-col justify-between p-4
+                ">
+                    <div className="">
                         {
-                            authState.isAuthenticated() ?
-                                <button onClick={addToCart(true)}
-                                        className="button-add"
-                                >
-                                    {TEXTS.addToCart}
-                                </button> :
-                                <button onClick={addToCart(false)}
-                                        className="button-locked">
-                                    ingresar
-                                </button>
+                            <img
+                                className={`card-image`}
+                                src={_p.listOfImages[0]}
+                            />
                         }
+                    </div>
+                    <div className="flex flex-col font-deco">
+                        <div className="text-md">{_p.name}</div>
+                        <div>
+                            <div className="flex flex-row justify-between">
+                                <div className="font-bold">
+                                    {`\$${_p.price.amount} ${_p.price.currency}`}
+                                </div>
+                                <div>{cardButton()}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

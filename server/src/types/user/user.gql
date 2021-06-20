@@ -99,6 +99,7 @@ type QueryUser{
     mapOfAddresses: MapOfAddresses
 }
 
+
 type AuthUser {
     token: String!
     userInfo: QueryUser
@@ -122,6 +123,23 @@ type SuccessfulUserAuth{
 
 #  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+union UserResult = Me | InvalidUser
+
+
+type Me{
+    status: String
+    message: String
+    me: QueryUser
+}
+
+type InvalidUser{
+    status: String
+    message: String
+    listOfErrors: [String]
+}
+
+#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 input ResetPasswordInput{
     email: String!
     password: String!
@@ -129,7 +147,7 @@ input ResetPasswordInput{
 }
 
 type Query {
-    queryUserByToken(token: String!) : QueryUser!
+    me: UserResult
     login(input: LoginInput!): UserAuthResult
 }
 

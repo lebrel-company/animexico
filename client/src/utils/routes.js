@@ -15,6 +15,10 @@ export var mapOfRoutes = {
         route: '/profile',
         text: 'Mi cuenta'
     },
+    cart: {
+        route: '/cart',
+        text: 'Mi carrito'
+    },
     store: {
         route: '/store',
         text: 'Tienda'

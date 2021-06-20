@@ -12,7 +12,7 @@ import Loading from '../../components/loading';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import QUERY_ALL_AVAILABLE_PRODUCTS
-    from '../../graphql/queryAllAvailableProducts.gql'
+    from '../../operations/queryProducts.gql'
 //==============================================================================
 
 export default function Store() {
@@ -36,8 +36,13 @@ export default function Store() {
                         {
                             data.queryAllAvailableProducts.map(
                                 function _query(_p) {
-                                    return <Card product={_p}
-                                                 scrollableInnerImages={true}/>
+                                    return (
+                                        <Card
+                                            key={_p.id}
+                                            product={_p}
+                                            scrollableInnerImages={true}
+                                        />
+                                    )
                                 }
                             )
                         }

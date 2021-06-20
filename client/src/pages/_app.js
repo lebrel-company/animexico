@@ -11,11 +11,11 @@ import {Provider as ReduxProvider} from 'react-redux'
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+import {client} from '../config/apollo';
 import '../../styles/tailwind.css'
 import '../../styles/globals.css'
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import {client} from '../config/apollo';
 import {AuthProvider} from '../context/AuthContext';
 import {CartProvider} from '../context/CartContext';
 

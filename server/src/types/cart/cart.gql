@@ -25,10 +25,6 @@ input CartInput{
 input CartProductInput{
     id: ID!
     quantity: Int!
-    name: String!
-    price: PriceInput!
-    thumbnail: String!
-    purchaseLimit: Int!
 }
 
 input DeleteCartInput{
@@ -52,7 +48,6 @@ type InvalidCart{
 type DeletedCart{
     status: String
     message: String
-
 }
 
 #---------------------------------------------------------------------------

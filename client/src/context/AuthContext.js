@@ -1,6 +1,6 @@
 'use strict';
 // libraries:
-import { useState, createContext, useEffect } from 'react';
+import {useState, createContext, useEffect} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -9,7 +9,7 @@ import { useState, createContext, useEffect } from 'react';
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-var pp = (el)=>console.log(el)
+var pp = (el) => console.log(el)
 //==============================================================================
 
 
@@ -72,7 +72,7 @@ function AuthProvider(props) {
 
     return (
         <Provider
-            value={ {
+            value={{
                 authState: authState,
                 setAuthState:
                     function (userData) {
@@ -81,7 +81,7 @@ function AuthProvider(props) {
                 isAdmin: isAdmin,
                 isAuthenticated: isAuthenticated,
                 logout: logout
-            } }
+            }}
         >
             {
                 props.children
@@ -90,4 +90,4 @@ function AuthProvider(props) {
     );
 }
 
-export { AuthContext, AuthProvider };
+export {AuthContext, AuthProvider};

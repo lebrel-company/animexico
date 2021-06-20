@@ -6,6 +6,7 @@ import {useContext} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {AuthContext} from '../context/AuthContext';
+import {CartContext} from '../context/CartContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -20,8 +21,10 @@ var pp = (el) => console.log(el)
 
 
 export default function Header() {
-    var authState = useContext(AuthContext);
+    var authState = useContext(AuthContext)
+    var cartState = useContext(CartContext)
     var listOfMenuLinks = ['homepage', 'store', 'faqs'];
+
 
     if (authState.isAuthenticated()) listOfMenuLinks.push('profile');
     return (
@@ -40,7 +43,7 @@ export default function Header() {
                     }
                     <div>
                         {
-                            createAuthButtons(authState)
+                            createAuthButtons(authState, cartState)
                         }
                     </div>
                 </div>
@@ -49,27 +52,42 @@ export default function Header() {
     );
 }
 
-function createAuthButtons(authState) {
+function createAuthButtons(authState, cartState) {
 
     function logout(e) {
         e.preventDefault()
         authState.logout()
+        cartState.deleteCart()
     }
+
+    function productAmount() {
+        return cartState.product.amount()
+    }
+
 
     if (authState.isAuthenticated()) {
         return (
             <div className="flex flex-row items-center h-full w-full">
-                <div className="h-full m-1">
+                <div className="h-full m-1 shadow-lg">
                     <Link href={generalButtons.cart.href}>
-                        <button className="button-red">
-                            {generalButtons.cart.text}
+                        <button className="button-blue">
+                            {
+                                productAmount() === 0 ?
+                                    `${generalButtons.cart.text}`
+                                    : `${generalButtons.cart.text}`
+                            }
+                            {
+                                productAmount() ? <div
+                                    className="button-product-amount
+                                ">{`${productAmount()}`}
+                                </div> : null
+                            }
                         </button>
                     </Link>
                 </div>
                 <div className="h-full m-1">
                     <button onClick={logout}>
-                        <a
-                            className="button-pale-outline">
+                        <a className="button-pale-outline">
                             logout
                         </a>
                     </button>

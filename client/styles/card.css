@@ -1,11 +1,12 @@
 
 .card-product {
+    max-height: 400px;
+    height: 400px;
     @apply
     bg-lightpale
     text-dark
     font-simp
     cursor-pointer
-    shadow-md
     rounded-md
     border-2
     border-opacity-25
@@ -17,12 +18,12 @@
     transform
     hover:scale-101
     hover:border-darkblue
-    hover:shadow-2xl
+    hover:shadow-lg
     hover:border-opacity-40
 }
 
 .card-image {
-    max-height: 300px;
+    max-height: 256px;
     @apply
     m-auto
 }
@@ -32,5 +33,30 @@
     @apply
     rounded
     bg-lightpale
-    p-2
+}
+
+.button-add {
+    @apply
+    text-center
+    m-auto
+    px-2
+    border-2
+    border-red
+    text-red
+    rounded-md
+    font-bold
+    font-simp
+}
+
+.button-cart {
+    @apply
+    text-center
+    m-auto
+    px-2
+    border-2
+    border-lightblue
+    text-lightblue
+    rounded-md
+    font-bold
+    font-simp
 }
