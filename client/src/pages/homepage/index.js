@@ -29,7 +29,7 @@ export default function Homepage() {
     var cartState = useContext(CartContext)
     var {loading, error, data} = useQuery(QUERY_ALL_AVAILABLE_PRODUCTS)
 
-    pp(`Data: ` + data)
+    // pp(`Data: ` + data)
 
     const settings = {
         dots: true,
@@ -52,7 +52,6 @@ export default function Homepage() {
                 }
 
                 {
-                    data?.queryAllAvailableProducts &&
                     <div>
                         <div>
                             <div>
@@ -69,8 +68,12 @@ export default function Homepage() {
                             </div>
                         </div>
                         <div className="my-12">
-                            <Carousel
-                                listOfProducts={data.queryAllAvailableProducts}/>
+                            {
+
+                                data?.queryAllAvailableProducts &&
+                                <Carousel
+                                    listOfProducts={data.queryAllAvailableProducts}/>
+                            }
                         </div>
                         <div
                             className="flex justify-center items-center relative">

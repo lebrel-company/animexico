@@ -6,7 +6,6 @@ query queryAllAvailableProducts{
         description
         listOfImages
         purchaseLimit
-        codeWithName @client
         price{
             amount
             currency

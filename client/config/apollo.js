@@ -28,10 +28,11 @@ const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache({
         typePolicies: {
-            Product: {
+            CartProducts: {
                 fields: {
                     codeWithName: {
-                        read(_, {readField}) {
+                        read(existing, {readField}) {
+                            pp(existing)
                             let code = readField('code')
                             let name = readField('name')
                             pp('Executing type policies')
