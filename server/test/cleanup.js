@@ -21,9 +21,13 @@ export function dropAll() {
     ]
     listOfModels.forEach(async function (el) {
         try {
-            await el.remove({})
+            await el.collection.drop()
         } catch (_e) {
-            pp(_e.message)
+        }
+        try {
+            await el.collection.dropIndexes()
+        } catch (_e) {
+
         }
     })
 }

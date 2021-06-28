@@ -21,7 +21,7 @@ var pp = (el) => console.log(el)
 //==============================================================================
 
 var TEXTS = {
-    addToCart: 'Agregar',
+    addToCart: 'Comprar',
     goToCart: 'En carrito'
 }
 

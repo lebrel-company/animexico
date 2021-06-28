@@ -28,15 +28,15 @@ const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache({
         typePolicies: {
-            CartProducts: {
+            Product: {
+                keyFields: ['code']
+            },
+            Cart: {
                 fields: {
-                    codeWithName: {
-                        read(existing, {readField}) {
+                    listOfProducts: {
+                        merge: function (existing = [], incoming) {
                             pp(existing)
-                            let code = readField('code')
-                            let name = readField('name')
-                            pp('Executing type policies')
-                            return `${code}_${name}`
+                            pp(incoming)
                         }
                     }
                 }

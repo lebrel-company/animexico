@@ -1,10 +1,11 @@
 'use strict';
 // libraries:
-import React from 'react';
+import React, {useContext} from 'react';
 import {useState} from 'react';
 import {v4 as uuid} from 'uuid';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
+import {CartContext} from '../../context/CartContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -16,28 +17,8 @@ import {useMe} from '../../hooks/me.hook';
 var pp = (el) => console.log(el)
 //==============================================================================
 
-const mapOfAddresses = {
-    primary: {
-        city: 'Guadalajara',
-        state: 'Jalisco',
-        zipcode: '44600',
-        neighbourhood: 'Ladrón de Guevara',
-        street: 'Av. Mexico',
-        buildingNumber: '2286',
-        apartmentNumber: '1'
-    },
-    secondary: {
-        city: 'Queretaro',
-        state: 'Queretaro',
-        zipcode: '76165',
-        neighbourhood: 'Las Margaritas',
-        street: 'primavera',
-        buildingNumber: '87',
-        apartmentNumber: 'D 15'
-    }
-}
 
-const mapAddressFields = {
+const MAP_ADDRESS_FIELDS = {
     country: 'País',
     city: 'Ciudad',
     state: 'Estado',
@@ -50,7 +31,7 @@ const mapAddressFields = {
 
 
 export default function AddressPicker() {
-    var [address, setAddress] = useState('primary')
+    const cartState = useContext(CartContext)
     var {me, loading} = useMe()
 
     let colors = {
@@ -61,7 +42,7 @@ export default function AddressPicker() {
     function selectAddress(address) {
         return function (event) {
             event.preventDefault()
-            setAddress(address)
+            cartState.address.setter(address)
         }
     }
 
@@ -70,7 +51,7 @@ export default function AddressPicker() {
             direcciones...</div>
 
         if (me) {
-            let myAddress = me.mapOfAddresses[address]
+            let myAddress = me.mapOfAddresses[cartState.address.getter]
             let keys = _.remove(Object.keys(myAddress), (_k) => {
                 return _k !== '__typename'
             })
@@ -80,7 +61,7 @@ export default function AddressPicker() {
                 return (
                     <div key={uuid()}>
                         <div className="text-pale py-2 text-sm">
-                            {mapAddressFields[k]}:
+                            {MAP_ADDRESS_FIELDS[k]}:
                             <span className="font-bold pl-4">
                                 {myAddress[k]}
                             </span>

@@ -16,10 +16,17 @@ var pp = (el) => console.log(el)
 //==============================================================================
 
 
-export default function CartProduct({product}) {
+const TEXTS = {
+    subtotal: 'Subtotal',
+    pieces: 'Piezas'
+}
+
+
+export default function CartProduct(props) {
     let cartState = useContext(CartContext)
-    let [productData, setProductData] = useState(product)
-    let {price, name, thumbnail} = product
+    let [productData, setProductData] = useState(props.product)
+    let [atCheckout, setAtCheckout] = useState(props?.atCheckout || false)
+    let {price, name, thumbnail} = props.product
 
     function removeFromCart(e) {
         e.preventDefault()
@@ -29,8 +36,9 @@ export default function CartProduct({product}) {
 
     function __updateQuantity(e) {
         e.preventDefault()
+        e.stopPropagation()
         let newProduct = produce(productData, (p) => {
-            p.quantity = e.target.value
+            p.quantity = parseInt(e.target.value)
         })
         setProductData(newProduct)
         cartState.product.update(newProduct)
@@ -52,6 +60,7 @@ export default function CartProduct({product}) {
         return (
             <div className="text-md">
                 <select onChange={__updateQuantity}
+                        disabled={!cartState.timer.validCart.getter}
                         value={productData.quantity}>
                     {
                         listOfNumbers.map((i) => {
@@ -67,9 +76,9 @@ export default function CartProduct({product}) {
 
 
     return (
-        <div className="cart-card-product relative border shadow-md">
-            <div className="bg-cross h-full w-full absolute z-10"/>
-            <div className='p-2 relative z-20'>
+        <div className="cart-card-product">
+            <div className="card-background bg-cross"/>
+            <div className="p-2 relative z-20">
                 <div className="
             flex justify-between font-deco text-lg font-black items-center
             ">
@@ -78,19 +87,26 @@ export default function CartProduct({product}) {
                     </div>
                     <button
                         onClick={removeFromCart}
-                        className="
-                    bg-red text-white rounded px-2
-                    ">X
+                        className="bg-red text-white rounded px-2">X
                     </button>
                 </div>
                 <div className="flex font-simp flex items-center">
                     <div className="w-1/3">
-                        <img className="rounded border border-dark"
+                        <img className="thumbnail"
                              src={thumbnail}/>
                     </div>
-                    <div className="mx-8">
-                        <QuantityPicker limit={productData.purchaseLimit}/>
-                        <div className="text-lg p-2">
+                    <div className="mx-8 grid grid-cols-2 gap-2">
+                        <div>{TEXTS.pieces}</div>
+                        <div>{TEXTS.subtotal}</div>
+                        <div>
+                            {
+                                atCheckout ? <div>{productData.quantity}</div>
+                                    : <QuantityPicker
+                                        limit={productData.purchaseLimit}/>
+                            }
+                        </div>
+                        <div
+                            className="text-xl flex justify-center items-center">
                             {subtotal()}
                         </div>
                     </div>

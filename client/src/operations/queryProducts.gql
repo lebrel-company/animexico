@@ -1,11 +1,10 @@
 query queryAllAvailableProducts{
     queryAllAvailableProducts{
         id
-        name
         code
-        description
-        listOfImages
         purchaseLimit
+        name
+        listOfImages
         price{
             amount
             currency

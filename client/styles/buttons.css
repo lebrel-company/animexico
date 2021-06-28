@@ -3,10 +3,10 @@
     text-center
     px-4
     py-1
-    bg-gradient-to-tr
     border-2
     border-red
     border-opacity-0
+    bg-gradient-to-tr
     from-darkred
     to-midred
     text-pale
@@ -38,7 +38,6 @@
 .button-blue {
     @apply
     text-center
-    shadow-xl
     px-4
     py-1
     bg-gradient-to-tr
@@ -151,8 +150,7 @@
 
 .button-product-amount {
     @apply
-    w-4
-    h-4
+        px-2
     absolute
     right-1
     bg-red

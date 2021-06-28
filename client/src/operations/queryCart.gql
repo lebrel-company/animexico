@@ -1,5 +1,5 @@
-query queryCartWithToken{
-    queryCartWithToken{
+query queryCart{
+    queryCart{
         __typename
         ... on MyCart{
             status
@@ -7,7 +7,10 @@ query queryCartWithToken{
             cart{
                 id
                 idUser
-                timeout
+                timeout{
+                    start
+                    end
+                }
                 listOfProducts{
                     id
                     code

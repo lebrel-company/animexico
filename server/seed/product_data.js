@@ -17,7 +17,7 @@ export var listOfProducts = [
         },
         description: 'Dragon Ball Z figuart',
         code: '123456',
-        stock: 200,
+        stock: 10,
         available: true,
         publish: {
             date: '2021-04-13'
@@ -39,7 +39,7 @@ export var listOfProducts = [
         },
         description: 'Guts from Berserk',
         code: '12345',
-        stock: 323,
+        stock: 10,
         available: true,
         purchaseLimit: 1,
         publish: {
@@ -61,7 +61,7 @@ export var listOfProducts = [
         },
         description: 'Kenshing amazing figure',
         code: '12345678',
-        stock: 2343,
+        stock: 10,
         available: true,
         purchaseLimit: 5,
         publish: {
@@ -83,7 +83,7 @@ export var listOfProducts = [
         },
         description: 'Personaje de la serie Demon Slayer',
         code: '77777777',
-        stock: 60,
+        stock: 10,
         available: true,
         purchaseLimit: 1,
         publish: {
@@ -105,7 +105,7 @@ export var listOfProducts = [
         },
         description: 'Caballero Dorado',
         code: '2222222',
-        stock: 120,
+        stock: 10,
         available: true,
         purchaseLimit: 3,
         publish: {

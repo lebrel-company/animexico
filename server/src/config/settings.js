@@ -10,7 +10,7 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //==============================================================================
 
 var __settings = {
-    cartTimeout: 5000
+    cartTimeout: 200000
 }
 
 

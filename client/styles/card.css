@@ -1,8 +1,10 @@
 
 .card-product {
-    max-height: 400px;
-    height: 400px;
     @apply
+    h-80
+        shadow-md
+    max-w-xs
+    min-h-full
     bg-lightpale
     text-dark
     font-simp
@@ -18,21 +20,41 @@
     transform
     hover:scale-101
     hover:border-darkblue
-    hover:shadow-lg
+    hover:shadow-xl
     hover:border-opacity-40
 }
 
 .card-image {
-    max-height: 256px;
     @apply
     m-auto
+    max-h-60
+    rounded-md
 }
 
 
 .cart-card-product {
     @apply
+    relative
+    border
+    shadow-md
     rounded
     bg-lightpale
+}
+
+.cart-card-product .card-background {
+    @apply
+    h-full
+    w-full
+    absolute
+    z-10
+}
+
+.cart-card-product .thumbnail {
+    max-height: 150px;
+    @apply
+    rounded
+    border
+
 }
 
 .button-add {

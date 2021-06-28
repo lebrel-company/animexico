@@ -17,9 +17,11 @@ import Error401 from '../errors/401';
 import AddressPicker from './addressPicker'
 import CartProduct from './cartProduct';
 import Loading from '../loading';
+import CartPayment from './cartPayment';
+import CartTimeLeft from './cartTimeLeft';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import QUERY_CART from '../../operations/myCart.gql'
+import QUERY_CART from '../../operations/queryCart.gql'
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -35,55 +37,57 @@ export default function CartComponent() {
 
     function deleteCart(event) {
         event.preventDefault()
-        pp('Deleting cart')
-    }
-
-    if (!cartState.product.exists()) {
-        return (
-            <ClientLayout>
-                <div
-                    className="
-                    text-dark font-deco text-xl shadow-lg
-                    mx-auto container text-center font-bold
-                    bg-pale bg-opacity-80
-                ">
-                    No hay productos en tu carrito.
-                </div>
-            </ClientLayout>
-        )
-
+        cartState.deleteCart()
     }
 
     return (
         <ClientLayout>
-            <div className="container m-auto h-full flex items-center">
+
+            <div className="
+            container m-auto h-full flex flex-col items-center justify-center my-4
+            ">
+                {
+                    cartState.exists() ?
+                        <div className="my-2">
+                            <CartTimeLeft/>
+                        </div> : null
+                }
+
                 {
                     !authState.isAuthenticated() ? <Error401/>
                         : !cartState.exists() ? <NoProducts/>
                         : <div
-                            className="grid lg:grid-cols-3 gap-4 items-center h-full">
-                            <div>
-                                <AddressPicker/>
-                            </div>
-                            <div className="h-5/6 flex flex-col">
+                            className="
+                            grid md:grid-cols-2 md:gap-4 items-center h-full
+                            max-w-4xl
+                            ">
+                            <div className="md:h-5/6 flex flex-col">
                                 <div
-                                    className="overflow-y-scroll h-full">
-                                    {mapProducts(cartState.cart.listOfProducts)}
-                                </div>
-                                <div
-                                    className="w-full flex justify-center">
-                                    <button
-                                        onClick={deleteCart}
-                                        className="button-red mt-4">
-                                        {texts.deleteButton}
-                                    </button>
+                                    className="md:overflow-y-scroll h-full">
+                                    {
+                                        cartState?.cart?.listOfProducts &&
+                                        mapProducts(cartState.cart.listOfProducts)
+                                    }
                                 </div>
                             </div>
                             <div>
-                                <ContinueToPayment
-                                    total={cartState.total()}/>
+                                <div className="my-4">
+                                    <AddressPicker/>
+                                </div>
+                                <CartPayment total={cartState.total()}/>
                             </div>
                         </div>
+                }
+                {
+
+                    cartState.exists() ? <div
+                        className="w-full flex justify-center">
+                        <button
+                            onClick={deleteCart}
+                            className="button-red my-4">
+                            {texts.deleteButton}
+                        </button>
+                    </div> : null
                 }
             </div>
         </ClientLayout>
@@ -92,7 +96,11 @@ export default function CartComponent() {
 
 function NoProducts() {
     return (
-        <div className="text-xl font-bold font-deco">
+        <div
+            className="
+            text-xl font-bold font-deco bg-pale bg-opacity-70 w-full
+            text-center py-2 rounded-md shadow-xl
+            ">
             No tienes ningun producto en tu carrito.
         </div>
     )
@@ -109,36 +117,4 @@ function mapProducts(listOfProducts) {
     return result
 }
 
-function ContinueToPayment({total}) {
-    return (
-        <div
-            className="
-            bg-dark rounded-md text-pale font-simp p-8
-            flex flex-col justify-center text-center
-            ">
-            <div className="text-5xl">Total</div>
-            <div className="divide-y divide-pale">
-                <div className="text-3xl">
-                    {
-                        new Intl.NumberFormat(
-                            'es-MX',
-                            {style: 'currency', currency: 'MXN'}
-                        ).format(total)
-                    }
-                </div>
-                <div className="text-lg">Envio Incluido</div>
-            </div>
-            <div className="bg-pale bg-opacity-80 flex justify-center p-5">
-                <img src="/PaypalLogo.png"
-                     className="h-10"
-                />
-            </div>
-            <div className="pt-8">
-                <Link href="/checkout">
-                    <a className={`button-blue text-xl p-2`}>Continuar</a>
-                </Link>
-            </div>
-        </div>
-    )
-}
 

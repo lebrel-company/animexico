@@ -1,9 +1,19 @@
+scalar Date
+
+#---------------------------------------------------------------------------
+
 type Cart {
     id: ID
     idUser: ID
     Status: String
     listOfProducts: [CartProducts!]
-    timeout: Int
+    timeout: Timeout
+    createdAt: String
+}
+
+type Timeout {
+    start: Date
+    end: Date
 }
 
 type CartProducts {
@@ -18,18 +28,11 @@ type CartProducts {
 
 #---------------------------------------------------------------------------
 
-input CartInput{
-    listOfProducts: [CartProductInput!]!
-}
-
-input CartProductInput{
-    id: ID!
-    quantity: Int!
-}
 
 input DeleteCartInput{
     idUser: String
 }
+
 
 #---------------------------------------------------------------------------
 
@@ -50,16 +53,35 @@ type DeletedCart{
     message: String
 }
 
+
 #---------------------------------------------------------------------------
 
 union CartResult = MyCart | InvalidCart | DeletedCart
 
 #---------------------------------------------------------------------------
-extend type Mutation {
-    updateCart(input: CartInput!): CartResult
-    deleteCart: CartResult
+
+
+input CartProductInput{
+    idProduct: ID!
+    quantity: Int
 }
 
-extend type Query {
-    queryCartWithToken: CartResult
+
+#---------------------------------------------------------------------------
+
+extend type Mutation {
+    createCart(input: CartProductInput!): CartResult
+    deleteCart: DeletedCart
+    updateProductQuantity(input: CartProductInput!): CartResult
+    addProductToCart(input: CartProductInput!): CartResult
 }
+
+
+extend type Query {
+    queryCart: CartResult
+}
+
+
+
+
+

@@ -24,7 +24,7 @@ let CartProductSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        purchaseLimit:{
+        purchaseLimit: {
             type: Number,
             required: true
         },
@@ -53,6 +53,7 @@ let CartProductSchema = new mongoose.Schema({
 )
 
 
+
 export var CartSchema = new mongoose.Schema(
     {
         idUser: {
@@ -70,8 +71,14 @@ export var CartSchema = new mongoose.Schema(
             required: false
         },
         timeout: {
-            type: Number,
-            required: true
+            start: {
+                type: Number,
+                required: true
+            },
+            end: {
+                type: Number,
+                required: true
+            }
         }
     },
     {timestamps: true}

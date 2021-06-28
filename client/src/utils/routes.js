@@ -19,6 +19,10 @@ export var mapOfRoutes = {
         route: '/cart',
         text: 'Mi carrito'
     },
+    checkout: {
+        route: '/checkout',
+        text: 'Checkout'
+    },
     store: {
         route: '/store',
         text: 'Tienda'

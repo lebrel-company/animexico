@@ -6,6 +6,7 @@ import util from 'util'
 import chai from 'chai'
 import chaiGraphQL from 'chai-graphql'
 import _ from 'lodash'
+import mongoose from 'mongoose'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 import {ProductModel} from '../../src/types/product/product.model';
@@ -15,6 +16,7 @@ import {hostname, axiosConfig} from '../constants';
 import {dropAll} from '../cleanup';
 import {listOfProducts} from '../../seed/product_data';
 import {authData} from '../auth';
+import status from '../../src/utils/status';
 
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 chai.use(chaiGraphQL)
@@ -26,8 +28,8 @@ var should = chai.should
 export var CART = {
     mutations: {
         createCart: gql`
-            mutation updateCart($input: CartInput!){
-                updateCart(input: $input){
+            mutation createCart($input: CartProductInput!){
+                createCart(input: $input){
                     __typename
                     ... on MyCart{
                         status
@@ -35,7 +37,11 @@ export var CART = {
                         cart{
                             id
                             idUser
-                            timeout
+                            timeout{
+                                start
+                                end
+                            }
+
                             listOfProducts{
                                 id
                                 code
@@ -61,37 +67,26 @@ export var CART = {
     }
 }
 
+
 var goku = listOfProducts[0]
-var cartInput = {
-    listOfProducts: [
-        {
-            id: goku._id.toString(),
-            quantity: 1,
-            price: goku.price,
-            name: goku.name,
-            thumbnail: goku.listOfImages[0],
-            purchaseLimit: goku.purchaseLimit
-        }
-    ]
+
+var cartProductInput = {
+    idProduct: goku._id.toString(),
+    quantity: 1
 }
 
 describe('CART', function cartTests() {
-    before(async function _before() {
-    })
 
     beforeEach(async function () {
-        dropAll()
+        await dropAll()
+        let _listOfProducts = _.cloneDeep(listOfProducts)
+        await ProductModel.insertMany(_listOfProducts)
     })
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
     it('NO-AUTH.Cart: Reject cart creation.', async function () {
-        let _listOfProducts = _.cloneDeep(listOfProducts)
-        try {
-            await ProductModel.insertMany(_listOfProducts)
-        } catch (_e) {
-            pp(_e.message)
-        }
+
         var res;
         try {
             res = await axios.post(
@@ -99,14 +94,15 @@ describe('CART', function cartTests() {
                 {
                     query: CART.mutations.createCart,
                     variables: {
-                        input: {...cartInput}
+                        input: cartProductInput
                     }
                 },
                 axiosConfig
             )
         } catch (_e) {
-            pp(_e.message)
+            pp(_e.response.data)
         }
+
         assert.graphQLError(res.data)
         expect(res.data.errors[0].message).to.be.equal('Not authorized')
     })
@@ -114,26 +110,25 @@ describe('CART', function cartTests() {
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
-    it('CL-AUTH.Cart: Successful cart creation', async function () {
+    it('CL-AUTH.Cart: Successful cart creation.', async function () {
         var CLIENT_AUTH_CONFIG = _.cloneDeep(axiosConfig)
         let {token} = await authData()
         CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
-        let _listOfProducts = _.cloneDeep(listOfProducts)
         let res;
         try {
-            await ProductModel.insertMany(_listOfProducts)
             res = await axios.post(
                 hostname,
                 {
                     query: CART.mutations.createCart,
                     variables: {
-                        input: {...cartInput}
+                        input: cartProductInput
                     }
                 },
                 CLIENT_AUTH_CONFIG
             )
         } catch (_e) {
-            pp(_e.message)
+            pp(_e)
+            pp(_e.response.data)
         }
 
         assert.graphQL(res.data)
@@ -141,21 +136,19 @@ describe('CART', function cartTests() {
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
-    it('CL-AUTH.Cart: Cart already exists', async function () {
+    it('CL-AUTH.Cart: Cart already exists.', async function () {
         var CLIENT_AUTH_CONFIG = _.cloneDeep(axiosConfig)
         let {token} = await authData()
         CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
-        let _listOfProducts = _.cloneDeep(listOfProducts)
         let res_01;
         let res_02;
         try {
-            await ProductModel.insertMany(_listOfProducts)
             res_01 = await axios.post(
                 hostname,
                 {
                     query: CART.mutations.createCart,
                     variables: {
-                        input: {...cartInput}
+                        input: cartProductInput
                     }
                 },
                 CLIENT_AUTH_CONFIG
@@ -165,16 +158,23 @@ describe('CART', function cartTests() {
                 {
                     query: CART.mutations.createCart,
                     variables: {
-                        input: {...cartInput}
+                        input: cartProductInput
                     }
                 },
                 CLIENT_AUTH_CONFIG
             )
         } catch (_e) {
-            pp(_e.message)
+            pp(_e.response.data)
         }
 
-        expect(res_01.data).to.deep.equal(res_02.data)
+        assert.graphQLSubset(
+            res_02.data,
+            {
+                createCart: {
+                    status: status.invalid
+                }
+            }
+        )
     })
 })
 

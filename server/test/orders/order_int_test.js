@@ -75,7 +75,9 @@ describe('ORDER.CREATION', function () {
         CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
     })
 
-    it('NO-AUTH.Order: Reject create order',
+    // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
+
+    it('NO-AUTH.Order: Reject create order.',
         async () => {
             let _listOfProducts = _.cloneDeep(listOfProducts)
             var res;
@@ -108,7 +110,9 @@ describe('ORDER.CREATION', function () {
         return result
     }
 
-    it('CL-AUTH.Order: Succesfully create order',
+    // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
+
+    it('CL-AUTH.Order: Succesfully create order.',
         async function userAuthenticatedOrderCreation() {
             let _listOfProducts = _.cloneDeep(listOfProducts)
             var _fetchedListOfProducts;
@@ -192,7 +196,9 @@ describe('ORDER.CREATION', function () {
         }
     )
 
-    it('CL-AUTH.Order: Reject order creation for product amount over the allowed limit',
+    // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
+
+    it('CL-AUTH.Order: Reject order for product amount over the allowed limit',
         async function rejectOrderWithProductsOverTheLimit() {
             let _listOfProducts = _.cloneDeep(listOfProducts)
             try {
@@ -237,6 +243,8 @@ describe('ORDER.CREATION', function () {
         }
     )
 
+    // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
+
     it('CL-AUTH.Order: Reject order creation for out of stock products',
         async function rejectOrderOutOfStock() {
             let _listOfProducts = _.cloneDeep(listOfProducts)
@@ -251,7 +259,9 @@ describe('ORDER.CREATION', function () {
             await ProductModel.create(listOfOutOfStockProducts)
 
             let _u = await UserModel.findOne({email: mapUserRegister.email})
-            let _mapOfOrderProducts = await createMapOfProducts(_listOfProducts, 5)
+            let _mapOfOrderProducts = (
+                await createMapOfProducts(_listOfProducts, 5)
+            )
             var res;
             try {
                 res = await axios.post(

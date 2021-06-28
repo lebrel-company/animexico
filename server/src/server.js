@@ -3,6 +3,7 @@
 const {ApolloServer} = require('apollo-server')
 const {merge} = require('lodash')
 import util from 'util'
+import {dateScalar} from './types/cart/date.type';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -43,12 +44,13 @@ export async function Server() {
             user,
             order,
             address,
-            file
+            file,
+            {Date: dateScalar}
         ),
         context: ({req, connection}) => {
             let token = req.headers.authorization
 
-            if (!token){
+            if (!token) {
                 return {userInfo: null}
             }
 

@@ -2,7 +2,8 @@
 // libraries:
 import Link from 'next/link';
 import {v4 as uuidv4} from 'uuid';
-import {useContext} from 'react';
+import {useContext, useEffect} from 'react';
+import {useQuery} from '@apollo/client'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {AuthContext} from '../context/AuthContext';
@@ -15,6 +16,7 @@ import {CartContext} from '../context/CartContext';
 // project:
 import {mapOfRoutes} from '../utils/routes'
 import {generalButtons} from '../utils/buttons/general';
+import QUERY_CART from '../operations/queryCart.gql';
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -24,7 +26,6 @@ export default function Header() {
     var authState = useContext(AuthContext)
     var cartState = useContext(CartContext)
     var listOfMenuLinks = ['homepage', 'store', 'faqs'];
-
 
     if (authState.isAuthenticated()) listOfMenuLinks.push('profile');
     return (
@@ -54,14 +55,18 @@ export default function Header() {
 
 function createAuthButtons(authState, cartState) {
 
-    function logout(e) {
+    async function logout(e) {
         e.preventDefault()
+        await cartState.deleteCart()
         authState.logout()
-        cartState.deleteCart()
     }
 
     function productAmount() {
         return cartState.product.amount()
+    }
+
+    function timeLeft() {
+        return cartState.timer.timeLeft !== 0
     }
 
 
@@ -76,12 +81,17 @@ function createAuthButtons(authState, cartState) {
                                     `${generalButtons.cart.text}`
                                     : `${generalButtons.cart.text}`
                             }
-                            {
-                                productAmount() ? <div
-                                    className="button-product-amount
-                                ">{`${productAmount()}`}
-                                </div> : null
-                            }
+                            <div>
+                                {
+                                    productAmount() && timeLeft() ?
+                                        <div className="button-product-amount">
+                                            {
+                                                `${productAmount()} 
+                                                ${cartState.timer.format}`
+                                            }
+                                        </div> : null
+                                }
+                            </div>
                         </button>
                     </Link>
                 </div>

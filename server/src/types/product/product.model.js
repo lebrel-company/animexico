@@ -13,7 +13,11 @@ export var PublishSchema = mongoose.Schema({
         required: true,
         trim: true
     }
-})
+},
+    {
+        _id: false
+    }
+)
 
 export var ProductPriceSchema = mongoose.Schema({})
 
@@ -23,6 +27,25 @@ PublishSchema.virtual('month').get(function releaseMonth() {
     }
 )
 
+export var InCartProductsSchema = new mongoose.Schema({
+        idUser: {
+            type: mongoose.ObjectId,
+            required: true,
+            unique: true
+        },
+        quantity: {
+            type: Number,
+            required: true
+        },
+        timestamp: {
+            type: Date,
+            required: true
+        }
+    },
+    {
+        _id: false
+    }
+)
 
 var ProductSchema = mongoose.Schema({
         name: {
@@ -79,6 +102,10 @@ var ProductSchema = mongoose.Schema({
             type: String,
             required: false,
             trim: true
+        }],
+        inCarts: [{
+            type: InCartProductsSchema,
+            required: false
         }]
 
     },

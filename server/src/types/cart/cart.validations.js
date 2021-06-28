@@ -4,12 +4,15 @@ import util from 'util'
 import {ProductModel} from '../product/product.model';
 import _ from 'lodash';
 import produce from 'immer'
+import {DateTime} from 'luxon'
+import mongoose from 'mongoose'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import status from '../../utils/status';
 import {globalSettings} from '../../config/settings';
+import {CartModel} from './cart.model';
 
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 
@@ -20,175 +23,156 @@ var fields = {
     product: ['id', 'code', 'name', 'price', 'quantity', 'purchaseLimit', 'listOfImages']
 }
 
-export function validateCart(nextResolver) {
-    return context(validateListOfProducts(nextResolver))
+export function validateCartCreation(nextResolver) {
+    return validateCartMustNotExistPreviously(
+        validateProduct(
+            validateProductExists(nextResolver)
+        )
+    )
 }
 
+export function validateCartProductUpdate(nextResolver) {
+    return validateProduct(
+        validateProductExists(validateInCartRegisterForUser(nextResolver))
+    )
+}
 
-function __validateArguments(args) {
-    let listOfProducts = _.get(args, ['input', 'listOfProducts'])
-    if (!listOfProducts) {
-        return {
-            status: status.invalid,
-            message: status.messages.cart.update.invalid,
-            listOfErrors: ['There is no list of products in your request.']
+export function validateAddCartToProduct(nextResolver) {
+    return validateProduct(validateProductExists(nextResolver)
+    )
+}
+
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   -
+
+function validateCartMustNotExistPreviously(nextResolver) {
+
+    return async function (parent, args, context, info) {
+
+        let idUser = context.userInfo.id
+        let {idProduct} = args.input
+
+        let cartExists = await CartModel.exists({idUser: idUser})
+        let existsInProduct = await ProductModel.exists(
+            {_id: idProduct, 'inCarts.idUser': idUser}
+        )
+
+        if (cartExists) {
+            return {
+                status: status.invalid,
+                message: status.messages.cart.creation.invalid,
+                listOfErrors: [
+                    `Cart for User ${context.userInfo.id} already exists.`
+                ]
+            }
         }
-    } else {
-        return {
-            status: status.success,
-            listOfProducts: listOfProducts
+
+        if (existsInProduct) {
+            return {
+                status: status.invalid,
+                message: status.messages.cart.creation.invalid,
+                listOfErrors: [
+                    `Register for ${idUser} already ` +
+                    `exists in product ${idProduct}.`
+                ]
+            }
         }
+
+        return nextResolver(parent, args, context, info)
     }
 }
 
-function hydrateContext(context, data) {
-    let ctx = _.cloneDeep(context)
-    return _.assign(ctx, data)
+// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   -
+
+function validateProduct(nextResolver) {
+    return async function resolver(parent, args, context, info) {
+        let listOfErrors = []
+        let {idProduct, quantity} = args.input
+
+        let product = await ProductModel.findById(idProduct)
+
+        if (product === null) {
+            listOfErrors.push('Product does\'t exists.')
+        }
+
+        listOfErrors = _.concat(
+            listOfErrors, validateProductStock(product, quantity)
+        )
+
+        if (listOfErrors.length > 0) {
+            return {
+                status: status.invalid,
+                message: status.messages.cart.creation.invalid,
+                listOfErrors: listOfErrors
+            }
+        }
+
+        context.product = product
+
+        return nextResolver(parent, args, context, info)
+
+    }
 }
 
-function hydrateProducts(listOfProducts, listOfStoreProducts) {
-    let result = []
+function validateProductExists(nextResolver) {
+    return async function (parent, args, context, info) {
 
-    listOfProducts.forEach((inputProduct) => {
-        listOfStoreProducts.forEach((storeProduct) => {
-                if (storeProduct._id.toString() === inputProduct.id.toString()) {
-                    inputProduct.code = storeProduct.code
-                    inputProduct.name = storeProduct.name
-                    inputProduct.price = storeProduct.price
-                    inputProduct.purchaseLimit = storeProduct.purchaseLimit
-                    inputProduct.thumbnail = storeProduct.listOfImages[0]
-                }
+        let {idProduct} = args.input
+
+        let productExists = await ProductModel.exists({_id: idProduct})
+
+        if (productExists) {
+            return nextResolver(parent, args, context, info)
+        }
+
+        return {
+            status: status.invalid,
+            message: status.messages.cart.updateProduct.invalid,
+            listOfErrors: [`Product ${idProduct} doesn\'t exists`]
+        }
+
+    }
+}
+
+function validateInCartRegisterForUser(nextResolver) {
+    return async function (parent, args, context, info) {
+        let {idProduct} = args.input
+        let idUser = context.userInfo.id
+
+        let registerExists = await ProductModel.exists(
+            {
+                _id: mongoose.Types.ObjectId(idProduct),
+                'inCarts.idUser': mongoose.Types.ObjectId(idUser)
             }
         )
-        result.push(inputProduct)
-    })
 
+        if (registerExists) {
+            return nextResolver(parent, args, context, info)
+        }
+
+        return {
+            status: status.error,
+            message: status.messages.cart.updateProduct.invalid,
+            listOfErrors: [
+                `There is no product.inCarts register for ` +
+                `product ${idProduct} and user ${idUser}`
+            ]
+        }
+
+    }
+}
+
+function validateProductStock(storeProduct, quantity) {
+    let result = []
+    let productExists = storeProduct !== null
+
+    if (productExists && storeProduct.stock < quantity) {
+        result.push('Not enough stock')
+    }
+
+    if (productExists && quantity > storeProduct.purchaseLimit) {
+        result.push('Quantity over the purchase limit per unit.')
+    }
 
     return result
 }
 
-
-function context(nextResolver) {
-    return async function resolver(parent, args, context, info) {
-        let _argsVal = __validateArguments(args)
-        if (_argsVal.status === status.invalid) return _argsVal
-
-        let {listOfProducts} = _argsVal
-        let listOfProductIds = _.map(listOfProducts, (el) => {
-            return {id: el.id}
-        })
-
-        let listOfProductsInStore = await ProductModel.find(
-            {'_id': {$in: _.map(listOfProductIds, p => p.id)}}, fields.product
-        ).lean()
-
-
-        listOfProducts = hydrateProducts(listOfProducts, listOfProductsInStore)
-
-        let data = {
-            newCartData: {listOfProducts},
-            newCartIds: listOfProductIds,
-            listOfProductsInStore: listOfProductsInStore,
-            cart: null,
-            listOfErrors: []
-        }
-
-        context = hydrateContext(context, data);
-
-        return nextResolver(parent, args, context, info)
-    }
-}
-
-
-
-
-function validateListOfProducts(nextResolver) {
-    return async function resolver(parent, args, context, info) {
-        let ctx = _.cloneDeep(context)
-        let listOfProductsInStore = ctx.listOfProductsInStore
-        let listOfNewCartProducts = ctx.newCartData.listOfProducts
-
-
-        let result = [] // Stands for listOfErrors
-        result = _.concat(
-            result,
-            productExists(listOfProductsInStore, listOfNewCartProducts)
-        )
-        result = _.concat(
-            result,
-            productStock(listOfProductsInStore, listOfNewCartProducts)
-        )
-        result = _.concat(
-            result,
-            productPurchaseLimit(listOfProductsInStore, listOfNewCartProducts)
-        )
-
-        context.listOfErrors = _.concat(context.listOfErrors, result)
-
-        return nextResolver(parent, args, context, info)
-
-    }
-}
-
-function productExists(listOfProductsInStore, listOfNewCartProducts) {
-    let _storeIds = _.map(listOfProductsInStore, (p) => {
-        p._id
-    })
-    let _newCartIds = _.map(listOfNewCartProducts, (p) => {
-        p._id
-    })
-
-    let listOfDifferentIds = _.difference(_storeIds, _newCartIds)
-
-    if (!listOfDifferentIds) return []
-
-    let listOfErrors = []
-    listOfDifferentIds.forEach((_id) => {
-        listOfNewCartProducts.forEach((p) => {
-            p._id === _id ?
-                listOfErrors.push(
-                    `${p._id} ${p.name} does not exists.`
-                ) : null
-        })
-    })
-
-    return listOfErrors
-
-}
-
-function productStock(listOfProductsInStore, listOfNewCartProducts) {
-    let listOfErrors = []
-    listOfProductsInStore.forEach((storeProduct) => {
-        listOfNewCartProducts.forEach((newProduct) => {
-            if (
-                storeProduct._id === newProduct._id &&
-                storeProduct.stock < newProduct.quantity
-            ) {
-                listOfErrors.push('Not enough pieces in stock')
-            }
-            listOfErrors.push()
-        })
-    })
-
-    return listOfErrors
-}
-
-function productPurchaseLimit(listOfProductsInStore, listOfNewCartProducts) {
-    let listOfErrors = []
-    listOfProductsInStore.forEach((storeProduct) => {
-        listOfNewCartProducts.forEach((newProduct) => {
-            if (
-                storeProduct._id === newProduct.id.toString() &&
-                storeProduct.purchaseLimit < newProduct.quantity
-            ) {
-                listOfErrors.push('Exceeding limit on allowed pieces')
-            }
-            listOfErrors.push()
-        })
-    })
-    return listOfErrors
-}
-
-export var cartProductValidation = {
-    productStock, productPurchaseLimit, productExists
-}

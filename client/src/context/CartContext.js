@@ -4,6 +4,7 @@ import _ from 'lodash'
 import {useState, createContext, useEffect, useContext} from 'react';
 import produce from 'immer'
 import {useQuery, useMutation, gql} from '@apollo/client'
+import {DateTime, Duration} from 'luxon'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {AuthContext} from './AuthContext';
@@ -13,8 +14,9 @@ import {AuthContext} from './AuthContext';
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import QUERY_CART from '../operations/myCart.gql'
+import QUERY_CART from '../operations/queryCart.gql'
 import UPDATE_CART from '../operations/updateCart.gql'
+import DELETE_CART from '../operations/deleteCart.gql'
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -22,8 +24,6 @@ var pp = (el) => console.log(el)
 
 export const CartContext = createContext();
 const Provider = CartContext.Provider
-
-// const DELETE_CART =
 
 
 var status = {
@@ -42,54 +42,118 @@ export function CartProvider(props) {
     var cartField = 'cart'
     let authState = useContext(AuthContext)
     const [cart, setCart] = useState({})
+    const [address, setAddress] = useState('primary')
+    const [timeLeft, setTimeLeft] = useState(20)
+    const [activateTimer, setActivateTimer] = useState(false)
+    const [formatTime, setFormatTime] = useState('')
+    const [validCart, setValidCart] = useState(true)
 
-    let {loading, error, data} = useQuery(
+    let [updateCart] = useMutation(UPDATE_CART, {
+        onCompleted: function (data) {
+            onCompletedCartResolver(data)
+        }
+    })
+    let [deleteCart] = useMutation(DELETE_CART)
+
+    let {loading, error, data, refetch} = useQuery(
         QUERY_CART,
         {
             onCompleted: function _onCompleted(data) {
-                if (data.queryCartWithToken.status === 'success') {
-                    localStorage.setItem(
-                        cartField,
-                        JSON.stringify(data.queryCartWithToken.cart)
-                    )
-                    setCart(data.queryCartWithToken.cart)
-                } else {
-                    localStorage.removeItem(cartField)
-                }
+                onCompletedCartResolver(data)
             }
         }
     )
 
-    useEffect(() => {
-        populateCart()
-    }, [])
+    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
+    function onCompletedCartResolver(data) {
+        let __data = data.queryCart ? data.queryCart : data.updateCart
+
+        if (__data.status === 'success') {
+            localStorage.setItem(
+                cartField, JSON.stringify(__data.cart)
+            )
+            setCart(__data.cart)
+            setTimeLeft(
+                millisToSeconds(__data.cart.timeout.end - DateTime.now().ts)
+            )
+        } else {
+            localStorage.removeItem(cartField)
+        }
+        setActivateTimer(true)
+    }
+
+    function millisToSeconds(millis) {
+        return (Math.floor(millis * 0.001))
+    }
+
+    useEffect(
+        async function triggerTimer() {
+            if (activateTimer === true) {
+                let _timeLeft;
+                const _id = setInterval(async function () {
+                    setTimeLeft(
+                        function (prevState) {
+                            let newState = prevState - 1
+                            _timeLeft = newState
+                            return prevState - 1
+                        }
+                    )
+                    setFormatTime(__formatTime(_timeLeft))
+                    if (_timeLeft <= 0) {
+                        clearInterval(_id)
+                        await __deleteCart()
+                    }
+
+                }, 1000)
+            }
+        }, [activateTimer])
+
+    function __formatTime(seconds) {
+        let timer = Duration.fromMillis(seconds * 1000)
+        if (seconds < 1) {
+            return '00:00'
+        } else {
+            return timer.toFormat('m:ss')
+        }
+    }
+
+
+    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
     function populateCart() {
         let _cart = localStorage.getItem(cartField)
+
         if (_cart !== null) {
             setCart(JSON.parse(_cart))
         }
     }
 
 
-    let [updateCart] = useMutation(UPDATE_CART, {
-        onCompleted: function updateContext(data) {
-            pp(data)
+    async function __deleteCart() {
+        if (typeof localStorage !== 'undefined') {
+            setCart({})
+            localStorage.removeItem(cartField)
         }
-    })
 
+        try {
+            let result = await deleteCart()
+            return result
+        } catch (_e) {
+            pp(_e)
+        }
 
-    function deleteCart() {
-        setCart({})
-        localStorage.removeItem(cartField)
     }
 
+
     function cartExists() {
-        let _cart = localStorage.getItem(cartField)
-        if (!_cart) {
-            return false
+        if (typeof localStorage !== 'undefined') {
+            let _cart = localStorage.getItem(cartField)
+            if (!_cart) {
+                return false
+            }
+            return true
         }
-        return true
     }
 
     function updateProduct(next) {
@@ -114,12 +178,19 @@ export function CartProvider(props) {
                 message: null
             }
             let _cart = _.cloneDeep(cart)
+
             let productInCart = false
-            _cart.listOfProducts.forEach((p) => {
-                if (p.id.toString() === product.id.toString()) {
-                    productInCart = true
-                }
-            })
+
+            if (_.has(_cart, 'listOfProducts')) {
+                _cart.listOfProducts.forEach((p) => {
+                    if (p.id.toString() === product.id.toString()) {
+                        productInCart = true
+                    }
+                })
+            } else {
+                _cart.listOfProducts = []
+                _cart.idUser = authState.authState.userInfo.id
+            }
 
             if (!productInCart) {
                 _cart.listOfProducts.push({
@@ -136,7 +207,6 @@ export function CartProvider(props) {
                 result.message = status.messages.addProduct.exists
                 result.status = status.success
             }
-
             next(_cart)
             return result
         }
@@ -160,6 +230,12 @@ export function CartProvider(props) {
     }
 
     async function __updateStateAndStorage(nextState) {
+
+        if (nextState.listOfProducts.length === 0) {
+            return await __deleteCart()
+
+        }
+
         setCart(nextState)
 
         let _input = {listOfProducts: []}
@@ -171,6 +247,28 @@ export function CartProvider(props) {
         let newCart = await updateCart({
             variables: {
                 input: _input
+            },
+            update: function (cache, mutationResult) {
+                let __data = mutationResult.data
+
+                let existingCart = cache.readQuery({
+                    query: QUERY_CART
+                })
+
+                let listOfNewProducts = __data.updateCart.cart.listOfProducts
+
+                let updatedCart = produce(existingCart, (draft) => {
+                    if (draft.queryCart?.cart?.listOfProducts) {
+                        draft.queryCart.cart.listOfProducts = listOfNewProducts
+                    }
+                })
+                cache.writeQuery({
+                    query: QUERY_CART,
+                    data: {
+                        queryCart: updatedCart.queryCart
+                    }
+                })
+
             }
         })
         localStorage.removeItem(cartField)
@@ -218,11 +316,23 @@ export function CartProvider(props) {
     return (
         <Provider value={{
             cart: cart,
-            update: updateCart,
-            deleteCart: deleteCart,
+            cartField: cartField,
+            setCartState: setCart,
+            deleteCart: __deleteCart,
             exists: cartExists,
             total: total,
-            populateCart: populateCart,
+            timer: {
+                timeLeft: timeLeft,
+                format: formatTime,
+                validCart: {
+                    getter: validCart,
+                    setter: setValidCart
+                }
+            },
+            address: {
+                setter: setAddress,
+                getter: address
+            },
             product: {
                 exists: hasProducts,
                 inCart: productInCart,
