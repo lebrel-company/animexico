@@ -131,30 +131,25 @@ function ImageScroll(props) {
 
     return (
         <div>
-            <div
-                className={`
-                `}
-            >
-                <Slider {...settings}>
-                    {
-                        listOfImages.map(
-                            (_img) => {
-                                return (
-                                    <img
-                                        key={uuidv4()}
-                                        className={`
+            <Slider {...settings}>
+                {
+                    listOfImages.map(
+                        (_img) => {
+                            return (
+                                <img
+                                    key={uuidv4()}
+                                    className={`
                                         md:w-72 h-72 block m-auto rounded-md 
                                         object-contain 
                                     `}
-                                        src={_img}
-                                        alt=""
-                                    />
-                                )
-                            }
-                        )
-                    }
-                </Slider>
-            </div>
+                                    src={_img}
+                                    alt=""
+                                />
+                            )
+                        }
+                    )
+                }
+            </Slider>
         </div>
     )
 }

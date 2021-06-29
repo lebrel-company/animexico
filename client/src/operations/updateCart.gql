@@ -1,5 +1,5 @@
-mutation createcart($input: CartInput!){
-    updateCart(input: $input){
+mutation createcart($input: CartProductInput!){
+    createCart(input: $input){
         __typename
         ... on MyCart{
             status

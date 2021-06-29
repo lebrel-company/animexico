@@ -15,7 +15,7 @@ import {AuthContext} from './AuthContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import QUERY_CART from '../operations/queryCart.gql'
-import UPDATE_CART from '../operations/updateCart.gql'
+import CREATE_CART from '../operations/updateCart.gql'
 import DELETE_CART from '../operations/deleteCart.gql'
 
 var pp = (el) => console.log(el)
@@ -48,7 +48,7 @@ export function CartProvider(props) {
     const [formatTime, setFormatTime] = useState('')
     const [validCart, setValidCart] = useState(true)
 
-    let [updateCart] = useMutation(UPDATE_CART, {
+    let [__createCart] = useMutation(CREATE_CART, {
         onCompleted: function (data) {
             onCompletedCartResolver(data)
         }
@@ -67,7 +67,7 @@ export function CartProvider(props) {
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
     function onCompletedCartResolver(data) {
-        let __data = data.queryCart ? data.queryCart : data.updateCart
+        let __data = data.queryCart ? data.queryCart : data.createCart
 
         if (__data.status === 'success') {
             localStorage.setItem(
@@ -244,7 +244,7 @@ export function CartProvider(props) {
             _input.listOfProducts.push({id: p.id, quantity: p.quantity})
         })
 
-        let newCart = await updateCart({
+        let newCart = await __createCart({
             variables: {
                 input: _input
             },
@@ -255,7 +255,7 @@ export function CartProvider(props) {
                     query: QUERY_CART
                 })
 
-                let listOfNewProducts = __data.updateCart.cart.listOfProducts
+                let listOfNewProducts = __data.createCart.cart.listOfProducts
 
                 let updatedCart = produce(existingCart, (draft) => {
                     if (draft.queryCart?.cart?.listOfProducts) {

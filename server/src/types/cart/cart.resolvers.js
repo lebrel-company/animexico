@@ -77,8 +77,7 @@ async function createCart(parent, args, context, info) {
     }
 }
 
-
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   -
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
 
 async function queryCart(parent, args, context, info) {
     let idUser = context.userInfo.id
@@ -102,25 +101,19 @@ async function queryCart(parent, args, context, info) {
     }
 }
 
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
+
 async function deleteCart(parent, args, context, input) {
     let idUser = context.userInfo.id
 
-    try {
-        let cart = await CartModel.findOneAndDelete({idUser})
-        if (cart) {
-            return {
-                status: status.deleted,
-                message: status.messages.cart.delete.exists
-            }
-        } else {
-            return {
-                status: status.deleted,
-                message: status.messages.cart.delete.notExists
-            }
+    let listOfProducts = await ProductModel.find(
+        {
+            'inCarts.idUser': idUser
         }
-    } catch (_e) {
-        throw Error(_e.message)
-    }
+    )
+
+    pp(listOfProducts)
+
 }
 
 //=============================================================================

@@ -71,7 +71,7 @@ input CartProductInput{
 
 extend type Mutation {
     createCart(input: CartProductInput!): CartResult
-    deleteCart: DeletedCart
+    deleteCart: CartResult
     updateProductQuantity(input: CartProductInput!): CartResult
     addProductToCart(input: CartProductInput!): CartResult
 }

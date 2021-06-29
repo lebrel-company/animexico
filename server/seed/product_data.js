@@ -85,7 +85,7 @@ export var listOfProducts = [
         code: '77777777',
         stock: 10,
         available: true,
-        purchaseLimit: 1,
+        purchaseLimit: 3,
         publish: {
             date: '2021-05-13'
         },
