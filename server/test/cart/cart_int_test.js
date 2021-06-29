@@ -65,6 +65,12 @@ export var CART = {
                     ... on DeletedCart{
                         status
                         message
+                        listOfProducts{
+                            id
+                            code
+                            purchaseLimit
+                            name
+                        }
                     }
                 }
             }
@@ -84,6 +90,12 @@ export var CART = {
                     ... on DeletedCart{
                         status
                         message
+                        listOfProducts{
+                            id
+                            code
+                            purchaseLimit
+                            name
+                        }
                     }
                 }
             }
@@ -213,17 +225,11 @@ describe('CART', function cartTests() {
         let res;
         let _listOfProducts = await ProductModel.find({})
 
-        _listOfProducts.forEach((el) => {
-            pp(`${el._id.toString()} - ${el.name}`)
-        })
 
         let idGuts = listOfProducts[1]._id.toString()
         let idKenshin = listOfProducts[2]._id.toString()
 
         try {
-            pp('Inside try:')
-            pp(idGuts)
-            pp(idKenshin)
             await axios.post(
                 hostname,
                 {
@@ -267,20 +273,21 @@ describe('CART', function cartTests() {
                 CLIENT_AUTH_CONFIG
             )
 
+
             //-     -     -     -     -     -     -     -     -     -     -   -
 
-            // await axios.post(
-            //     hostname,
-            //     {
-            //         query: CART_PRODUCTS.mutations.updateProductQuantity,
-            //         variables: {
-            //             input: {
-            //                 idProduct: listOfProducts[2]._id.toString(),
-            //                 quantity: 4
-            //             }
-            //         }
-            //     }
-            // )
+            await axios.post(
+                hostname,
+                {
+                    query: CART_PRODUCTS.mutations.updateProductQuantity,
+                    variables: {
+                        input: {
+                            idProduct: listOfProducts[2]._id.toString(),
+                            quantity: 4
+                        }
+                    }
+                }
+            )
 
             // -     -     -     -     -     -     -     -     -     -     -   -
 
@@ -295,7 +302,7 @@ describe('CART', function cartTests() {
         } catch (_e) {
             pp(_e.response.data)
         }
-        pp(res.data)
+
 
         let listOfProductsInStore = await ProductModel.find({})
         listOfProductsInStore.forEach((p) => {

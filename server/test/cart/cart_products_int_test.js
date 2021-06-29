@@ -65,6 +65,49 @@ export var CART_PRODUCTS = {
                 }
             }
         `.loc.source.body,
+        removeProductFromCart: gql`
+            mutation removeProductFromCart($input: CartProductInput!){
+                removeProductFromCart(input: $input){
+                    __typename
+                    ... on MyCart{
+                        status
+                        message
+                        cart{
+                            id
+                            idUser
+                            timeout{
+                                start
+                                end
+                            }
+                            listOfProducts{
+                                id
+                                code
+                                purchaseLimit
+                                name
+                                thumbnail
+                                price{
+                                    amount
+                                    currency
+                                }
+                                quantity
+                            }
+                        }
+                    }
+                    ... on InvalidCart{
+                        status
+                        message
+                        listOfErrors
+                    },
+                    ... on DeletedCart{
+                        status
+                        message
+                        listOfProducts{
+                            name
+                        }
+                    }
+                }
+            }
+        `.loc.source.body,
         updateProductQuantity: gql`
             mutation updateProductQuantity($input: CartProductInput!){
                 updateProductQuantity(input: $input){
@@ -149,39 +192,39 @@ describe('CART.PRODUCTS', function () {
 
     // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
 
-    // it('CL-AUTH.Cart: Add product.', async () => {
-    //     let res;
-    //     try {
-    //         res = await axios.post(
-    //             hostname,
-    //             {
-    //                 query: CART_PRODUCTS.mutations.addProductToCart,
-    //                 variables: {
-    //                     input: {...gutsAsInput}
-    //                 }
-    //             },
-    //             CLIENT_AUTH_CONFIG
-    //         )
-    //
-    //     } catch (_e) {
-    //         pp(_e.response.data)
-    //     }
-    //
-    //     let product = await ProductModel.findOne(
-    //         {_id: gutsAsInput.idProduct}
-    //     )
-    //
-    //     expect(product.stock).to.be.equal(9)
-    //
-    //     assert.graphQLSubset(
-    //         res.data,
-    //         {
-    //             addProductToCart: {
-    //                 status: status.success
-    //             }
-    //         }
-    //     )
-    // })
+    it('CL-AUTH.Cart: Add product.', async () => {
+        let res;
+        try {
+            res = await axios.post(
+                hostname,
+                {
+                    query: CART_PRODUCTS.mutations.addProductToCart,
+                    variables: {
+                        input: {...gutsAsInput}
+                    }
+                },
+                CLIENT_AUTH_CONFIG
+            )
+
+        } catch (_e) {
+            pp(_e.response.data)
+        }
+
+        let product = await ProductModel.findOne(
+            {_id: gutsAsInput.idProduct}
+        )
+
+        expect(product.stock).to.be.equal(9)
+
+        assert.graphQLSubset(
+            res.data,
+            {
+                addProductToCart: {
+                    status: status.success
+                }
+            }
+        )
+    })
 
     // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
 
@@ -267,6 +310,102 @@ describe('CART.PRODUCTS', function () {
         expect(cart03.listOfProducts[0].quantity).to.be.equal(2)
 
         //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+
+    })
+
+    // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
+
+    it('CL-AUTH.Cart: Remove product.', async function () {
+        let _listOfProducts = await ProductModel.find({})
+
+        //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+        // CREATE CART
+        let res01;
+        try {
+            res01 = await axios.post(
+                hostname,
+                {
+                    query: CART.mutations.createCart,
+                    variables: {
+                        input: {
+                            quantity: 3,
+                            idProduct: _listOfProducts[0]._id.toString()
+                        }
+                    }
+                },
+                CLIENT_AUTH_CONFIG
+            )
+        } catch (_e) {
+            pp(_e.response.data)
+        }
+        //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+        // UPDATE CART
+        try {
+            await axios.post(
+                hostname,
+                {
+                    query: CART_PRODUCTS.mutations.updateProductQuantity,
+                    variables: {
+                        input: {
+                            quantity: 3,
+                            idProduct: _listOfProducts[0]._id.toString()
+                        }
+                    }
+                },
+                CLIENT_AUTH_CONFIG
+            )
+        } catch (_e) {
+            pp(_e.response.data)
+        }
+
+        //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+        // ADD PRODUCT
+
+        let res02;
+        try {
+            res02 = await axios.post(
+                hostname,
+                {
+                    query: CART_PRODUCTS.mutations.addProductToCart,
+                    variables: {
+                        input: {
+                            quantity: 1,
+                            idProduct: _listOfProducts[1]._id.toString()
+                        }
+                    }
+                },
+                CLIENT_AUTH_CONFIG
+            )
+        } catch (_e) {
+            pp(_e.response.data)
+        }
+
+        //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+        // REMOVE PRODUCT
+
+        let res03;
+        try {
+            res03 = await axios.post(
+                hostname,
+                {
+                    query: CART_PRODUCTS.mutations.removeProductFromCart,
+                    variables: {
+                        input: {
+                            idProduct: _listOfProducts[0]._id.toString()
+                        }
+                    }
+                },
+                CLIENT_AUTH_CONFIG
+            )
+        } catch (_e) {
+            pp(_e.response.data)
+        }
+
+        // Assertions:
+
+        let product = await ProductModel.findOne({_id: _listOfProducts[0].id})
+
+        expect(product.stock).to.be.equal(10)
 
     })
 })

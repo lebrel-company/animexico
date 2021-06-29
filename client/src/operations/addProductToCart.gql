@@ -1,0 +1,34 @@
+mutation addProductToCart($input: CartProductInput!){
+    addProductToCart(input: $input){
+        __typename
+        ... on MyCart{
+            status
+            message
+            cart{
+                id
+                idUser
+                timeout{
+                    start
+                    end
+                }
+                listOfProducts{
+                    id
+                    code
+                    purchaseLimit
+                    name
+                    thumbnail
+                    price{
+                        amount
+                        currency
+                    }
+                    quantity
+                }
+            }
+        }
+        ... on InvalidCart{
+            status
+            message
+            listOfErrors
+        }
+    }
+}

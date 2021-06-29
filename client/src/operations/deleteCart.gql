@@ -1,6 +1,12 @@
 mutation deleteCart{
     deleteCart{
-        status
-        message
+        __typename
+        ... on DeletedCart{
+            status
+            message
+            listOfProducts{
+                name
+            }
+        }
     }
 }

@@ -15,8 +15,10 @@ import {AuthContext} from './AuthContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import QUERY_CART from '../operations/queryCart.gql'
-import CREATE_CART from '../operations/updateCart.gql'
+import CREATE_CART from '../operations/createCart.gql'
 import DELETE_CART from '../operations/deleteCart.gql'
+import ADD_PRODUCT_TO_CART from '../operations/addProductToCart.gql'
+
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -38,10 +40,11 @@ var status = {
     }
 }
 
+var CART_FIELD = 'cart'
+
 export function CartProvider(props) {
-    var cartField = 'cart'
     let authState = useContext(AuthContext)
-    const [cart, setCart] = useState({})
+    const [cart, setCart] = useState(null)
     const [address, setAddress] = useState('primary')
     const [timeLeft, setTimeLeft] = useState(20)
     const [activateTimer, setActivateTimer] = useState(false)
@@ -49,36 +52,41 @@ export function CartProvider(props) {
     const [validCart, setValidCart] = useState(true)
 
     let [__createCart] = useMutation(CREATE_CART, {
-        onCompleted: function (data) {
-            onCompletedCartResolver(data)
-        }
+        onCompleted: onCompletedCartResolver
     })
     let [deleteCart] = useMutation(DELETE_CART)
 
     let {loading, error, data, refetch} = useQuery(
         QUERY_CART,
         {
-            onCompleted: function _onCompleted(data) {
-                onCompletedCartResolver(data)
-            }
+            onCompleted: onCompletedCartResolver
         }
     )
+
+    let [__addProductToCart] = useMutation(ADD_PRODUCT_TO_CART, {
+        onCompleted: onCompletedCartResolver
+    })
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
     function onCompletedCartResolver(data) {
-        let __data = data.queryCart ? data.queryCart : data.createCart
-
-        if (__data.status === 'success') {
+        let _key = _.keys(data)[0]
+        pp(_key)
+        let __data = data[_key]
+        pp(__data)
+        if (__data.status === 'success' && typeof localStorage !== undefined) {
             localStorage.setItem(
-                cartField, JSON.stringify(__data.cart)
+                CART_FIELD, JSON.stringify(__data.cart)
             )
             setCart(__data.cart)
             setTimeLeft(
                 millisToSeconds(__data.cart.timeout.end - DateTime.now().ts)
             )
+            pp('Setting local storage')
+            localStorage.removeItem(CART_FIELD)
+            localStorage.setItem(CART_FIELD, JSON.stringify(__data.cart))
         } else {
-            localStorage.removeItem(cartField)
+            localStorage.removeItem(CART_FIELD)
         }
         setActivateTimer(true)
     }
@@ -122,7 +130,7 @@ export function CartProvider(props) {
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
     function populateCart() {
-        let _cart = localStorage.getItem(cartField)
+        let _cart = localStorage.getItem(CART_FIELD)
 
         if (_cart !== null) {
             setCart(JSON.parse(_cart))
@@ -132,8 +140,8 @@ export function CartProvider(props) {
 
     async function __deleteCart() {
         if (typeof localStorage !== 'undefined') {
-            setCart({})
-            localStorage.removeItem(cartField)
+            setCart(null)
+            localStorage.removeItem(CART_FIELD)
         }
 
         try {
@@ -148,7 +156,7 @@ export function CartProvider(props) {
 
     function cartExists() {
         if (typeof localStorage !== 'undefined') {
-            let _cart = localStorage.getItem(cartField)
+            let _cart = localStorage.getItem(CART_FIELD)
             if (!_cart) {
                 return false
             }
@@ -171,44 +179,36 @@ export function CartProvider(props) {
     }
 
 
-    function addProduct(next) {
-        return function inner(product) {
-            let result = {
-                status: null,
-                message: null
-            }
-            let _cart = _.cloneDeep(cart)
+    function addProduct(product) {
+        if (cart === null) {
+            __createCart({
+                variables: {
+                    input: {
+                        idProduct: product.id,
+                        quantity: 1
+                    }
+                }
+            })
+        } else {
+            let inCart = false
+            cart.listOfProducts.forEach((p) => {
+                if (p.id === product.id) {
+                    inCart = true
+                }
+            })
 
-            let productInCart = false
-
-            if (_.has(_cart, 'listOfProducts')) {
-                _cart.listOfProducts.forEach((p) => {
-                    if (p.id.toString() === product.id.toString()) {
-                        productInCart = true
+            if (inCart) {
+                pp('Already in cart')
+            } else {
+                __addProductToCart({
+                    variables: {
+                        input: {
+                            idProduct: product.id
+                        }
                     }
                 })
-            } else {
-                _cart.listOfProducts = []
-                _cart.idUser = authState.authState.userInfo.id
             }
 
-            if (!productInCart) {
-                _cart.listOfProducts.push({
-                    id: product.id,
-                    name: product.name,
-                    thumbnail: product.listOfImages[0],
-                    price: product.price,
-                    quantity: 1,
-                    purchaseLimit: product.purchaseLimit
-                })
-                result.message = status.messages.addProduct.notExists
-                result.status = status.success
-            } else {
-                result.message = status.messages.addProduct.exists
-                result.status = status.success
-            }
-            next(_cart)
-            return result
         }
     }
 
@@ -238,6 +238,7 @@ export function CartProvider(props) {
 
         setCart(nextState)
 
+        pp(nextState)
         let _input = {listOfProducts: []}
 
         nextState.listOfProducts.forEach((p) => {
@@ -251,9 +252,7 @@ export function CartProvider(props) {
             update: function (cache, mutationResult) {
                 let __data = mutationResult.data
 
-                let existingCart = cache.readQuery({
-                    query: QUERY_CART
-                })
+                let existingCart = cache.readQuery({query: QUERY_CART})
 
                 let listOfNewProducts = __data.createCart.cart.listOfProducts
 
@@ -271,8 +270,8 @@ export function CartProvider(props) {
 
             }
         })
-        localStorage.removeItem(cartField)
-        localStorage.setItem(cartField, JSON.stringify(nextState))
+        localStorage.removeItem(CART_FIELD)
+        localStorage.setItem(CART_FIELD, JSON.stringify(nextState))
     }
 
     function hasProducts() {
@@ -316,7 +315,7 @@ export function CartProvider(props) {
     return (
         <Provider value={{
             cart: cart,
-            cartField: cartField,
+            cartField: CART_FIELD,
             setCartState: setCart,
             deleteCart: __deleteCart,
             exists: cartExists,
@@ -338,7 +337,7 @@ export function CartProvider(props) {
                 inCart: productInCart,
                 amount: productsAmount,
                 remove: removeProduct(__updateStateAndStorage),
-                add: addProduct(__updateStateAndStorage),
+                add: addProduct,
                 update: updateProduct(__updateStateAndStorage)
             }
         }}>

@@ -14,13 +14,13 @@ var authData = {}
 var browser;
 var config = {
     _w: 1920,
-    _h: 1080,
+    _h: 1080
 }
 var homepage;
 beforeEach(async function _beforeEach() {
     browser = await puppeteer.launch({
         headless: false,
-        args: [`--window-size=${config._w},${config._h}`],
+        args: [`--window-size=${config._w},${config._h}`]
     })
     authData.token = localStorage.getItem('token');
     authData.expiresIn = localStorage.getItem('expiresIn');
@@ -40,14 +40,14 @@ test(
     async function validateNotAuthSessionHeaderLinks() {
         let mapOfLinks = {
             homepage: {
-                text: 'Inicio',
+                text: 'Inicio'
             },
             store: {
-                text: 'Tienda',
+                text: 'Tienda'
             },
             faqs: {
-                text: 'FAQs',
-            },
+                text: 'FAQs'
+            }
         }
 
         let listOfMenuLinks = ['homepage', 'store', 'faqs']
@@ -56,38 +56,38 @@ test(
             listOfMenuLinks.push('profile')
         }
         let linkToHomeText = await homepage.$eval(
-            'a.homepage', el => el.innerHTML,
+            'a.homepage', el => el.innerHTML
         )
         let linkToStoreText = await homepage.$eval(
-            'a.store', el => el.innerHTML,
+            'a.store', el => el.innerHTML
         )
         let linkToFaqsText = await homepage.$eval(
-            'a.faqs', el => el.innerHTML,
+            'a.faqs', el => el.innerHTML
         )
         expect(linkToHomeText).toEqual(mapOfLinks.homepage.text)
         expect(linkToStoreText).toEqual(mapOfLinks.store.text)
         expect(linkToFaqsText).toEqual(mapOfLinks.faqs.text)
-    },
+    }
 )
 
 test(
     'Header has the correct buttons for session',
     async function header_has_the_correct_buttons_for_session() {
-    // async () => {
+        // async () => {
         let mapOfButtons = {
             signup: {
-                text: 'Registrarme',
+                text: 'Registrarme'
             },
             login: {
-                text: 'Ingresar',
-            },
+                text: 'Ingresar'
+            }
         }
 
         let signupButton = await homepage.$eval(
-            'a.button-signup', el => el.innerHTML,
+            'a.button-signup', el => el.innerHTML
         )
         let loginButton = await homepage.$eval(
-            'a.button-login', el => el.innerHTML,
+            'a.button-login', el => el.innerHTML
         )
 
         // let cartButton = await homepage.$eval(
@@ -101,6 +101,6 @@ test(
         expect(signupButton).toEqual(mapOfButtons.signup.text)
         expect(loginButton).toEqual(mapOfButtons.login.text)
         // expect(cartButton).toEqual('')
-    },
+    }
 )
 

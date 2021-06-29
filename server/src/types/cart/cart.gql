@@ -51,6 +51,7 @@ type InvalidCart{
 type DeletedCart{
     status: String
     message: String
+    listOfProducts: [Product]
 }
 
 
@@ -74,6 +75,7 @@ extend type Mutation {
     deleteCart: CartResult
     updateProductQuantity(input: CartProductInput!): CartResult
     addProductToCart(input: CartProductInput!): CartResult
+    removeProductFromCart(input: CartProductInput!): CartResult
 }
 
 

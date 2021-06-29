@@ -19,13 +19,15 @@ import {
     validateCartProductUpdate,
     validateAddCartToProduct
 } from './cart.validations'
-import {modifyCartProduct} from './cart.product';
 
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //==============================================================================
 
 const SETTINGS = globalSettings()
 
+function toID(id) {
+    return mongoose.Types.ObjectId(id)
+}
 
 // =============================================================================
 // CART MUTATIONS
@@ -108,11 +110,44 @@ async function deleteCart(parent, args, context, input) {
 
     let listOfProducts = await ProductModel.find({'inCarts.idUser': idUser})
 
-    // pp(listOfProducts)
+    let mapOfProducts = {}
+    listOfProducts.forEach((p) => {
+        mapOfProducts[p._id.toString()] = {
+            quantity: p.inCarts[0].quantity
+        }
+    })
+
+    let listOfUpdatedProducts = []
+
+    try {
+        await Promise.all(listOfProducts.map(async (p) => {
+                let id = p._id.toString()
+                let product = await ProductModel.findOneAndUpdate(
+                    {_id: p._id},
+                    {
+                        $inc: {stock: mapOfProducts[id].quantity},
+                        $pull: {inCarts: {idUser: idUser}}
+                    },
+                    {new: true}
+                )
+                listOfUpdatedProducts.push(product)
+            })
+        )
+
+        await CartModel.deleteOne({idUser: idUser})
+    } catch (_e) {
+        throw Error(_e.message)
+    }
+
+
+    listOfUpdatedProducts.forEach((p, i) => {
+        listOfUpdatedProducts[i].id = p._id.toString()
+    })
 
     return {
         status: status.deleted,
-        message: status.messages.cart.delete.exists
+        message: status.messages.cart.delete.exists,
+        listOfProducts: listOfUpdatedProducts
     }
 }
 
@@ -120,40 +155,30 @@ async function deleteCart(parent, args, context, input) {
 // CART PRODUCTS UPDATE:
 
 async function addProductToCart(parent, args, context, info) {
-    pp('Adding:')
-    pp(args)
     let idUser = context.userInfo.id
-    let {idProduct, quantity} = args.input
+
+    let {idProduct} = args.input
+
+    let quantity = 1
+
 
     let product = await ProductModel.findOneAndUpdate(
         {
             $and: [
-                {_id: mongoose.Types.ObjectId(idProduct)},
+                {_id: toID(idProduct)},
                 {stock: {$gte: quantity}},
                 {purchaseLimit: {$gte: quantity}}
             ]
         },
         {
-            $inc: {
-                stock: -quantity
-            },
-            $push: {
-                inCarts: {
-                    quantity: quantity,
-                    idUser: idUser
-                }
-            }
+            $inc: {stock: -quantity},
+            $push: {inCarts: {quantity: quantity, idUser: idUser}}
         },
-        {
-            new: true
-        }
+        {new: true}
     )
 
 
-    let cart = await CartModel.findOneAndUpdate(
-        {
-            idUser: mongoose.Types.ObjectId(idUser)
-        },
+    let cart = await CartModel.findOneAndUpdate({idUser: toID(idUser)},
         {
             $push: {
                 listOfProducts: {
@@ -166,15 +191,46 @@ async function addProductToCart(parent, args, context, info) {
                 }
             }
         },
-        {
-            new: true
-        }
+        {new: true}
     )
-
 
     return {
         status: status.success,
         message: status.messages.cart.addProduct.success,
+        cart: cart
+    }
+
+}
+
+async function removeProductFromCart(parent, args, context, info) {
+    let idUser = context.userInfo.id
+    let {idProduct} = args.input
+
+    let product = await ProductModel.findOne(
+        {
+            _id: idProduct,
+            'inCarts': {$elemMatch: {idUser: idUser}}
+        },
+        ['inCarts.$', '_id']
+    )
+    let quantity = product.inCarts[0].quantity
+
+    await ProductModel.findOneAndUpdate({_id: idProduct},
+        {
+            $inc: {
+                stock: quantity
+            },
+            $pull: {
+                inCarts: {idUser: idUser}
+            }
+        }
+    )
+
+    let cart = await CartModel.findOne({idUser: idUser})
+
+    return {
+        status: status.success,
+        message: status.messages.cart.updateProduct.success,
         cart: cart
     }
 
@@ -188,7 +244,7 @@ async function updateProductQuantity(parent, args, context, info) {
 
     let product = await ProductModel.findOne(
         {
-            _id: mongoose.Types.ObjectId(idProduct),
+            _id: toID(idProduct),
             'inCarts': {
                 $elemMatch: {idUser: user.id}
             }
@@ -311,6 +367,7 @@ export default {
         addProductToCart: authenticated(
             validateAddCartToProduct(addProductToCart)
         ),
+        removeProductFromCart: removeProductFromCart,
         updateProductQuantity: authenticated(
             validateCartProductUpdate(updateProductQuantity)
         )
