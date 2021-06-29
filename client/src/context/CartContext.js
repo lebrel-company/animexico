@@ -18,7 +18,8 @@ import QUERY_CART from '../operations/queryCart.gql'
 import CREATE_CART from '../operations/createCart.gql'
 import DELETE_CART from '../operations/deleteCart.gql'
 import ADD_PRODUCT_TO_CART from '../operations/addProductToCart.gql'
-
+import REMOVE_PRODUCT_FROM_CART from '../operations/removeProductFromCart.gql'
+import UPDATE_PRODUCT_QUANTITY from '../operations/updateProductQuantity.gql'
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -64,6 +65,14 @@ export function CartProvider(props) {
     )
 
     let [__addProductToCart] = useMutation(ADD_PRODUCT_TO_CART, {
+        onCompleted: onCompletedCartResolver
+    })
+
+    let [__removeProductFromCart] = useMutation(REMOVE_PRODUCT_FROM_CART, {
+        onCompleted: onCompletedCartResolver
+    })
+
+    let [__updateProductQuantity] = useMutation(UPDATE_PRODUCT_QUANTITY, {
         onCompleted: onCompletedCartResolver
     })
 
@@ -212,21 +221,14 @@ export function CartProvider(props) {
         }
     }
 
-    function removeProduct(next) {
-        return function inner(product) {
-            let result;
-            let _cart = _.cloneDeep(cart)
-            let newState = produce(_cart, (draftState) => {
-                let _listOffilteredProducts = _.filter(
-                    draftState.listOfProducts,
-                    (p) => {
-                        return p.id !== product.id
-                    }
-                )
-                draftState.listOfProducts = _listOffilteredProducts
-            })
-            next(newState)
-        }
+    function removeProduct(product) {
+        __removeProductFromCart({
+            variables: {
+                input: {
+                    idProduct: product.id
+                }
+            }
+        })
     }
 
     async function __updateStateAndStorage(nextState) {
@@ -288,6 +290,17 @@ export function CartProvider(props) {
         return 0
     }
 
+    function updateProductQuantity(product, quantity) {
+        __updateProductQuantity({
+            variables: {
+                input: {
+                    idProduct: product.id,
+                    quantity: parseInt(quantity)
+                }
+            }
+        })
+    }
+
 
     function total() {
         if (!hasProducts()) {
@@ -336,9 +349,9 @@ export function CartProvider(props) {
                 exists: hasProducts,
                 inCart: productInCart,
                 amount: productsAmount,
-                remove: removeProduct(__updateStateAndStorage),
-                add: addProduct,
-                update: updateProduct(__updateStateAndStorage)
+                updateProductQuantity: updateProductQuantity,
+                remove: removeProduct,
+                add: addProduct
             }
         }}>
             {

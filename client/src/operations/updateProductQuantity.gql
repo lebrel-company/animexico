@@ -1,5 +1,5 @@
-mutation removeProductFromCart($input: CartProductInput!){
-    removeProductFromCart(input: $input){
+mutation updateProductQuantity($input: CartProductInput!){
+    updateProductQuantity(input: $input){
         __typename
         ... on MyCart{
             status

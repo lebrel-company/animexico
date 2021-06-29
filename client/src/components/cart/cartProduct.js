@@ -41,7 +41,7 @@ export default function CartProduct(props) {
             p.quantity = parseInt(e.target.value)
         })
         setProductData(newProduct)
-        cartState.product.update(newProduct)
+        cartState.product.updateProductQuantity(newProduct, newProduct.quantity)
     }
 
     function subtotal() {

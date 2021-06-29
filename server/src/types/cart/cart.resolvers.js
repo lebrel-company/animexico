@@ -187,12 +187,15 @@ async function addProductToCart(parent, args, context, info) {
                     purchaseLimit: product.purchaseLimit,
                     thumbnail: product.listOfImages[0],
                     quantity: quantity,
+                    price: product.price,
                     code: product.code
                 }
             }
         },
         {new: true}
     )
+
+    pp(cart)
 
     return {
         status: status.success,
@@ -215,7 +218,7 @@ async function removeProductFromCart(parent, args, context, info) {
     )
     let quantity = product.inCarts[0].quantity
 
-    await ProductModel.findOneAndUpdate({_id: idProduct},
+    let updatedProduct = await ProductModel.findOneAndUpdate({_id: idProduct},
         {
             $inc: {
                 stock: quantity
@@ -223,10 +226,24 @@ async function removeProductFromCart(parent, args, context, info) {
             $pull: {
                 inCarts: {idUser: idUser}
             }
+        },
+        {
+            new: true
         }
     )
-
-    let cart = await CartModel.findOne({idUser: idUser})
+    let cart = await CartModel.findOneAndUpdate(
+        {idUser: idUser},
+        {
+            $pull: {
+                listOfProducts: {
+                    id: idProduct
+                }
+            }
+        },
+        {
+            new: true
+        }
+    )
 
     return {
         status: status.success,
