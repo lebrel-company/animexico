@@ -106,20 +106,22 @@ async function queryCart(parent, args, context, info) {
 async function deleteCart(parent, args, context, input) {
     let idUser = context.userInfo.id
 
-    let listOfProducts = await ProductModel.find(
-        {
-            'inCarts.idUser': idUser
-        }
-    )
+    let listOfProducts = await ProductModel.find({'inCarts.idUser': idUser})
 
-    pp(listOfProducts)
+    // pp(listOfProducts)
 
+    return {
+        status: status.deleted,
+        message: status.messages.cart.delete.exists
+    }
 }
 
 //=============================================================================
 // CART PRODUCTS UPDATE:
 
 async function addProductToCart(parent, args, context, info) {
+    pp('Adding:')
+    pp(args)
     let idUser = context.userInfo.id
     let {idProduct, quantity} = args.input
 
@@ -128,7 +130,7 @@ async function addProductToCart(parent, args, context, info) {
             $and: [
                 {_id: mongoose.Types.ObjectId(idProduct)},
                 {stock: {$gte: quantity}},
-                {purchaseLimit: {$lte: quantity}}
+                {purchaseLimit: {$gte: quantity}}
             ]
         },
         {
@@ -146,6 +148,7 @@ async function addProductToCart(parent, args, context, info) {
             new: true
         }
     )
+
 
     let cart = await CartModel.findOneAndUpdate(
         {
@@ -167,6 +170,7 @@ async function addProductToCart(parent, args, context, info) {
             new: true
         }
     )
+
 
     return {
         status: status.success,

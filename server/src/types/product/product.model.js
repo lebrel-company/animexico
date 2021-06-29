@@ -31,7 +31,6 @@ export var InCartProductsSchema = new mongoose.Schema({
         idUser: {
             type: mongoose.ObjectId,
             required: true,
-            unique: true
         },
         quantity: {
             type: Number,

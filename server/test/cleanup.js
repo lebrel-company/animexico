@@ -23,7 +23,9 @@ export function dropAll() {
         try {
             await el.collection.drop()
         } catch (_e) {
+
         }
+
         try {
             await el.collection.dropIndexes()
         } catch (_e) {

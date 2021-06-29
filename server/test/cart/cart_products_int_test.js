@@ -143,45 +143,45 @@ describe('CART.PRODUCTS', function () {
             )
 
         } catch (_e) {
-            pp(_e.response.data)
+            pp(_e.message)
         }
     })
 
     // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
 
-    it('CL-AUTH.Cart: Add product.', async () => {
-        let res;
-        try {
-            res = await axios.post(
-                hostname,
-                {
-                    query: CART_PRODUCTS.mutations.addProductToCart,
-                    variables: {
-                        input: {...gutsAsInput}
-                    }
-                },
-                CLIENT_AUTH_CONFIG
-            )
-
-        } catch (_e) {
-            pp(_e.response.data)
-        }
-
-        let product = await ProductModel.findOne(
-            {_id: gutsAsInput.idProduct}
-        )
-
-        expect(product.stock).to.be.equal(9)
-
-        assert.graphQLSubset(
-            res.data,
-            {
-                addProductToCart: {
-                    status: status.success
-                }
-            }
-        )
-    })
+    // it('CL-AUTH.Cart: Add product.', async () => {
+    //     let res;
+    //     try {
+    //         res = await axios.post(
+    //             hostname,
+    //             {
+    //                 query: CART_PRODUCTS.mutations.addProductToCart,
+    //                 variables: {
+    //                     input: {...gutsAsInput}
+    //                 }
+    //             },
+    //             CLIENT_AUTH_CONFIG
+    //         )
+    //
+    //     } catch (_e) {
+    //         pp(_e.response.data)
+    //     }
+    //
+    //     let product = await ProductModel.findOne(
+    //         {_id: gutsAsInput.idProduct}
+    //     )
+    //
+    //     expect(product.stock).to.be.equal(9)
+    //
+    //     assert.graphQLSubset(
+    //         res.data,
+    //         {
+    //             addProductToCart: {
+    //                 status: status.success
+    //             }
+    //         }
+    //     )
+    // })
 
     // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
 

@@ -77,7 +77,7 @@ function validateCartMustNotExistPreviously(nextResolver) {
             }
         }
 
-        return nextResolver(parent, args, context, info)
+        return await nextResolver(parent, args, context, info)
     }
 }
 
@@ -108,7 +108,7 @@ function validateProduct(nextResolver) {
 
         context.product = product
 
-        return nextResolver(parent, args, context, info)
+        return await nextResolver(parent, args, context, info)
 
     }
 }
@@ -121,7 +121,7 @@ function validateProductExists(nextResolver) {
         let productExists = await ProductModel.exists({_id: idProduct})
 
         if (productExists) {
-            return nextResolver(parent, args, context, info)
+            return await nextResolver(parent, args, context, info)
         }
 
         return {
@@ -146,7 +146,7 @@ function validateInCartRegisterForUser(nextResolver) {
         )
 
         if (registerExists) {
-            return nextResolver(parent, args, context, info)
+            return await nextResolver(parent, args, context, info)
         }
 
         return {

@@ -62,13 +62,30 @@ export var CART = {
                         message
                         listOfErrors
                     }
+                    ... on DeletedCart{
+                        status
+                        message
+                    }
                 }
             }
         `.loc.source.body,
         deleteCart: gql`
-            mutation deleteCart($input: ID!){
-                status
-                message
+            mutation deleteCart{
+                deleteCart{
+                    __typename
+                    ... on MyCart{
+                        status
+                        message
+                    }
+                    ... on InvalidCart{
+                        status
+                        message
+                    }
+                    ... on DeletedCart{
+                        status
+                        message
+                    }
+                }
             }
         `.loc.source.body
     }
@@ -82,15 +99,6 @@ var cartProductInput = {
     quantity: 1
 }
 
-var gutsAsInput = {
-    idProduct: listOfProducts[1]._id.toString(),
-    quantity: 1
-}
-
-var kenshinAsInput = {
-    idProduct: listOfProducts[2]._id.toString(),
-    quantity: 1
-}
 
 //=============================================================================
 
@@ -146,7 +154,6 @@ describe('CART', function cartTests() {
                 CLIENT_AUTH_CONFIG
             )
         } catch (_e) {
-            pp(_e)
             pp(_e.response.data)
         }
 
@@ -204,8 +211,20 @@ describe('CART', function cartTests() {
         let {token} = await authData()
         CLIENT_AUTH_CONFIG.headers.authorization = `Bearer ${token}`
         let res;
+        let _listOfProducts = await ProductModel.find({})
+
+        _listOfProducts.forEach((el) => {
+            pp(`${el._id.toString()} - ${el.name}`)
+        })
+
+        let idGuts = listOfProducts[1]._id.toString()
+        let idKenshin = listOfProducts[2]._id.toString()
+
         try {
-            res = await axios.post(
+            pp('Inside try:')
+            pp(idGuts)
+            pp(idKenshin)
+            await axios.post(
                 hostname,
                 {
                     query: CART.mutations.createCart,
@@ -223,20 +242,10 @@ describe('CART', function cartTests() {
                 {
                     query: CART_PRODUCTS.mutations.addProductToCart,
                     variables: {
-                        input: {...gutsAsInput}
-                    }
-                },
-                CLIENT_AUTH_CONFIG
-            )
-
-            //-     -     -     -     -     -     -     -     -     -     -   -
-
-            await axios.post(
-                hostname,
-                {
-                    query: CART_PRODUCTS.mutations.addProductToCart,
-                    variables: {
-                        input: {...kenshinAsInput}
+                        input: {
+                            idProduct: idGuts,
+                            quantity: 1
+                        }
                     }
                 },
                 CLIENT_AUTH_CONFIG
@@ -250,12 +259,28 @@ describe('CART', function cartTests() {
                     query: CART_PRODUCTS.mutations.addProductToCart,
                     variables: {
                         input: {
-                            idProduct: kenshinAsInput.idProduct,
-                            quantity: 4
+                            idProduct: idKenshin,
+                            quantity: 1
                         }
                     }
-                }
+                },
+                CLIENT_AUTH_CONFIG
             )
+
+            //-     -     -     -     -     -     -     -     -     -     -   -
+
+            // await axios.post(
+            //     hostname,
+            //     {
+            //         query: CART_PRODUCTS.mutations.updateProductQuantity,
+            //         variables: {
+            //             input: {
+            //                 idProduct: listOfProducts[2]._id.toString(),
+            //                 quantity: 4
+            //             }
+            //         }
+            //     }
+            // )
 
             // -     -     -     -     -     -     -     -     -     -     -   -
 
@@ -270,11 +295,7 @@ describe('CART', function cartTests() {
         } catch (_e) {
             pp(_e.response.data)
         }
-
-        assert.graphQLSubset(
-            res.data.deleteCart,
-            {}
-        )
+        pp(res.data)
 
         let listOfProductsInStore = await ProductModel.find({})
         listOfProductsInStore.forEach((p) => {
