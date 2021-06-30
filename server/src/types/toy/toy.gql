@@ -1,6 +1,0 @@
-type Toy {
-    id: ID!
-    jancode: String!
-    purchasedAmount: Int!
-    limit: Int!
-}

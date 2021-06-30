@@ -3,6 +3,8 @@
 import util from 'util'
 import mongoose from 'mongoose'
 import _ from 'lodash'
+import checkoutNodeJssdk from '@paypal/checkout-server-sdk'
+import axios from 'axios'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 import {UserModel} from '../user/user.model';
@@ -10,10 +12,20 @@ import {ProductModel} from '../product/product.model';
 import {OrdersModel} from './order.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+import {
+    getToken,
+    PAYPAL_PAYMENT_API,
+    PAYPAL_CLIENT,
+    PAYPAL_SECRET
+} from './paypal';
 import {authenticated, authorized} from '../../utils/auth';
 import helpers from './order.helpers';
 import status from '../../utils/status'
 import validate from './order.validations'
+import placeholder from 'lodash/fp/placeholder';
+import messages from '../user/user.messages';
+import cart from '../../../../client/src/pages/checkout';
+import {CartModel} from '../cart/cart.model';
 
 var pp = (el) => {
     console.log(util.inspect(el, false, 5, true))
@@ -82,21 +94,62 @@ async function createOrder(parent, args, context, info) {
 
 }
 
+//=============================================================================
+// PAYPAL:
 
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
+async function payment(parent, args, context, info) {
+    let idUser = context.userInfo.id
 
-async function updateOrder(parent, arts, context, info) {
-    return {}
+    let cart = await CartModel.find({idUser: idUser})
+
+    pp(cart)
+
+    let order
+    try {
+        order = await axios({
+            method: 'POST',
+            url: PAYPAL_PAYMENT_API,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
+                intent: 'sale',
+                payer: {
+                    payment_method: 'paypal'
+                },
+                transactions: [{
+                    amount: {
+                        total: TOTAL.toString(),
+                        currency: 'MXN'
+                    }
+                }],
+                redirect_urls: {
+                    return_url: '/',
+                    cancel_url: '/'
+                }
+            },
+            auth: {
+                username: PAYPAL_CLIENT,
+                password: PAYPAL_SECRET
+            }
+        })
+
+    } catch (_e) {
+        pp(_e.response.data)
+        pp(_e.message)
+    }
+
+    return order.data
 }
 
-
+//=============================================================================
 export default {
     Query: {
         queryOrder
     },
     Mutation: {
         createOrder: authenticated(authorized('CLIENT', createOrder)),
-        updateOrder: authenticated(updateOrder)
+        payment: authenticated(payment)
     },
     OrderResult: {
         __resolveType(obj, context, info) {

@@ -174,7 +174,3 @@ function createRoutes(mapOfRoutes, listOfKeys) {
         }
     );
 }
-
-//==============================================================================
-// Variables:
-

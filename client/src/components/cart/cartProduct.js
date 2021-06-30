@@ -35,13 +35,14 @@ export default function CartProduct(props) {
 
 
     function __updateQuantity(e) {
-        e.preventDefault()
-        e.stopPropagation()
+        // e.preventDefault()
+        // e.stopPropagation()
+        pp(e)
         let newProduct = produce(productData, (p) => {
             p.quantity = parseInt(e.target.value)
         })
-        setProductData(newProduct)
         cartState.product.updateProductQuantity(newProduct, newProduct.quantity)
+        setProductData(newProduct)
     }
 
     function subtotal() {
@@ -58,10 +59,11 @@ export default function CartProduct(props) {
         }
 
         return (
-            <div className="text-md">
+            <>
                 <select onChange={__updateQuantity}
                         disabled={!cartState.timer.validCart.getter}
-                        value={productData.quantity}>
+                        value={productData.quantity}
+                >
                     {
                         listOfNumbers.map((i) => {
                             return (
@@ -70,7 +72,7 @@ export default function CartProduct(props) {
                         })
                     }
                 </select>
-            </div>
+            </>
         )
     }
 
@@ -106,7 +108,9 @@ export default function CartProduct(props) {
                             }
                         </div>
                         <div
-                            className="text-xl flex justify-center items-center">
+                            className="
+                            text-xl flex justify-center items-center
+                            ">
                             {subtotal()}
                         </div>
                     </div>

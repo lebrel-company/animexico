@@ -1,7 +1,7 @@
 'use strict';
 // libraries:
 import Link from 'next/link'
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
 import {CartContext} from '../../context/CartContext';
@@ -9,6 +9,7 @@ import {CartContext} from '../../context/CartContext';
 // layouts:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
+import PaypalButton from './paypalButton';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {mapOfRoutes} from '../../utils/routes';
@@ -17,8 +18,14 @@ var pp = (el) => console.log(el)
 
 //=============================================================================
 
+const TEXTS = {
+    paypalPayment: 'Pagar con Paypal',
+    continue: 'Ir al checkout'
+}
+
 export default function CartPayment(props) {
     const route = props.route ? props.route : mapOfRoutes.checkout.route
+    const checkout = props.checkout ? props.checkout : false
     const cartState = useContext(CartContext)
 
     return (
@@ -45,9 +52,12 @@ export default function CartPayment(props) {
                 />
             </div>
             <div className="pt-8">
-                <Link href={route}>
-                    <a className={`button-blue text-xl p-2`}>Continuar</a>
-                </Link>
+                {
+                    checkout ? <PaypalButton/> :
+                        <Link href={route}>
+                            <a className="button-blue text-xl p-2">{TEXTS.continue}</a>
+                        </Link>
+                }
             </div>
         </div>
     )

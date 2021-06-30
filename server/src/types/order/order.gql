@@ -1,3 +1,5 @@
+union OrderResult = OrderAccepted | OrderInvalid
+
 type Order{
     id: ID
     idUser: ID,
@@ -19,7 +21,8 @@ type OrderInvalid{
     listOfErrors: [String]
 }
 
-union OrderResult = OrderAccepted | OrderInvalid
+
+#---------------------------------------------------------------------------
 
 input OrderInput{
     idUser: ID!
@@ -47,6 +50,8 @@ input OrderProductDataInput{
     subtotal: Float
 }
 
+
+#---------------------------------------------------------------------------
 
 input OrderProductInput{
     id: ID!
@@ -81,11 +86,31 @@ enum OrderStatus{
     cancelled
 }
 
+#---------------------------------------------------------------------------
+
+type PaypalLink{
+    href: String
+    rel: String
+    method: String
+}
+
+type Paypal {
+    id: ID
+    status: String
+    links: [PaypalLink!]
+}
+
+#---------------------------------------------------------------------------
+
 extend type Query{
     queryOrder(input: ID!): Order
 }
 
+
+#---------------------------------------------------------------------------
+
 extend type Mutation {
     createOrder(input: OrderInput!): OrderResult
     updateOrder(id: ID!, input: OrderInput!): Order
+    payment: Paypal
 }

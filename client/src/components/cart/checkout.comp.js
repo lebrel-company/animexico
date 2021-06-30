@@ -53,7 +53,7 @@ export default function CheckoutComponent() {
                         }
                     </div>
                     <div className="flex items-center justify-center">
-                        <CartPayment/>
+                        <CartPayment checkout={true}/>
                     </div>
                 </div>
             </div>

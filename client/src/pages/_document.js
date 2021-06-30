@@ -10,12 +10,15 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head
-                    title='tamashii.mx'
+                    title="tamashii.mx"
                 >
                     <link rel="preconnect" href="https://fonts.gstatic.com"/>
                     <link
                         href="https://fonts.googleapis.com/css2?family=Overlock&family=Tajawal&display=swap"
                         rel="stylesheet"/>
+
+                    <script
+                        src="https://www.paypalobjects.com/api/checkout.js"></script>
                 </Head>
                 <body>
                 <Main/>
