@@ -34,46 +34,11 @@ export default function CartProduct(props) {
     }
 
 
-    function __updateQuantity(e) {
-        // e.preventDefault()
-        // e.stopPropagation()
-        pp(e)
-        let newProduct = produce(productData, (p) => {
-            p.quantity = parseInt(e.target.value)
-        })
-        cartState.product.updateProductQuantity(newProduct, newProduct.quantity)
-        setProductData(newProduct)
-    }
-
     function subtotal() {
         return new Intl.NumberFormat(
             'es-MX',
             {style: 'currency', currency: 'MXN'}
         ).format(price.amount * productData.quantity)
-    }
-
-    function QuantityPicker({limit}) {
-        let listOfNumbers = []
-        for (let n = 0; n < limit; n++) {
-            listOfNumbers.push(n + 1)
-        }
-
-        return (
-            <>
-                <select onChange={__updateQuantity}
-                        disabled={!cartState.timer.validCart.getter}
-                        value={productData.quantity}
-                >
-                    {
-                        listOfNumbers.map((i) => {
-                            return (
-                                <option value={i} key={uuid()}>{i}</option>
-                            )
-                        })
-                    }
-                </select>
-            </>
-        )
     }
 
 
@@ -104,7 +69,14 @@ export default function CartProduct(props) {
                             {
                                 atCheckout ? <div>{productData.quantity}</div>
                                     : <QuantityPicker
-                                        limit={productData.purchaseLimit}/>
+                                        limit={productData.purchaseLimit}
+                                        productData={productData}
+                                        setProductData={setProductData}
+                                        updateProductQuantity={
+                                            cartState.product.updateProductQuantity
+                                        }
+                                        validCart={cartState.timer.validCart.getter}
+                                    />
                             }
                         </div>
                         <div
@@ -120,3 +92,39 @@ export default function CartProduct(props) {
     )
 }
 
+
+function QuantityPicker(props) {
+    let updateProductQuantity = props.updateProductQuantity
+    let validCart = props.validCart
+    let productData = props.productData
+    let setProductData = props.setProductData
+    let limit = props?.limit || 1
+    let listOfNumbers = []
+    for (let n = 0; n < limit; n++) {
+        listOfNumbers.push(n + 1)
+    }
+
+    function __updateQuantity(e) {
+        e.preventDefault()
+        let newProduct = produce(productData, (p) => {
+            p.quantity = parseInt(e.target.value)
+        })
+        updateProductQuantity(newProduct, newProduct.quantity)
+        setProductData(newProduct)
+    }
+
+    return (
+        <select onChange={__updateQuantity}
+                disabled={!validCart}
+                value={productData.quantity}
+        >
+            {
+                listOfNumbers.map((i) => {
+                    return (
+                        <option value={i} key={uuid()}>{i}</option>
+                    )
+                })
+            }
+        </select>
+    )
+}

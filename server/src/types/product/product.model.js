@@ -1,36 +1,40 @@
+'use strict';
+// libraries:
+import util from 'util'
 const mongoose = require('mongoose');
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
+//=============================================================================
 
-var listOfMonths = [
-    'JANUARY', 'FEBRUARY', 'MARCH',
-    'APRIL', 'MAY', 'JUNE',
-    'JULY', 'AUGUST', 'SEPTEMBER',
-    'OCTOBER', 'NOVEMBER', 'DECEMBER'
-]
 
 export var PublishSchema = mongoose.Schema({
-    date: {
-        type: Date,
-        required: true,
-        trim: true
-    }
-},
+        date: {
+            type: Date,
+            required: true,
+            trim: true
+        },
+        timestamp: {
+            type: String,
+            required: true
+        },
+        local: {
+            type: String,
+            required: true
+        }
+    },
     {
         _id: false
     }
 )
 
-export var ProductPriceSchema = mongoose.Schema({})
-
-PublishSchema.virtual('month').get(function releaseMonth() {
-        let _d = new Date(this.date)
-        return listOfMonths[_d.getMonth()]
-    }
-)
 
 export var InCartProductsSchema = new mongoose.Schema({
         idUser: {
             type: mongoose.ObjectId,
-            required: true,
+            required: true
         },
         quantity: {
             type: Number,
@@ -68,7 +72,7 @@ var ProductSchema = mongoose.Schema({
             required: true,
             trim: true
         },
-        code: {
+        sku: {
             type: String,
             required: true,
             trim: true,

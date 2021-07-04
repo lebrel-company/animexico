@@ -25,17 +25,21 @@ ts:
 	cls
 	yarn --cwd server run test
 
-ts-cart:
+tcart:
 	cls
 	yarn --cwd server run test-cart
 
-ts-order:
+torder:
 	cls
 	yarn --cwd server run test-order
 
-ts-signup:
+tauth:
 	cls
 	yarn --cwd server run test-signup
+
+tprod:
+	cls
+	yarn --cwd server run test-prod
 
 seed:
 	cls

@@ -10,7 +10,7 @@ import {OrdersModel} from '../src/types/order/order.model';
 import {hashPassword} from '../src/utils/auth';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {listOfProducts} from './product_data';
+import {forDatabaseInsertion, listOfProducts} from './product_data';
 import {listOfUsers} from './user_data';
 
 var pp = (el) => {
@@ -20,7 +20,14 @@ var pp = (el) => {
 
 var DATABASE = 'mongodb://localhost:27017/database'
 
-mongoose.connect(DATABASE)
+mongoose.connect(
+    DATABASE,
+    {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true
+    }
+)
 
 var listOfFormattedUsers = []
 
@@ -57,7 +64,7 @@ ProductModel._name = 'ProductModel'
 
 let listOfModels = [
     [UserModel, listOfFormattedUsers],
-    [ProductModel, listOfProducts]
+    [ProductModel, forDatabaseInsertion()]
 ]
 
 listOfModels.forEach(async function functionName(_m) {

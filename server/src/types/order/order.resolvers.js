@@ -12,19 +12,10 @@ import {ProductModel} from '../product/product.model';
 import {OrdersModel} from './order.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import {
-    getToken,
-    PAYPAL_PAYMENT_API,
-    PAYPAL_CLIENT,
-    PAYPAL_SECRET
-} from './paypal';
 import {authenticated, authorized} from '../../utils/auth';
 import helpers from './order.helpers';
 import status from '../../utils/status'
 import validate from './order.validations'
-import placeholder from 'lodash/fp/placeholder';
-import messages from '../user/user.messages';
-import cart from '../../../../client/src/pages/checkout';
 import {CartModel} from '../cart/cart.model';
 
 var pp = (el) => {
@@ -34,14 +25,9 @@ var pp = (el) => {
 //==============================================================================
 
 
-async function queryOrder(parent, args, context, info) {
-    return {}
-}
-
-//==============================================================================
-
 async function createOrder(parent, args, context, info) {
     let _i = args.input
+    let {paypal} = args.input
     let listProductIdObjects = _i.listOfProducts.map((el) => {
         return mongoose.Types.ObjectId(el.id)
     })
@@ -74,7 +60,8 @@ async function createOrder(parent, args, context, info) {
         idUser: _i.idUser,
         address: _i.address,
         orderStatus: status.order.pending,
-        shippingAddress: {}
+        shippingAddress: {},
+        paypal
     }
 
     listOfSegregatedProducts.forEach(function createOrderEntries(el) {
@@ -97,12 +84,20 @@ async function createOrder(parent, args, context, info) {
 //=============================================================================
 // PAYPAL:
 
-async function payment(parent, args, context, info) {
+const PAYPAL_CLIENT = 'AWRqzvZX9poAvA67i306KiwGx82vdxVrhy0BcB6aJLCi_ihcalvYmFMzavW6SRngbRLkF2eUqUMGL2BU'
+const PAYPAL_SECRET = 'EKDfGW7hhCPV-OYQpDj8wpYToo72O_U2LOQSAB4j4JikvASovjDOxWqksxNy7hmsQBqEF4VvLLK-UyMX'
+const PAYPAL_PAYMENT_API = 'https://api-m.sandbox.paypal.com/v1/payments/payment';
+const TOTAL = 100
+
+function executePaymentEndpoint(paymentID) {
+    return `${PAYPAL_PAYMENT_API}/${paymentID}/execute`
+}
+
+async function createPayment(parent, args, context, info) {
     let idUser = context.userInfo.id
 
     let cart = await CartModel.find({idUser: idUser})
 
-    pp(cart)
 
     let order
     try {
@@ -135,21 +130,48 @@ async function payment(parent, args, context, info) {
         })
 
     } catch (_e) {
-        pp(_e.response.data)
         pp(_e.message)
     }
 
     return order.data
 }
 
+async function executePayment(parent, args, context, info) {
+    const {paymentID, payerID} = args.input
+    const endpoint = executePaymentEndpoint(paymentID)
+
+
+    // let payment = await axios({
+    //     method: 'POST',
+    //     auth: {
+    //         username: PAYPAL_CLIENT,
+    //         password: PAYPAL_SECRET
+    //     },
+    //     data: {
+    //         payer_id: payerID,
+    //         transactions: [{
+    //             amount: {
+    //                 total: TOTAL.toString(),
+    //                 currency: 'MXN'
+    //             }
+    //         }]
+    //     },
+    //     header: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // })
+
+    pp(payment)
+
+}
+
 //=============================================================================
 export default {
-    Query: {
-        queryOrder
-    },
+    Query: {},
     Mutation: {
         createOrder: authenticated(authorized('CLIENT', createOrder)),
-        payment: authenticated(payment)
+        createPayment: authenticated(createPayment),
+        executePayment: executePayment
     },
     OrderResult: {
         __resolveType(obj, context, info) {

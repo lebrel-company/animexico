@@ -63,8 +63,23 @@ input, select, textarea {
     @apply
     p-2
     w-full
+    bg-pale
     text-dark
-    rounded-md
+    rounded
+    font-bold
+}
+
+input::placeholder {
+    @apply
+    text-dark
+    font-bold
+}
+
+input:disabled::placeholder {
+    @apply
+    font-bold
+    text-dark
+    text-opacity-50
 }
 
 ::-webkit-input-placeholder { /* Edge */

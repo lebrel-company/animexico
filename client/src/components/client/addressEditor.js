@@ -83,9 +83,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder="Mexico"
                                 name="name"
-                                className="
-                                bg-pale h-8 flex items-center rounded-lg
-                                "
                                 disabled="True"
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}
@@ -102,7 +99,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder={MapOfAddresses[address].city}
                                 name="name"
-                                className="bg-pale h-8 flex items-center rounded-lg"
                                 disabled={!editMode}
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}
@@ -119,7 +115,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder={MapOfAddresses[address].state}
                                 name="name"
-                                className="bg-pale h-8 flex items-center rounded-lg"
                                 disabled={!editMode}
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}
@@ -137,7 +132,6 @@ export default function AddressEditor() {
                             type="text"
                             placeholder={MapOfAddresses[address].zipcode}
                             name="name"
-                            className="bg-pale h-8 flex items-center rounded-lg"
                             disabled={!editMode}
                             // value={formik[productFields.name.value]}
                             // onChange={formik.handleChange}
@@ -153,7 +147,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder={MapOfAddresses[address].street}
                                 name="name"
-                                className="bg-pale h-8 flex items-center rounded-lg"
                                 disabled={!editMode}
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}
@@ -172,7 +165,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder={MapOfAddresses[address].neighbourhood}
                                 name="name"
-                                className="bg-pale h-8 flex items-center rounded-lg"
                                 disabled={!editMode}
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}
@@ -192,9 +184,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder={MapOfAddresses[address].buildingNumber}
                                 name="name"
-                                className="
-                                    bg-pale h-8 flex items-center rounded-lg
-                                "
                                 disabled={!editMode}
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}
@@ -215,7 +204,6 @@ export default function AddressEditor() {
                                 type="text"
                                 placeholder={MapOfAddresses[address].apartmentNumber}
                                 name="name"
-                                className="bg-pale h-8 flex items-center rounded-lg "
                                 disabled={!editMode}
                                 // value={formik[productFields.name.value]}
                                 // onChange={formik.handleChange}

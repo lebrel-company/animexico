@@ -1,7 +1,7 @@
-query queryAllAvailableProducts{
-    queryAllAvailableProducts{
+query queryProducts{
+    queryProducts{
         id
-        code
+        sku
         purchaseLimit
         name
         listOfImages

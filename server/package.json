@@ -11,6 +11,7 @@
     "test": "mocha --recursive --require esm --exit --colors",
     "test-cart": "mocha --recursive --require esm --exit --colors --grep '.Cart'",
     "test-order": "mocha --recursive --require esm --exit --colors --grep '.Order'",
+    "test-prod": "mocha --recursive --require esm --exit --colors --grep '.Product'",
     "test-signup": "mocha --recursive --require esm --exit --colors --grep '.Signup'",
     "seed": "babel-node seed",
     "drop": "babel-node seed/drop.js"
@@ -36,6 +37,7 @@
     "lodash": "^4.17.21",
     "luxon": "^1.27.0",
     "mongoose": "^5.11.10",
+    "nodemailer": "^6.6.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

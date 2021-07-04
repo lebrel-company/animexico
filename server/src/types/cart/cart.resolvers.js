@@ -47,7 +47,7 @@ async function createCart(parent, args, context, info) {
             listOfProducts: [
                 {
                     id: context.product._id,
-                    code: context.product.code,
+                    sku: context.product.sku,
                     name: context.product.name,
                     purchaseLimit: context.product.purchaseLimit,
                     price: context.product.price,
@@ -188,14 +188,13 @@ async function addProductToCart(parent, args, context, info) {
                     thumbnail: product.listOfImages[0],
                     quantity: quantity,
                     price: product.price,
-                    code: product.code
+                    sku: product.sku
                 }
             }
         },
         {new: true}
     )
 
-    pp(cart)
 
     return {
         status: status.success,
@@ -266,7 +265,7 @@ async function updateProductQuantity(parent, args, context, info) {
                 $elemMatch: {idUser: user.id}
             }
         },
-        ['inCarts.$', 'name', 'code', 'purchaseLimit']
+        ['inCarts.$', 'name', 'sku', 'purchaseLimit']
     )
 
     var deltaQuantity = deltaProductQuantity(user, product, quantity)

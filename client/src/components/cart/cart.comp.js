@@ -44,7 +44,8 @@ export default function CartComponent() {
         <ClientLayout>
 
             <div className="
-            container m-auto h-full flex flex-col items-center justify-center my-4
+            container m-auto h-full flex flex-col
+            items-center justify-center my-4
             ">
                 {
                     cartState.exists() ?
@@ -62,11 +63,12 @@ export default function CartComponent() {
                             max-w-4xl
                             ">
                             <div className="md:h-5/6 flex flex-col">
-                                <div
-                                    className="md:overflow-y-scroll h-full">
+                                <div className="md:overflow-y-scroll h-full">
                                     {
                                         cartState?.cart?.listOfProducts &&
-                                        mapProducts(cartState.cart.listOfProducts)
+                                        mapProducts(
+                                            cartState.cart.listOfProducts
+                                        )
                                     }
                                 </div>
                             </div>

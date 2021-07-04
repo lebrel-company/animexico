@@ -39,7 +39,7 @@ export function signupFormik(mutation, states, contexts, route) {
                 street: '',
                 zipcode: '',
                 buildingNumber: '',
-                apartmentNumber: '',
+                apartmentNumber: ''
             },
             validationSchema: Yup.object({
                 firstName:
@@ -61,7 +61,10 @@ export function signupFormik(mutation, states, contexts, route) {
                         .required(requiredMessage(userFields.email.placeholder)),
                 password:
                     Yup.string()
-                        .required(requiredMessage(userFields.password.placeholder)),
+                        .required(requiredMessage(userFields.password.placeholder))
+                        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
+                            {message: 'Tu contraseña debe contener al menos un número y una letra mayúscula y 8 cáracteres.'}
+                        ),
                 passwordConfirm:
                     Yup.string()
                         .oneOf([Yup.ref('password'), null], 'Los passwords deben coincidir')
@@ -95,7 +98,7 @@ export function signupFormik(mutation, states, contexts, route) {
                     Yup.string()
                         .required(requiredMessage(userFields.address.buildingNumber.placeholder)),
                 apartmentNumber:
-                    Yup.string(),
+                    Yup.string()
             }),
             onSubmit: async function submitForm(values) {
                 let _input = {
@@ -116,15 +119,15 @@ export function signupFormik(mutation, states, contexts, route) {
                             neighbourhood: values.neighbourhood,
                             street: values.street,
                             buildingNumber: values.buildingNumber,
-                            apartmentNumber: values.apartmentNumber,
-                        },
-                    },
+                            apartmentNumber: values.apartmentNumber
+                        }
+                    }
                 };
                 try {
                     let {data} = await mutation({
                         variables: {
-                            input: _input,
-                        },
+                            input: _input
+                        }
                     });
                     contexts.authContext.setAuthState(data.signup);
                     setTimeout(() => {
@@ -133,8 +136,8 @@ export function signupFormik(mutation, states, contexts, route) {
                 } catch (error) {
                     console.error(error);
                 }
-            },
-        },
+            }
+        }
     );
 }
 

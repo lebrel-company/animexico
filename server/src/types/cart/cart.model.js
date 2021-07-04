@@ -16,7 +16,7 @@ let CartProductSchema = new mongoose.Schema({
             type: mongoose.ObjectId,
             required: true
         },
-        code: {
+        sku: {
             type: String,
             required: true
         },

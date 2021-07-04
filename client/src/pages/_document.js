@@ -1,4 +1,15 @@
 import Document, {Html, Head, Main, NextScript} from 'next/document'
+import __ from 'lodash/fp/__';
+
+
+function getClientID() {
+    let result = 'AWRqzvZX9poAvA67i306KiwGx82vdxVrhy0BcB6aJLCi_ihcalvYmFMzavW6SRngbRLkF2eUqUMGL2BU'
+
+    if (process.env.NODE_ENV === 'pro') {
+        result = process.env.PAYPAL_CLIENT_ID
+    }
+    return result
+}
 
 class MyDocument extends Document {
     static async getInitialProps(ctx) {
@@ -18,7 +29,7 @@ class MyDocument extends Document {
                         rel="stylesheet"/>
 
                     <script
-                        src="https://www.paypalobjects.com/api/checkout.js"></script>
+                        src={`https://www.paypal.com/sdk/js?client-id=${getClientID()}&components=buttons&currency=MXN`}></script>
                 </Head>
                 <body>
                 <Main/>

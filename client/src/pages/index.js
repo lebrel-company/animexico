@@ -1,35 +1,28 @@
 'use strict';
 // libraries:
-import {gql, useQuery, readQuery} from '@apollo/client'
-import {useContext, useEffect} from 'react';
+import {useQuery} from '@apollo/client'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
-import {AuthContext} from '../../context/AuthContext';
-import {CartContext} from '../../context/CartContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
-import ClientLayout from '../../layout/Client';
+import ClientLayout from '../layout/Client';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // components:
-import Carousel from '../../components/SliderMultipleFiles';
-import SliderText from '../../components/SliderText';
+import Carousel from '../components/SliderMultipleFiles';
+import SliderText from '../components/SliderText';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import QUERY_ALL_AVAILABLE_PRODUCTS
-    from '../../operations/queryProducts.gql'
-import {aboutUs, sliderTexts} from '../../utils/texts/homepage.texts'
-import Loading from '../../components/loading';
+import QUERY_PRODUCTS from '../operations/queryProducts.gql'
+import {aboutUs, sliderTexts} from '../utils/texts/homepage.texts'
+import {useCartTimer} from '../hooks/useCartTimer';
 
 var pp = (el) => console.log(el)
 //==============================================================================
 
 
 export default function Homepage() {
-    var authState = useContext(AuthContext)
-    var cartState = useContext(CartContext)
-    var {loading, error, data} = useQuery(QUERY_ALL_AVAILABLE_PRODUCTS)
+    const {loading, error, data} = useQuery(QUERY_PRODUCTS)
 
-    // pp(`Data: ` + data)
 
     const settings = {
         dots: true,
@@ -42,37 +35,26 @@ export default function Homepage() {
 
     return (
         <ClientLayout pattern={`bg-clouds`}>
-            <div
-                className={`
-                    container mx-auto w-full 
-                `}>
-
-                {
-                    loading && <Loading/>
-                }
+            <div className={`container mx-auto w-full`}>
 
                 {
                     <div>
                         <div>
-                            <div>
-                                <div>
-                                    <button
-                                        className="button-blue top-44 h-16 w-64
+                            <button
+                                className="button-blue top-44 h-16 w-64
                                 text-2xl z-10 ml-20 absolute
                                 ">Proximos Productos
-                                    </button>
-                                    <img
-                                        className="z-0 bg-cover rounded-md w-full relative"
-                                        src="/banner-test.png"/>
-                                </div>
-                            </div>
+                            </button>
+                            <img
+                                className="z-0 bg-cover rounded-md w-full relative"
+                                src="/banner-test.png"/>
                         </div>
                         <div className="my-12">
                             {
 
-                                data?.queryAllAvailableProducts &&
+                                data?.queryProducts &&
                                 <Carousel
-                                    listOfProducts={data.queryAllAvailableProducts}/>
+                                    listOfProducts={data.queryProducts}/>
                             }
                         </div>
                         <div

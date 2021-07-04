@@ -35,10 +35,27 @@ let OrderProductSchema = new mongoose.Schema({
     }
 });
 
+let OrderPaypalSchema = new mongoose.Schema({
+        idOrder: {
+            type: String,
+            required: true
+        },
+        idPayer: {
+            type: String,
+            required: true
+        }
+    },
+    {_id: false}
+)
+
 
 export var OrderSchema = new mongoose.Schema({
     idUser: {
         type: mongoose.Types.ObjectId,
+        required: true
+    },
+    paypal: {
+        type: OrderPaypalSchema,
         required: true
     },
     listOfProducts: {

@@ -48,8 +48,6 @@ export function CartProvider(props) {
     const [cart, setCart] = useState(null)
     const [address, setAddress] = useState('primary')
     const [timeLeft, setTimeLeft] = useState(20)
-    const [activateTimer, setActivateTimer] = useState(false)
-    const [formatTime, setFormatTime] = useState('')
     const [validCart, setValidCart] = useState(true)
 
     let [__createCart] = useMutation(CREATE_CART, {
@@ -80,9 +78,7 @@ export function CartProvider(props) {
 
     function onCompletedCartResolver(data) {
         let _key = _.keys(data)[0]
-        pp(_key)
         let __data = data[_key]
-        pp(__data)
         if (__data.status === 'success' && typeof localStorage !== undefined) {
             localStorage.setItem(
                 CART_FIELD, JSON.stringify(__data.cart)
@@ -91,45 +87,21 @@ export function CartProvider(props) {
             setTimeLeft(
                 millisToSeconds(__data.cart.timeout.end - DateTime.now().ts)
             )
-            pp('Setting local storage')
             localStorage.removeItem(CART_FIELD)
             localStorage.setItem(CART_FIELD, JSON.stringify(__data.cart))
         } else {
             localStorage.removeItem(CART_FIELD)
         }
-        setActivateTimer(true)
     }
 
     function millisToSeconds(millis) {
         return (Math.floor(millis * 0.001))
     }
 
-    useEffect(
-        async function triggerTimer() {
-            if (activateTimer === true) {
-                let _timeLeft;
-                const _id = setInterval(async function () {
-                    setTimeLeft(
-                        function (prevState) {
-                            let newState = prevState - 1
-                            _timeLeft = newState
-                            return prevState - 1
-                        }
-                    )
-                    setFormatTime(__formatTime(_timeLeft))
-                    if (_timeLeft <= 0) {
-                        clearInterval(_id)
-                        await __deleteCart()
-                    }
-
-                }, 1000)
-            }
-        }, [activateTimer])
-
-    function __formatTime(seconds) {
-        let timer = Duration.fromMillis(seconds * 1000)
-        if (seconds < 1) {
-            return '00:00'
+    function __formatTime(millis) {
+        let timer = Duration.fromMillis(millis)
+        if (millis < 1) {
+            return '0:00'
         } else {
             return timer.toFormat('m:ss')
         }
@@ -164,13 +136,11 @@ export function CartProvider(props) {
 
 
     function cartExists() {
-        if (typeof localStorage !== 'undefined') {
-            let _cart = localStorage.getItem(CART_FIELD)
-            if (!_cart) {
-                return false
-            }
-            return true
+        if (cart === null) {
+            return false
         }
+
+        return true
     }
 
     function updateProduct(next) {
@@ -240,7 +210,6 @@ export function CartProvider(props) {
 
         setCart(nextState)
 
-        pp(nextState)
         let _input = {listOfProducts: []}
 
         nextState.listOfProducts.forEach((p) => {
@@ -335,7 +304,7 @@ export function CartProvider(props) {
             total: total,
             timer: {
                 timeLeft: timeLeft,
-                format: formatTime,
+                format: __formatTime,
                 validCart: {
                     getter: validCart,
                     setter: setValidCart

@@ -1,0 +1,11 @@
+mutation createPayment{
+    createPayment{
+        id
+        status
+        links{
+            href
+            rel
+            method
+        }
+    }
+}

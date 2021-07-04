@@ -13,7 +13,7 @@ mutation createcart($input: CartProductInput!){
                 }
                 listOfProducts{
                     id
-                    code
+                    sku
                     purchaseLimit
                     name
                     thumbnail

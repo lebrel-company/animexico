@@ -150,10 +150,31 @@
 
 .button-product-amount {
     @apply
-        px-2
-    absolute
-    right-1
+    px-2
     bg-red
     rounded-full
     text-xs
 }
+
+
+.button-section {
+    @apply
+    bg-lightpale
+    border-2
+    border-dark
+    py-4
+    mx-1
+    rounded-md
+    font-deco
+    w-72
+    shadow-lg
+    text-2xl
+    transition
+    duration-200
+    ease-in-out
+    transform
+    hover:scale-101
+    hover:opacity-100
+}
+
+

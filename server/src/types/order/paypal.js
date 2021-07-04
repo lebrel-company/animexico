@@ -10,12 +10,6 @@ import querystring from 'querystring'
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
 
-export const PAYPAL_CLIENT = 'AWRqzvZX9poAvA67i306KiwGx82vdxVrhy0BcB6aJLCi_ihcalvYmFMzavW6SRngbRLkF2eUqUMGL2BU'
-export const PAYPAL_SECRET = 'EKDfGW7hhCPV-OYQpDj8wpYToo72O_U2LOQSAB4j4JikvASovjDOxWqksxNy7hmsQBqEF4VvLLK-UyMX'
-
-const PAYPAL_OAUTH_API = 'https://api-m.sandbox.paypal.com/v1/oauth2/token/';
-export const PAYPAL_ORDER_API = 'https://api-m.sandbox.paypal.com/v2/checkout/orders/';
-export const PAYPAL_PAYMENT_API = 'https://api-m.sandbox.paypal.com/v1/payments/payment';
 
 //=============================================================================
 

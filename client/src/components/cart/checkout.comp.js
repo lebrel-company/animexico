@@ -3,6 +3,7 @@
 import {useContext} from 'react';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
+import {AuthContext} from '../../context/AuthContext'
 import {CartContext} from '../../context/CartContext';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // layouts:
@@ -13,18 +14,33 @@ import ClientLayout from '../../layout/Client';
 // project:
 import CartProduct from './cartProduct';
 import CartPayment from './cartPayment';
+import Error401 from '../errors/401';
 
 var pp = (el) => console.log(el)
 //=============================================================================
 
 
 const TEXTS = {
-    title: 'Se realizara un cobro por los siguientes productos:'
+    title: 'Se realizara un cobro por los siguientes productos:',
+    noCart: 'Agrega productos a tu carrito.'
 }
 
 
 export default function CheckoutComponent() {
+    const authState = useContext(AuthContext)
     const cartState = useContext(CartContext)
+
+    if (!cartState.exists()) {
+        return (
+            <ClientLayout>
+                <div className=" font-deco font-black text-dark
+                    container m-auto text-center text-2xl
+                    ">
+                    {TEXTS.noCart}
+                </div>
+            </ClientLayout>
+        )
+    }
 
     return (
         <ClientLayout>
@@ -34,7 +50,7 @@ export default function CheckoutComponent() {
                 <div
                     className="
                     text-xl lg:text-3xl font-bold font-deco shadow-xl
-                    bg-pale p-4 bg-opacity-70 rounded-md text-center
+                    bg-pale p-4 bg-opacity-70 rounded-md text-center my-8
                     ">
                     {TEXTS.title}
                 </div>
@@ -57,6 +73,7 @@ export default function CheckoutComponent() {
                     </div>
                 </div>
             </div>
+            }
         </ClientLayout>
     )
 }

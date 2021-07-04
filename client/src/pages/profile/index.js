@@ -65,20 +65,12 @@ export default function Profile() {
 
                             <button
                                 onClick={switchComponent('address')}
-                                className="
-                                bg-lightpale border-2 border-dark py-4 mx-1
-                                rounded-md font-deco w-72 shadow-lg
-                                text-2xl"
-                            >
+                                className="button-section">
                                 Direcciones
                             </button>
                             <button
                                 onClick={switchComponent('orders')}
-                                className="
-                                bg-lightpale border-2 border-dark
-                                rounded-md font-deco w-72 shadow-lg
-                                text-2xl"
-                            >
+                                className="button-section">
                                 Historial de pedidos
                             </button>
                         </div>

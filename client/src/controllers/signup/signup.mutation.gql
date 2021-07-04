@@ -7,7 +7,6 @@ mutation signup($input: SignupInput!){
             middleName
             lastName
             secondLastName
-            mapOfAddresses
         }
         expiresIn
     }

@@ -3,7 +3,7 @@ type Product {
     name: String
     price: Price
     description: String
-    code: String
+    sku: String
     stock: Int
     available: Boolean
     publish: ProductPublish
@@ -14,24 +14,20 @@ type Product {
 
 type ProductPublish{
     date: String
-    month: String
+    timestamp: Date
 }
 
 input ProductInput {
     name: String!
     price: PriceInput!
     description: String!
-    code: String!
+    sku: String!
     stock: Int!
     purchaseLimit: Int!
     available: Boolean!
-    publish: ProductPublishInput!
+    publish: String!
     listOfImages: [String!]!
     listOfTags: [String!]!
-}
-
-input ProductPublishInput {
-    date: String!
 }
 
 
@@ -46,7 +42,7 @@ input PriceInput{
 }
 
 extend type Query {
-    queryAllAvailableProducts: [Product!]
+    queryProducts: [Product!]
     queryListOfProducts:[Product]
     queryProductById(input: ID!): Product
 }

@@ -2,7 +2,7 @@
 // libraries:
 import Link from 'next/link';
 import {v4 as uuidv4} from 'uuid';
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useQuery} from '@apollo/client'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
@@ -17,6 +17,7 @@ import {CartContext} from '../context/CartContext';
 import {mapOfRoutes} from '../utils/routes'
 import {generalButtons} from '../utils/buttons/general';
 import QUERY_CART from '../operations/queryCart.gql';
+import {useCartTimer} from '../hooks/useCartTimer';
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -26,6 +27,7 @@ export default function Header() {
     var authState = useContext(AuthContext)
     var cartState = useContext(CartContext)
     var listOfMenuLinks = ['homepage', 'store', 'faqs'];
+
 
     if (authState.isAuthenticated()) listOfMenuLinks.push('profile');
     return (
@@ -44,7 +46,7 @@ export default function Header() {
                     }
                     <div>
                         {
-                            createAuthButtons(authState, cartState)
+                            <AuthButtons/>
                         }
                     </div>
                 </div>
@@ -53,7 +55,10 @@ export default function Header() {
     );
 }
 
-function createAuthButtons(authState, cartState) {
+function AuthButtons() {
+    const cartState = useContext(CartContext)
+    const authState = useContext(AuthContext)
+    const timeLeft = useCartTimer()
 
     async function logout(e) {
         e.preventDefault()
@@ -64,11 +69,6 @@ function createAuthButtons(authState, cartState) {
     function productAmount() {
         return cartState.product.amount()
     }
-
-    function timeLeft() {
-        return cartState.timer.timeLeft !== 0
-    }
-
 
     if (authState.isAuthenticated()) {
         return (
@@ -81,16 +81,27 @@ function createAuthButtons(authState, cartState) {
                                     `${generalButtons.cart.text}`
                                     : `${generalButtons.cart.text}`
                             }
-                            <div>
-                                {
-                                    productAmount() && timeLeft() ?
-                                        <div className="button-product-amount">
-                                            {
-                                                `${productAmount()} 
-                                                ${cartState.timer.format}`
-                                            }
-                                        </div> : null
-                                }
+                            <div className='flex flex-row absolute -right-1'>
+                                <div>
+                                    {
+                                        productAmount() ?
+                                            <div className="button-product-amount">
+                                                {
+                                                    `${productAmount()}`
+                                                }
+                                            </div> : null
+                                    }
+                                </div>
+                                <div>
+                                    {
+                                        timeLeft !== '0:00' ?
+                                            <div className="button-product-amount">
+                                                {
+                                                    `${timeLeft}`
+                                                }
+                                            </div> : null
+                                    }
+                                </div>
                             </div>
                         </button>
                     </Link>

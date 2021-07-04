@@ -2,46 +2,50 @@
 // libraries:
 import {ProductModel} from './product.model';
 import {authenticated, authorized} from '../../utils/auth';
+import {DateTime} from 'luxon'
+import util from 'util'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-//==============================================================================
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
+
+//=============================================================================
+
+
+export function generatePublishDatesInput(ISOPublishDate) {
+    let d = DateTime.fromISO(ISOPublishDate)
+    return {
+        date: d,
+        timestamp: d.ts.toString(),
+        local: d.setLocale('ES-MX').toLocaleString(DateTime.DATE_FULL)
+    }
+
+}
 
 async function createProduct(parent, args, context, info) {
+
+    let product = args.input
+    product.publish = generatePublishDatesInput(product.publish)
+
     try {
-        const newProduct = await new ProductModel(args.input);
-        return await newProduct.save();
-    } catch (error) {
-        console.log(error)
-        throw new Error('Unable to create product')
+        return await ProductModel.create(product)
+    } catch (e) {
+        throw new Error(e.message)
     }
 }
+
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
-async function queryListOfProducts(parent, args, context, info) {
-    try {
-        return await ProductModel.find({}).exec();
-    } catch (error) {
-        console.log(error);
-    }
-}
 
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
-async function queryProduct(parent, args, context, info) {
-    const product = await ProductModel.findById(args.id);
-    if (!product) {
-        throw new Error('Product not found');
-    }
-    return product;
-}
-
-async function queryAllAvailableProducts() {
+async function queryListOfProducts() {
     var _p = await ProductModel.find({'available': true})
+    pp(_p)
     return _p
 }
 
 // --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
+
 async function updateProduct(parent, args, context, info) {
     const _product = await ProductModel.findOneAndUpdate(
         {
@@ -54,7 +58,7 @@ async function updateProduct(parent, args, context, info) {
                 currency: args.price.currency
             },
             description: args.description,
-            code: args.code,
+            sku: args.sku,
             stock: args.stock,
             publishDate: new Date(args.publish),
             available: args.available,
@@ -80,7 +84,7 @@ async function queryProductById(parent, args, context, info) {
 
 export default {
     Query: {
-        queryAllAvailableProducts: queryAllAvailableProducts,
+        queryProducts: queryListOfProducts,
         queryProductById: queryProductById
     },
     Mutation: {

@@ -1,6 +1,6 @@
 'use strict';
 // libraries:
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {useMutation} from '@apollo/client'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // Contexts:
@@ -10,33 +10,39 @@ import {useMutation} from '@apollo/client'
 // components:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-var pp = (el) => console.log(el)
+import PAYMENT from '../../operations/createPayment.gql'
 
+var pp = (el) => console.log(el)
 //=============================================================================
 
 
 export default function PaypalButton() {
+    const [payment, setPayment] = useState(null)
+    const [__createPayment] = useMutation(PAYMENT, {
+        onCompleted: function (data) {
+            setPayment(data.createPayment)
+        }
+    })
 
     useEffect(() => {
-        paypal.Button.render({
+        paypal.Buttons({
             env: 'sandbox',
-            payment: function (data, actions) {
-                return actions.request.post('/my-api/create-payment/')
-                    .then(function (res) {
-                        return res.id;
-                    });
+            createOrder: async function (data, actions) {
+                let payment = await __createPayment()
+                let token;
+                for (let link of payment.data.createPayment.links) {
+                    if (link.rel === 'approval_url') {
+                        token = link.href.match(/EC-\w+/)[0]
+                    }
+                }
+                return token
             },
-            onAuthorize: function (data, actions) {
-                return actions.request.post('/my-api/execute-payment/', {
-                    paymentID: data.paymentID,
-                    payerID: data.payerID
-                })
-                    .then(function (res) {
-                        pp('Confirmed')
-                        pp(res)
-                    });
+            onApprove: function (data) {
+                pp(data)
+
+
             }
-        }, '#paypal-button')
+        }).render('#paypal-button')
     }, [])
 
     return <div id="paypal-button"/>

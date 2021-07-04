@@ -13,7 +13,7 @@ query queryCart{
                 }
                 listOfProducts{
                     id
-                    code
+                    sku
                     name
                     purchaseLimit
                     thumbnail

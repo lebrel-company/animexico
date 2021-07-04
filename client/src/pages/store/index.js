@@ -11,12 +11,11 @@ import Card from '../../components/Card'
 import Loading from '../../components/loading';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import QUERY_ALL_AVAILABLE_PRODUCTS
-    from '../../operations/queryProducts.gql'
+import QUERY_PRODUCTS from '../../operations/queryProducts.gql'
 //==============================================================================
 
 export default function Store() {
-    var {loading, error, data} = useQuery(QUERY_ALL_AVAILABLE_PRODUCTS)
+    var {loading, error, data} = useQuery(QUERY_PRODUCTS)
 
 
     if (loading) return <Loading/>
@@ -34,7 +33,7 @@ export default function Store() {
                         "
                     >
                         {
-                            data.queryAllAvailableProducts.map(
+                            data.queryProducts.map(
                                 function _query(_p) {
                                     return (
                                         <Card

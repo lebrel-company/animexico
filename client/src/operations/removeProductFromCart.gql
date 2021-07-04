@@ -13,7 +13,7 @@ mutation removeProductFromCart($input: CartProductInput!){
                 }
                 listOfProducts{
                     id
-                    code
+                    sku
                     purchaseLimit
                     name
                     thumbnail
