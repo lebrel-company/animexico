@@ -8,6 +8,7 @@ import _ from 'lodash';
 // project:
 import {listOfProductsFromListOfOrders} from './order.helpers'
 import status from '../../utils/status'
+import {ProductModel} from '../product/product.model';
 
 var pp = (el) => {
     console.log(util.inspect(el, false, 5, true))
@@ -15,57 +16,105 @@ var pp = (el) => {
 
 //==============================================================================
 
-var errorMessages = {
-    message: 'Lo sentimos, hubo un error al procesar tu orden',
-    invalidQuantity: (name, purchaseLimit) => {
-        return `El limite de compra de ${name} es de ${purchaseLimit}`
-    },
-    outOfStock: (name, stock) => {
-        return `Quedan ${stock} piezas de ${name}`
+
+export function validateOrderCreation(nextResolver) {
+    return findProductsAndHydrateContext(
+        validateProductsQuantity(nextResolver)
+    )
+}
+
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
+// CONTEXT HYDRATION:
+
+
+function findProductsAndHydrateContext(nextResolver) {
+    return async function _findProductsAndHydrateContext(
+        parent, args, context, info
+    ) {
+        let {listOfProducts} = args.input
+        let listOfIds = listOfProducts.map(p => p.id)
+
+        // lop = listOfProducts
+        let lop = await ProductModel.find({_id: {$in: listOfIds}})
+
+        if (lop === null && lop.length !== listOfIds.length) {
+            return {
+                status: status.invalid,
+                message: status.messages.order.creation.invalid,
+                listOfErrors: [
+                    'Cannot find products with given IDs.',
+                    'Amount of given IDs does not match Products found.'
+                ]
+            }
+        } else {
+            context.listOfProducts = lop
+            return nextResolver(parent, args, context, info)
+        }
     }
 }
 
-function order(listOfOrderProducts, listOfProducts) {
-    let result = []
-    result = __productPurchaseLimit(listOfOrderProducts, listOfProducts)
-    result = _.concat(
-        result, __productOutOfStock(listOfOrderProducts, listOfProducts)
-    )
-    return result
-}
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
+// ORDER PRODUCTS VALIDATIONS:
 
-// --   --   --   --   --   --   --   --   --   --   --   --   --   --   --   --
-function __productPurchaseLimit(_listOfOrderProd, _listOfProd) {
-    let result = []
-    _listOfOrderProd.forEach((_op) => {
-        _listOfProd.forEach((_p) => {
-            let match = _op.id === _p.id
-            if (match && (_op.quantity > _p.purchaseLimit)) {
-                result.push(
-                    errorMessages.invalidQuantity(_p.name, _p.purchaseLimit)
-                )
-            }
+function validateProductsQuantity(nextResolver) {
+    return async function _validateProductsQuantity(
+        parent, args, context, info
+    ) {
+        let loe = [] // for "list of errors"
+        context.listOfProducts.forEach((storeProduct) => {
+            args.input.listOfProducts.forEach((orderProduct) => {
+                let _id = storeProduct._id.toString()
+                if (_id === orderProduct.id) {
+                    loe = _.concat(
+                        loe, __validProductQuantityVsStock(
+                            storeProduct, orderProduct
+                        )
+                    )
+                    loe = _.concat(
+                        loe, __validProductQuantityVsPurchaseLimit(
+                            storeProduct, orderProduct
+                        )
+                    )
+                }
+            })
         })
-    })
-    return result
-}
 
-function __productOutOfStock(_listOfOrderProd, _listOfProd) {
-    let result = []
-    _listOfOrderProd.forEach((_op) => {
-        _listOfProd.forEach((_p) => {
-            let match = _op.id === _p.id
-            if (match && (_op.quantity > _p.stock)) {
-                result.push(
-                    errorMessages.outOfStock(_p.name, _p.stock)
-                )
+        if (loe.length > 0) {
+            return {
+                status: status.invalid,
+                message: status.messages.order.creation.invalid,
+                listOfErrors: loe
             }
-        })
-    })
+        } else {
+
+            return nextResolver(parent, args, context, info)
+        }
+
+    }
+}
+
+function __validProductQuantityVsStock(storeProduct, orderProduct) {
+    let result = []
+    if (storeProduct.stock < orderProduct.quantity) {
+        result.push(
+            `Not enough stock to fulfill the Order for Product ${storeProduct.id}.`
+        )
+    }
+    return result
+}
+
+function __validProductQuantityVsPurchaseLimit(storeProduct, orderProduct) {
+    let result = []
+    if (storeProduct.purchaseLimit < orderProduct.quantity) {
+        result.push(
+            `Product ${storeProduct.id} over the purchase limit.`
+        )
+    }
     return result
 }
 
 
-export default {
-    order
-}
+
+
+
+

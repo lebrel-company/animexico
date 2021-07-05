@@ -2,7 +2,7 @@
 // libraries:
 import util from 'util'
 import _ from 'lodash';
-import {listOfProducts} from '../../../seed/product_data';
+import {DateTime} from 'luxon'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -16,30 +16,32 @@ var pp = (el) => {
 
 function segregateProductsByMonth(listOfProducts) {
     var result = {}
-    listOfProducts.forEach(function segregatePublishes(el) {
-            if (result.hasOwnProperty(el.publish.month)) {
-                result[el.publish.month].push(el)
+    listOfProducts.forEach(function segregatePublishes(p) {
+            let date = DateTime.fromMillis(parseInt(p.publish.timestamp))
+            let month = date.monthLong
+            if (result.hasOwnProperty(month)) {
+                result[month].push(p)
             } else {
-                result[el.publish.month] = [el]
+                result[month] = [p]
             }
         }
     )
-    return Object.values(result)
+    return result
 }
 
-function filterListOfProductFields(listOfProducts) {
+function remappedListOfProductFields(listOfProducts) {
     let result = []
-    listOfProducts.forEach(function process(el) {
-        result.push(filterProductFields(el))
+    listOfProducts.forEach(function process(p) {
+        result.push(remapProductFields(p))
     })
     return result
 }
 
-function filterProductFields(product) {
+function remapProductFields(product) {
     let _p = product
     return {
         id: _p._id,
-        code: _p.code,
+        sku: _p.sku,
         name: _p.name,
         quantity: _p.quantity,
         thumbnail: _p.listOfImages[0],
@@ -52,12 +54,12 @@ function filterProductFields(product) {
 }
 
 
-function mapInputQuantityWithProductList(listOfInputs, listOfProducts) {
+function mapInputQuantityWithProductList(listOfOrderProducts, listOfStoreProducts) {
     let result = []
 
-    listOfProducts.forEach(function mappingValues(product) {
+    listOfStoreProducts.forEach(function mappingValues(product) {
         let _product = _.cloneDeep(product)
-        listOfInputs.forEach(function functionName(entry) {
+        listOfOrderProducts.forEach(function functionName(entry) {
             if (entry.id === product.id) {
                 _product.quantity = entry.quantity
                 result.push(_product)
@@ -95,8 +97,8 @@ function listOfProductsFromListOfOrders(listOfOrders) {
 export default {
     listOfProductsFromListOfOrders,
     segregateProductsByMonth,
-    filterProductFields,
-    filterListOfProductFields,
+    remapProductFields,
+    remappedListOfProductFields,
     mapInputQuantityWithProductList,
     calculateTotalFromListOfProducts
 }

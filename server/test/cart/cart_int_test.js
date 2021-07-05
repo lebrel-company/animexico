@@ -15,7 +15,7 @@ import {ProductModel} from '../../src/types/product/product.model';
 import {CART_PRODUCTS} from './cart_products_int_test';
 import {hostname, axiosConfig} from '../constants';
 import {dropAll} from '../cleanup';
-import {listOfProducts} from '../../seed/product_data';
+import {listOfProducts, forDatabaseInsertion} from '../../seed/product_data';
 import {authData} from '../auth';
 import status from '../../src/utils/status';
 
@@ -24,82 +24,71 @@ chai.use(chaiGraphQL)
 var assert = chai.assert
 var expect = chai.expect
 var should = chai.should
+
 //==============================================================================
+
+export function cartFragments() {
+    return `
+        __typename
+        ... on MyCart{
+            status
+            message
+            cart{
+                id
+                idUser
+                timeout{
+                    start
+                    end
+                }
+
+                listOfProducts{
+                    id
+                    sku
+                    purchaseLimit
+                    name
+                    thumbnail
+                    price{
+                        amount
+                        currency
+                    }
+                    quantity
+                }
+            }
+        }
+        ... on InvalidCart{
+            status
+            message
+            listOfErrors
+        }
+        ... on DeletedCart{
+                status
+                message
+                listOfProducts{
+                    id
+                    sku
+                    purchaseLimit
+                    name
+                }
+        }
+    `
+}
 
 export var CART = {
     mutations: {
-        createCart: gql`
+        createCart: `
             mutation createCart($input: CartProductInput!){
                 createCart(input: $input){
-                    __typename
-                    ... on MyCart{
-                        status
-                        message
-                        cart{
-                            id
-                            idUser
-                            timeout{
-                                start
-                                end
-                            }
-
-                            listOfProducts{
-                                id
-                                code
-                                purchaseLimit
-                                name
-                                thumbnail
-                                price{
-                                    amount
-                                    currency
-                                }
-                                quantity
-                            }
-                        }
-                    }
-                    ... on InvalidCart{
-                        status
-                        message
-                        listOfErrors
-                    }
-                    ... on DeletedCart{
-                        status
-                        message
-                        listOfProducts{
-                            id
-                            code
-                            purchaseLimit
-                            name
-                        }
-                    }
+                    ${cartFragments()}
                 }
             }
-        `.loc.source.body,
-        deleteCart: gql`
+        `,
+        deleteCart: `
             mutation deleteCart{
                 deleteCart{
-                    __typename
-                    ... on MyCart{
-                        status
-                        message
-                    }
-                    ... on InvalidCart{
-                        status
-                        message
-                    }
-                    ... on DeletedCart{
-                        status
-                        message
-                        listOfProducts{
-                            id
-                            code
-                            purchaseLimit
-                            name
-                        }
-                    }
+                    ${cartFragments()}
                 }
             }
-        `.loc.source.body
+        `
     }
 }
 
@@ -118,8 +107,7 @@ describe('CART', function cartTests() {
 
     beforeEach(async function () {
         await dropAll()
-        let _listOfProducts = _.cloneDeep(listOfProducts)
-        await ProductModel.insertMany(_listOfProducts)
+        await ProductModel.insertMany(forDatabaseInsertion())
     })
 
     // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -

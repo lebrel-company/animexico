@@ -12,7 +12,7 @@ import {ProductPriceSchema} from '../product/product.model';
 //==============================================================================
 
 let OrderProductSchema = new mongoose.Schema({
-    code: {type: String, required: true},
+    sku: {type: String, required: true},
     name: {type: String, required: true},
     description: {type: String, required: false},
     currency: {type: String, default: 'MXN', required: false},
@@ -52,6 +52,10 @@ let OrderPaypalSchema = new mongoose.Schema({
 export var OrderSchema = new mongoose.Schema({
     idUser: {
         type: mongoose.Types.ObjectId,
+        required: true
+    },
+    month: {
+        type: String,
         required: true
     },
     paypal: {

@@ -63,7 +63,8 @@ input, select, textarea {
     @apply
     p-2
     w-full
-    bg-pale
+    bg-white
+    border
     text-dark
     rounded
     font-bold

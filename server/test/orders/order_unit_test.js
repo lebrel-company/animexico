@@ -3,6 +3,7 @@
 import util from 'util'
 import chai from 'chai'
 import chaiGraphQL from 'chai-graphql'
+import {DateTime} from 'luxon'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -12,36 +13,41 @@ var assert = chai.assert
 var expect = chai.expect
 var should = chai.should
 import helpers from '../../src/types/order/order.helpers'
+
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //==============================================================================
 
 
 describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
 
-        it('Segregate list of orders by publish month',
+        it('Unit.Order: Segregate list of orders by publish month',
             async function segretateProducts() {
+                let january = DateTime.fromISO('2021-01-01').ts
+                let april = DateTime.fromISO('2021-04-01').ts
                 let data = [
-                    {name: 'Product one', publish: {month: 'JANUARY'}},
-                    {name: 'Product two', publish: {month: 'APRIL'}},
-                    {name: 'Product three', publish: {month: 'JANUARY'}},
-                    {name: 'Product four', publish: {month: 'JANUARY'}}
+                    {name: 'Product one', publish: {timestamp: january}},
+                    {name: 'Product two', publish: {timestamp: april}},
+                    {name: 'Product three', publish: {timestamp: january}},
+                    {name: 'Product four', publish: {timestamp: january}}
                 ]
                 let result = helpers.segregateProductsByMonth(data)
 
-                expect(result).to.deep.equal([
-                    [
-                        {name: 'Product one', publish: {month: 'JANUARY'}},
-                        {name: 'Product three', publish: {month: 'JANUARY'}},
-                        {name: 'Product four', publish: {month: 'JANUARY'}}
+
+                expect(result).to.deep.equal({
+                    January: [
+                        {name: 'Product one', publish: {timestamp: january}},
+                        {name: 'Product three', publish: {timestamp: january}},
+                        {name: 'Product four', publish: {timestamp: january}}
                     ],
-                    [
-                        {name: 'Product two', publish: {month: 'APRIL'}}
+                    April: [
+                        {name: 'Product two', publish: {timestamp: april}}
                     ]
-                ])
+                })
             }
         )
 
-        it('Filter order list of products', function functionName() {
+
+        it('Unit.Order: Filter order list of products', () => {
                 let data = {
                     price: {
                         amount: 10,
@@ -57,7 +63,7 @@ describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
                     quantity: 3,
                     name: 'Goku',
                     description: 'Dragon Ball Z figuart',
-                    code: '123456',
+                    sku: '123456',
                     stock: 200,
                     available: true,
                     publish: [Object],
@@ -68,7 +74,7 @@ describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
                     __v: 0
                 }
 
-                let result = helpers.filterProductFields(data)
+                let result = helpers.remapProductFields(data)
 
                 expect(result).to.deep.equal(
                     {
@@ -79,7 +85,7 @@ describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
                         },
                         thumbnail: 'https://omochanoruumu.com/wp-content/uploads/2018/01/gh0.jpg',
                         name: 'Goku',
-                        code: '123456',
+                        sku: '123456',
                         quantity: 3,
                         subtotal: 30
                     }
@@ -88,7 +94,7 @@ describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
         )
 
 
-        it('Map quantity to list of products', function mapQuantity() {
+        it('Unit.Order: Map quantity to list of products', () => {
             let input = [
                 {id: '1234567', quantity: 1},
                 {id: '7654321', quantity: 2}
@@ -110,19 +116,19 @@ describe('UNIT.ORDERS: Helpers', function ordersUtilitiesTest() {
             )
         })
 
-        it('Calculate total from a list of products', function calculate() {
+        it('Unit.Order: Calculate total from a list of products', () => {
             let data = [{subtotal: 1200}, {subtotal: 4390}]
             let result = helpers.calculateTotalFromListOfProducts(data)
             expect(result).to.be.equal(5590)
         })
 
-        it('Get name id and amount from li', function calculate() {
+        it('Unit.Order: Get name id and amount from li', function calculate() {
             let data = [{subtotal: 1200}, {subtotal: 4390}]
             let result = helpers.calculateTotalFromListOfProducts(data)
             expect(result).to.be.equal(5590)
         })
 
-        it('Extract flattened list of products from list of orders',
+        it('Unit.Order: Extract flattened list of products from list of orders',
             () => {
                 let source = [
                     {

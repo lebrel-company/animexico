@@ -1,26 +1,20 @@
 'use strict';
 // libraries:
 import util from 'util'
-import mongoose from 'mongoose'
 import _ from 'lodash'
-import checkoutNodeJssdk from '@paypal/checkout-server-sdk'
 import axios from 'axios'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
-import {UserModel} from '../user/user.model';
-import {ProductModel} from '../product/product.model';
 import {OrdersModel} from './order.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {authenticated, authorized} from '../../utils/auth';
-import helpers from './order.helpers';
+import h from './order.helpers';
 import status from '../../utils/status'
-import validate from './order.validations'
+import {validateOrderCreation} from './order.validations'
 import {CartModel} from '../cart/cart.model';
 
-var pp = (el) => {
-    console.log(util.inspect(el, false, 5, true))
-}
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
 
 //==============================================================================
 
@@ -28,26 +22,12 @@ var pp = (el) => {
 async function createOrder(parent, args, context, info) {
     let _i = args.input
     let {paypal} = args.input
-    let listProductIdObjects = _i.listOfProducts.map((el) => {
-        return mongoose.Types.ObjectId(el.id)
-    })
-    let _p = await ProductModel.find({_id: {$in: listProductIdObjects}})
 
-    let listOfErrors = validate.order(_i.listOfProducts, _p)
-
-    if (listOfErrors.length > 0) {
-        return {
-            status: status.invalid,
-            message: status.messages.order.creation.invalid,
-            listOfErrors: listOfErrors
-        }
-    }
-
-    let listOfProducts = helpers.mapInputQuantityWithProductList(
-        _i.listOfProducts, _p
+    let listOfProducts = h.mapInputQuantityWithProductList(
+        _i.listOfProducts, context.listOfProducts
     )
     let listOfSegregatedProducts = (
-        helpers.segregateProductsByMonth(listOfProducts)
+        h.segregateProductsByMonth(listOfProducts)
     )
 
     let result = {
@@ -57,20 +37,25 @@ async function createOrder(parent, args, context, info) {
     }
 
     let mapBaseObject = {
-        idUser: _i.idUser,
+        idUser: context.userInfo.id,
         address: _i.address,
         orderStatus: status.order.pending,
         shippingAddress: {},
         paypal
     }
 
-    listOfSegregatedProducts.forEach(function createOrderEntries(el) {
+
+    _.forEach(listOfSegregatedProducts, (listOfProducts, month) => {
         let base = _.cloneDeep(mapBaseObject)
-        let listOfProducts = helpers.filterListOfProductFields(el)
-        base.listOfProducts = listOfProducts
-        base.total = helpers.calculateTotalFromListOfProducts(listOfProducts)
+        let listOfRemappedProducts = (
+            h.remappedListOfProductFields(listOfProducts)
+        )
+        base.month = month
+        base.listOfProducts = listOfRemappedProducts
+        base.total = h.calculateTotalFromListOfProducts(listOfRemappedProducts)
         result.listOfOrders.push(base)
     })
+
 
     try {
         await OrdersModel.insertMany(result.listOfOrders)
@@ -87,21 +72,29 @@ async function createOrder(parent, args, context, info) {
 const PAYPAL_CLIENT = 'AWRqzvZX9poAvA67i306KiwGx82vdxVrhy0BcB6aJLCi_ihcalvYmFMzavW6SRngbRLkF2eUqUMGL2BU'
 const PAYPAL_SECRET = 'EKDfGW7hhCPV-OYQpDj8wpYToo72O_U2LOQSAB4j4JikvASovjDOxWqksxNy7hmsQBqEF4VvLLK-UyMX'
 const PAYPAL_PAYMENT_API = 'https://api-m.sandbox.paypal.com/v1/payments/payment';
-const TOTAL = 100
+
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
 
 function executePaymentEndpoint(paymentID) {
     return `${PAYPAL_PAYMENT_API}/${paymentID}/execute`
 }
 
+function getTotalFromCart(cart) {
+    let {listOfProducts} = cart
+    let total = 0
+    listOfProducts.forEach((product) => {
+        total += (product.price.amount * product.quantity)
+    })
+    return total
+}
+
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
+
 async function createPayment(parent, args, context, info) {
     let idUser = context.userInfo.id
-
-    let cart = await CartModel.find({idUser: idUser})
-
-
-    let order
+    let cart = await CartModel.findOne({idUser: idUser})
     try {
-        order = await axios({
+        let order = await axios({
             method: 'POST',
             url: PAYPAL_PAYMENT_API,
             headers: {
@@ -114,7 +107,7 @@ async function createPayment(parent, args, context, info) {
                 },
                 transactions: [{
                     amount: {
-                        total: TOTAL.toString(),
+                        total: getTotalFromCart(cart).toString(),
                         currency: 'MXN'
                     }
                 }],
@@ -129,11 +122,12 @@ async function createPayment(parent, args, context, info) {
             }
         })
 
+        return order.data
+
     } catch (_e) {
-        pp(_e.message)
+        throw Error(_e.message)
     }
 
-    return order.data
 }
 
 async function executePayment(parent, args, context, info) {
@@ -169,7 +163,9 @@ async function executePayment(parent, args, context, info) {
 export default {
     Query: {},
     Mutation: {
-        createOrder: authenticated(authorized('CLIENT', createOrder)),
+        createOrder: authenticated(
+            authorized('CLIENT', validateOrderCreation(createOrder))
+        ),
         createPayment: authenticated(createPayment),
         executePayment: executePayment
     },

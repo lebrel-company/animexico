@@ -20,7 +20,6 @@ import {ProductModel} from '../../src/types/product/product.model';
 import {axiosConfig, hostname} from '../constants';
 import {forDatabaseInsertion, listOfProducts} from '../../seed/product_data';
 import {authData} from '../auth';
-
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 chai.use(chaiGraphQL)
 var assert = chai.assert

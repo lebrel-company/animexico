@@ -11,7 +11,6 @@ import {AuthContext} from '../../context/AuthContext'
 import ClientLayout from '../../layout/Client';
 import AddressEditor from '../../components/client/addressEditor'
 import Orders from '../../components/client/orders'
-import Footer from '../../components/Footer';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 //==============================================================================

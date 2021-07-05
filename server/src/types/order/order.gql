@@ -9,6 +9,7 @@ type Order{
     orderStatus: OrderStatus
     total: Float
     paypal: PaypalOrder
+    month: String
 }
 
 type PaypalOrder{
@@ -33,7 +34,6 @@ type OrderInvalid{
 #---------------------------------------------------------------------------
 
 input OrderInput{
-    idUser: ID!
     listOfProducts: [OrderProductDataInput!]!
     address: String!,
     paypal: PaypalInput!

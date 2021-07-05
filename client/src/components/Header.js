@@ -72,40 +72,38 @@ function AuthButtons() {
 
     if (authState.isAuthenticated()) {
         return (
-            <div className="flex flex-row items-center h-full w-full">
-                <div className="h-full m-1 shadow-lg">
-                    <Link href={generalButtons.cart.href}>
-                        <button className="button-blue">
-                            {
-                                productAmount() === 0 ?
-                                    `${generalButtons.cart.text}`
-                                    : `${generalButtons.cart.text}`
-                            }
-                            <div className='flex flex-row absolute -right-1'>
-                                <div>
-                                    {
-                                        productAmount() ?
-                                            <div className="button-product-amount">
-                                                {
-                                                    `${productAmount()}`
-                                                }
-                                            </div> : null
-                                    }
-                                </div>
-                                <div>
-                                    {
-                                        timeLeft !== '0:00' ?
-                                            <div className="button-product-amount">
-                                                {
-                                                    `${timeLeft}`
-                                                }
-                                            </div> : null
-                                    }
-                                </div>
+            <div className="flex flex-row items-center w-full">
+                <Link href={generalButtons.cart.href}>
+                    <button className="button-blue">
+                        {
+                            productAmount() === 0 ?
+                                `${generalButtons.cart.text}`
+                                : `${generalButtons.cart.text}`
+                        }
+                        <div className="flex flex-row absolute -right-1">
+                            <div>
+                                {
+                                    productAmount() ?
+                                        <div className="button-product-amount">
+                                            {
+                                                `${productAmount()}`
+                                            }
+                                        </div> : null
+                                }
                             </div>
-                        </button>
-                    </Link>
-                </div>
+                            <div>
+                                {
+                                    timeLeft !== '0:00' ?
+                                        <div className="button-product-amount">
+                                            {
+                                                `${timeLeft}`
+                                            }
+                                        </div> : null
+                                }
+                            </div>
+                        </div>
+                    </button>
+                </Link>
                 <div className="h-full m-1">
                     <button onClick={logout}>
                         <a className="button-pale-outline">

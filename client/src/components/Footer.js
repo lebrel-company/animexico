@@ -16,7 +16,7 @@ import {mapOfRoutes} from '../utils/routes'
 export default function Footer() {
     return (
         <div className="bg-black-gradient text-pale text-xl">
-            <div className="container mx-auto p-8">
+            <div className="container mx-auto p-2">
                 <div className="flex justify-between items-center">
 
                     <div className="px-4">

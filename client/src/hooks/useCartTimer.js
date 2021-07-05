@@ -21,6 +21,7 @@ export function useCartTimer() {
 
     useEffect(() => {
         let idInterval = null;
+
         if (
             cartState.cart !== null &&
             cartState.cart.timeout.end > DateTime.local().ts
@@ -31,9 +32,24 @@ export function useCartTimer() {
                     return cartState.timer.format(newTime)
                 })
 
+                if (DateTime.local().ts > cartState.cart.timeout.end) {
+                    cartState.deleteCart()
+                }
+
             }, 1000)
 
         }
+
+        //-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+
+        else {
+            try {
+                cartState.deleteCart()
+            } catch (_e) {
+                // Handle error here
+            }
+        }
+
         return () => {
             if (idInterval !== null) {
                 clearInterval(idInterval)
