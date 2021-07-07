@@ -2,6 +2,13 @@ sudo: required
 services:
   - docker
 
+branches:
+  only:
+    - master
+    - development
+
+
+
 before_install:
   - docker build -t jairanpo/tamashii-server ./server/Dockerfile.dev ./server
 
