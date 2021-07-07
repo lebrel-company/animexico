@@ -2,11 +2,6 @@ sudo: required
 services:
   - docker
 
-branches:
-  only:
-    - master
-    - development
-
 
 
 before_install:
