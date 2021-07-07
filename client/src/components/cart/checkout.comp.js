@@ -21,7 +21,7 @@ var pp = (el) => console.log(el)
 
 
 const TEXTS = {
-    title: 'Se realizara un cobro por los siguientes productos:',
+    title: 'Se realizará un cobro por los siguientes productos:',
     noCart: 'Agrega productos a tu carrito.'
 }
 
@@ -49,26 +49,28 @@ export default function CheckoutComponent() {
             ">
                 <div
                     className="
-                    text-xl lg:text-3xl font-bold font-deco shadow-xl
-                    bg-pale p-4 bg-opacity-70 rounded-md text-center my-8
+                    text-2xl font-deco shadow-xl
+                    bg-pale p-4 bg-opacity-70 rounded text-center my-8
                     ">
                     {TEXTS.title}
                 </div>
-                <div className="grid grid-cols-2">
+                <div className="grid md:grid-cols-2">
                     <div>
                         {
                             cartState.cart?.listOfProducts &&
                             cartState.cart.listOfProducts.map(function (p) {
                                 return (
-                                    <div key={p.id} className="my-2">
-                                        <CartProduct product={p}
-                                                     atCheckout={true}/>
+                                    <div key={p.id} className="m-2">
+                                        <CartProduct
+                                            product={p}
+                                            atCheckout={true}
+                                        />
                                     </div>
                                 )
                             })
                         }
                     </div>
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center m-2">
                         <CartPayment checkout={true}/>
                     </div>
                 </div>

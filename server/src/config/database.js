@@ -1,24 +1,22 @@
-const keys = require('../keys');
+'use strict';
+// libraries:
+import util from 'util'
+
 const mongoose = require('mongoose');
-require('dotenv').config({path: 'variables.env'});
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+import {KEYS} from '../config/keys'
 
-const username = keys.mongoUsername;
-const password = keys.mongoPassword;
-const host = keys.mongoHost;
-const database = keys.mongoDatabase;
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
+//=============================================================================
 
-var connection_string = null;
-if (process.env.NODE_ENV == 'production'){
-    connection_string = `mongodb://${username}:${password}@${host}/${database}`;
-}
-else{
-    connection_string = process.env.TEST_DB || 'mongodb://tamashii-mongo/database';
-}
 
 const connection = async function () {
     try {
         await mongoose.connect(
-            connection_string,
+            KEYS.mongodb.host,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
@@ -26,7 +24,6 @@ const connection = async function () {
                 useCreateIndex: true
             })
         console.log('MongoDB its connected');
-
     } catch (error) {
         console.log('There was an error connecting to MongoDB');
         console.log(error);

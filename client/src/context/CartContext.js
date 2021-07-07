@@ -79,7 +79,10 @@ export function CartProvider(props) {
     function onCompletedCartResolver(data) {
         let _key = _.keys(data)[0]
         let __data = data[_key]
-        if (__data.status === 'success' && typeof localStorage !== undefined) {
+        if (
+            __data.status === 'success' &&
+            typeof localStorage !== undefined
+        ) {
             localStorage.setItem(
                 CART_FIELD, JSON.stringify(__data.cart)
             )
@@ -293,6 +296,7 @@ export function CartProvider(props) {
 
         return listOfMatchedProducts.length > 0
     }
+
 
     return (
         <Provider value={{

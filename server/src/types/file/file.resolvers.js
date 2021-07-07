@@ -2,17 +2,21 @@
 // libraries:
 import AWS from 'aws-sdk'
 import {v4 as uuidv4} from 'uuid'
+import util from 'util'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
-import keys from '../../config/keys'
+import {KEYS} from '../../config/keys';
 import {authenticated} from '../../utils/auth';
-//==============================================================================
+
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
+//=============================================================================
+
 
 const S3 = new AWS.S3({
-    accessKeyId: keys.accessKeyId,
-    secretAccessKey: keys.secretAccessKey
+    accessKeyId: KEYS.aws.accessKeyId,
+    secretAccessKey: KEYS.aws.secretAccessKey
 })
 
 async function signedAwsUrl(parent, args, context, info) {
@@ -22,7 +26,7 @@ async function signedAwsUrl(parent, args, context, info) {
         return new Promise(
             function resolveSignedUrl(resolve, reject) {
                 S3.getSignedUrl('putObject', {
-                        Bucket: keys.bucket,
+                        Bucket: KEYS.aws.bucket,
                         ContentType: 'image/jpeg',
                         Key: _file_key
                     },

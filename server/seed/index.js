@@ -29,6 +29,10 @@ mongoose.connect(
     }
 )
 
+OrdersModel.collection.drop().then(() => {
+    pp(deleted)
+})
+
 var listOfFormattedUsers = []
 
 listOfUsers.forEach(async function _hash(el) {
@@ -41,7 +45,6 @@ listOfUsers.forEach(async function _hash(el) {
     }
 })
 
-pp(listOfFormattedUsers)
 
 async function drop(model) {
     try {

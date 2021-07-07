@@ -41,6 +41,11 @@ export var ORDER = {
                             address
                             orderStatus
                             total
+                            paypal{
+                                idOrder
+                                idPayer
+                                idPayment
+                            }
                             listOfProducts{
                                 name
                             }
@@ -119,7 +124,11 @@ describe('ORDER.CREATION', function () {
                         input: {
                             listOfProducts: _mapOfOrderProducts,
                             address: 'primary',
-                            paypal: {idOrder: '123', idPayer: 'abc'}
+                            paypal: {
+                                idOrder: '123',
+                                idPayer: 'abc',
+                                idPayment: '123abc'
+                            }
                         }
                     }
                 },
@@ -188,7 +197,8 @@ describe('ORDER.CREATION', function () {
                                 address: 'primary',
                                 paypal: {
                                     idOrder: '123',
-                                    idPayer: 'abc'
+                                    idPayer: 'abc',
+                                    idPayment: '123abc'
                                 }
                             }
                         }
@@ -244,7 +254,8 @@ describe('ORDER.CREATION', function () {
                                 address: 'primary',
                                 paypal: {
                                     idOrder: '123',
-                                    idPayer: 'abc'
+                                    idPayer: 'abc',
+                                    idPayment: '123abc'
                                 }
                             }
                         }

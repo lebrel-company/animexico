@@ -40,7 +40,6 @@ async function createProduct(parent, args, context, info) {
 
 async function queryListOfProducts() {
     var _p = await ProductModel.find({'available': true})
-    pp(_p)
     return _p
 }
 

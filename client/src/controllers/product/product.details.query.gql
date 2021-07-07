@@ -1,6 +1,5 @@
 query queryProductById($input: ID!){
     queryProductById(input:$input){
         id
-
     }
 }

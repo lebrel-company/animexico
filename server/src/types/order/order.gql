@@ -15,6 +15,7 @@ type Order{
 type PaypalOrder{
     idOrder: ID
     idPayer: ID
+    idPayment: ID
 }
 
 
@@ -40,8 +41,9 @@ input OrderInput{
 }
 
 input PaypalInput{
-    idOrder: ID!,
+    idOrder: ID!
     idPayer: ID!
+    idPayment: ID!
 }
 
 #---------------------------------------------------------------------------

@@ -1,0 +1,12 @@
+.showcase {
+    max-height: 920px;
+}
+
+
+
+.showcase img{
+    @apply
+    m-auto
+    rounded
+    object-cover
+}

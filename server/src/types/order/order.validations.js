@@ -18,14 +18,15 @@ var pp = (el) => {
 
 
 export function validateOrderCreation(nextResolver) {
-    return findProductsAndHydrateContext(
-        validateProductsQuantity(nextResolver)
+    return validatePaypalInputs(
+        findProductsAndHydrateContext(
+            validateProductsQuantity(nextResolver)
+        )
     )
 }
 
 // __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
 // CONTEXT HYDRATION:
-
 
 function findProductsAndHydrateContext(nextResolver) {
     return async function _findProductsAndHydrateContext(
@@ -49,6 +50,39 @@ function findProductsAndHydrateContext(nextResolver) {
         } else {
             context.listOfProducts = lop
             return nextResolver(parent, args, context, info)
+        }
+    }
+}
+
+// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
+// INPUT VALIDATIONS:
+function validatePaypalInputs(nextResolver) {
+    return function _validatePaypalInputs(parent, args, context, info) {
+
+        if (!_.has(args.input, ['paypal'])) {
+            return {
+                status: status.invalid,
+                message: status.messages.order.creation.invalid,
+                listOfErrors: [
+                    'Missing paypal input data.'
+                ]
+            }
+        }
+        let {paypal} = args.input
+        let hasIdPayment = _.has(paypal, 'idPayment')
+        let hasIdPayer = _.has(paypal, 'idPayer')
+        let hasIdOrder = _.has(paypal, 'idOrder')
+
+        if (hasIdPayment && hasIdPayer && hasIdOrder) {
+            return nextResolver(parent, args, context, info)
+        } else {
+            return {
+                status: status.invalid,
+                message: status.messages.order.creation.invalid,
+                listOfErrors: [
+                    'Paypal input should contain: idOrder, idPayer, idPayment'
+                ]
+            }
         }
     }
 }

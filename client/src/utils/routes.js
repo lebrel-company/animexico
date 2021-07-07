@@ -54,5 +54,9 @@ export var mapOfRoutes = {
     profile: {
         route: '/profile',
         text: 'Mi perfil'
+    },
+    checkoutSuccess:{
+        route: '/checkout/success',
+        text: ''
     }
 }

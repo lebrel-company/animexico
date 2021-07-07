@@ -39,15 +39,17 @@ export default function Homepage() {
 
                 {
                     <div>
-                        <div>
-                            <button
-                                className="button-blue top-44 h-16 w-64
-                                text-2xl z-10 ml-20 absolute
-                                ">Proximos Productos
-                            </button>
+                        <div className="relative h-80 flex items-center">
                             <img
-                                className="z-0 bg-cover rounded-md w-full relative"
-                                src="/banner-test.png"/>
+                                className="z-0 bg-fill rounded absolute z-0"
+                                src="/banner-test.png">
+                            </img>
+                            <div>
+                                <button
+                                    className="button-blue m-8
+                                ">Proximos Productos
+                                </button>
+                            </div>
                         </div>
                         <div className="my-12">
                             {

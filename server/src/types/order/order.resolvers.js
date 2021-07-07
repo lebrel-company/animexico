@@ -13,6 +13,7 @@ import h from './order.helpers';
 import status from '../../utils/status'
 import {validateOrderCreation} from './order.validations'
 import {CartModel} from '../cart/cart.model';
+import KEYS from '../../config/keys'
 
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 
@@ -69,14 +70,9 @@ async function createOrder(parent, args, context, info) {
 //=============================================================================
 // PAYPAL:
 
-const PAYPAL_CLIENT = 'AWRqzvZX9poAvA67i306KiwGx82vdxVrhy0BcB6aJLCi_ihcalvYmFMzavW6SRngbRLkF2eUqUMGL2BU'
-const PAYPAL_SECRET = 'EKDfGW7hhCPV-OYQpDj8wpYToo72O_U2LOQSAB4j4JikvASovjDOxWqksxNy7hmsQBqEF4VvLLK-UyMX'
-const PAYPAL_PAYMENT_API = 'https://api-m.sandbox.paypal.com/v1/payments/payment';
-
-// __ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ __
 
 function executePaymentEndpoint(paymentID) {
-    return `${PAYPAL_PAYMENT_API}/${paymentID}/execute`
+    return `${PAYPAL.api}/${paymentID}/execute`
 }
 
 function getTotalFromCart(cart) {
@@ -96,7 +92,7 @@ async function createPayment(parent, args, context, info) {
     try {
         let order = await axios({
             method: 'POST',
-            url: PAYPAL_PAYMENT_API,
+            url: KEYS.paypl.api,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -117,8 +113,8 @@ async function createPayment(parent, args, context, info) {
                 }
             },
             auth: {
-                username: PAYPAL_CLIENT,
-                password: PAYPAL_SECRET
+                username: KEYS.paypal.client,
+                password: KEYS.paypal.secret
             }
         })
 
@@ -138,8 +134,8 @@ async function executePayment(parent, args, context, info) {
     // let payment = await axios({
     //     method: 'POST',
     //     auth: {
-    //         username: PAYPAL_CLIENT,
-    //         password: PAYPAL_SECRET
+    //         username: PAYPAL.client,
+    //         password: PAYPAL.secret
     //     },
     //     data: {
     //         payer_id: payerID,

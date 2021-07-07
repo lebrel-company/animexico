@@ -43,6 +43,10 @@ let OrderPaypalSchema = new mongoose.Schema({
         idPayer: {
             type: String,
             required: true
+        },
+        idPayment: {
+            type: String,
+            required: true
         }
     },
     {_id: false}

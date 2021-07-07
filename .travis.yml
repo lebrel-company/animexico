@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t jairanpo/tamashii-server ./server/Dockerfile.dev ./server
+
+script:
+  - docker run jairanpo/tamashii-test npm test -- --coverage
+
+after_success:
+  - docker build -t jairanpo/tamashii-client ./client
+  - docker build -t jairanpo/tamashii-nginx ./nginx
+  - docker build -t jairanpo/tamashii-server ./server
+  # Login into the Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push to DockerHUB
+  - docker push jairanpo/tamashii-client
+  - docker push jairanpo/tamashii-nginx
+  - docker push jairanpo/tamashii-server
