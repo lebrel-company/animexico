@@ -1,15 +1,26 @@
-const mongoose = require('mongoose');
+'use strict';
+// libraries:
+import util from 'util'
+import mongoose from 'mongoose'
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
+import {KEYS} from './keys';
+
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
+//=============================================================================
 
 
 const connection = async function () {
     try {
         await mongoose.connect(
-            'mongodb://localhost:27017/database',
+            `${KEYS.mongodb.host}/database`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useFindAndModify: false,
-                useCreateIndex: true,
+                useCreateIndex: true
             })
         console.log('MongoDB its connected');
 
