@@ -10,7 +10,7 @@ import {dateScalar} from './types/cart/date.type';
 // project:
 const mongoConnection = require('./config/database.js')
 const {loadSchemaType} = require('./utils/schema')
-import {createToken, userFromToken} from './utils/auth'
+import {userFromToken} from './utils/auth'
 import product from './types/product/product.resolvers'
 import user from './types/user/user.resolvers'
 import order from './types/order/order.resolvers'
@@ -64,7 +64,7 @@ export async function Server() {
 export default async function start() {
     mongoConnection()
     let _server = await Server()
-    _server.listen().then(({url}) => {
+    _server.listen({port: process.env.GRAPHQL_PORT}).then(({url}) => {
         console.log(`🚀  Server ready at ${url}`);
     });
 

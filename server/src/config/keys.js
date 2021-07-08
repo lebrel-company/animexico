@@ -29,7 +29,11 @@ if (process.env.NODE_ENV === 'development') {
         },
         mongodb: {
             host: process.env.MONGO_HOST,
-            database: process.env.MONGO_DATABASE
+            database: process.env.MONGO_DATABASE,
+            port: process.env.MONGO_PORT
+        },
+        server: {
+            port: process.env.GRAPHQL_PORT
         }
     }
 }

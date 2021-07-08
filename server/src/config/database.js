@@ -13,10 +13,12 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
 
 
-const connection = async function () {
+const connection = async
+
+function () {
     try {
         await mongoose.connect(
-            `${KEYS.mongodb.host}/${KEYS.mongodb.database}`,
+            `${KEYS.mongodb.host}:${KEYS.mongodb.port}/${KEYS.mongodb.database}`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
@@ -24,7 +26,8 @@ const connection = async function () {
                 useCreateIndex: true
             })
         console.log('MongoDB its connected');
-    } catch (error) {
+    }
+ catch (error) {
         console.log('There was an error connecting to MongoDB');
         console.log(error);
         process.exit(1);// stop the app

@@ -21,7 +21,11 @@ export var devKeys = {
     },
     mongodb: {
         host: 'mongodb://tamashii-mongo',
-        database: 'database'
+        database: 'database',
+        port: '27017'
+    },
+    server: {
+        port: 4000
     }
 }
 

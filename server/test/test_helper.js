@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 import {KEYS} from '../src/config/keys';
 
-var DATABASE = `${KEYS.mongodb.host}/${KEYS.mongodb.database}`
+var DATABASE = `${KEYS.mongodb.host}:${KEYS.mongodb.port}/${KEYS.mongodb.database}`
 
 mongoose.connect(DATABASE)
 mongoose.connection
