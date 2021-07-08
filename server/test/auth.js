@@ -26,7 +26,7 @@ async function authenticateAsUser() {
             axiosConfig
         )
     } catch (_e) {
-        pp(_e)
+        pp(_e.message)
     }
     return result.data.data.signup
 }

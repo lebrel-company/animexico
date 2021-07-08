@@ -13,14 +13,22 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
 
 
-pp(KEYS.mongodb.connection_string())
-mongoose.connect(KEYS.mongodb.connection_string())
+console.log('DATABASE: ', KEYS.mongodb.connection_string())
+mongoose.connect(KEYS.mongodb.connection_string(),
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true
+    }
+)
+
 mongoose.connection
     .once('open', () => {
         console.log('Mongoose its good to go')
     })
     .on('error', (_error) => {
-        console.warn('Error:', _error)
+        console.warn('Error:', _error.message)
     })
 
 

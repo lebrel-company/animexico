@@ -5,6 +5,29 @@ up:
 build:
 	docker-compose build
 
+build-server:
+	docker build \
+	-t jairanpo/tamashii-test \
+	-f .\server\Dockerfile.dev \
+	.\server
+
+run-server:
+	docker run \
+    --network host \
+    --env NODE_ENV=CI \
+    --env MONGO_HOST=mongodb://localhost \
+    --env MONGO_PORT=27017 \
+    --env MONGO_DB=database \
+    --env GRAPHQL_PORT=4000 \
+    --env CI=true \
+    jairanpo/tamashii-test \
+    npm test -- --coverage
+
+ci:
+	make build-server
+	make run-server
+
+
 restart:
 	docker-compose restart
 

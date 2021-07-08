@@ -9,9 +9,15 @@ services:
 before_install:
   - docker build -t $DOCKER_USERNAME/tamashii-test -f ./server/Dockerfile.dev ./server
 
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis", pwd:"test", roles: ["readWrite"]})'
+
 script:
   - >-
-    docker run --network host
+    docker run
+    --network host
+    --env NODE_ENV=CI
     --env MONGO_HOST=$MONGO_HOST
     --env MONGO_PORT=$MONGO_PORT
     --env MONGO_DB=$MONGO_DB

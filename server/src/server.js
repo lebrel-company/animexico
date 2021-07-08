@@ -63,7 +63,9 @@ export async function Server() {
 
 export default async function start() {
     mongoConnection()
-    let _server = await Server()
+    let _server = await Server({
+        port: process.env.GRAPHQL_PORT
+    })
     _server.listen({port: process.env.GRAPHQL_PORT}).then(({url}) => {
         console.log(`🚀  Server ready at ${url}`);
     });

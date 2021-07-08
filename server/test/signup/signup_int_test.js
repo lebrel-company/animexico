@@ -63,7 +63,7 @@ describe('SIGNUP', () => {
         try {
             await UserModel.collection.drop()
         } catch (_e) {
-            // Handle error here
+            pp(_e.message)
         }
 
     })
@@ -83,7 +83,7 @@ describe('SIGNUP', () => {
                 axiosConfig
             )
         } catch (_e) {
-            console.log(_e)
+            console.log(_e.message)
         }
 
         let _d = response.data.data
