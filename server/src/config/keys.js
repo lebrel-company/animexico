@@ -30,7 +30,14 @@ if (process.env.NODE_ENV === 'development') {
         mongodb: {
             host: process.env.MONGO_HOST,
             database: process.env.MONGO_DATABASE,
-            port: process.env.MONGO_PORT
+            port: process.env.MONGO_PORT,
+            connection_string: function () {
+                return (
+                    this.host + ':' +
+                    this.port + '/' +
+                    this.database
+                )
+            }
         },
         server: {
             port: process.env.GRAPHQL_PORT

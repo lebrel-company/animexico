@@ -1,9 +1,20 @@
+'use strict';
+// libraries:
+import util from 'util'
+
 const mongoose = require('mongoose')
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// models:
+// -- -- -- -- -- -- -- -- -- -- -- -- -- --
+// project:
 import {KEYS} from '../src/config/keys';
 
-var DATABASE = `${KEYS.mongodb.host}:${KEYS.mongodb.port}/${KEYS.mongodb.database}`
+var pp = (el) => console.log(util.inspect(el, false, 5, true))
+//=============================================================================
 
-mongoose.connect(DATABASE)
+
+pp(KEYS.mongodb.connection_string())
+mongoose.connect(KEYS.mongodb.connection_string())
 mongoose.connection
     .once('open', () => {
         console.log('Mongoose its good to go')
