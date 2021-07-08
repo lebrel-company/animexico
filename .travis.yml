@@ -12,8 +12,8 @@ before_install:
 script:
   - >-
     docker run --network host
-    $DOCKER_USERNAME/tamashii-test
     --env MONGO_HOST=$MONGO_HOST
+    $DOCKER_USERNAME/tamashii-test
     npm test -- --coverage
 
 after_success:
