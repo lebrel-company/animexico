@@ -28,7 +28,8 @@ if (process.env.NODE_ENV === 'development') {
             api: process.env.PAYPAL_PAYMENT_API
         },
         mongodb: {
-            host: process.env.MONGO_HOST
+            host: process.env.MONGO_HOST,
+            database: process.env.MONGO_DATABASE
         }
     }
 }

@@ -20,7 +20,8 @@ export var devKeys = {
         api: 'https://api-m.sandbox.paypal.com/v1/payments/payment'
     },
     mongodb: {
-        host: 'mongodb://tamashii-mongo/database'
+        host: 'mongodb://tamashii-mongo',
+        database: 'database'
     }
 }
 

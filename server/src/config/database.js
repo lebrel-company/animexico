@@ -16,7 +16,7 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 const connection = async function () {
     try {
         await mongoose.connect(
-            KEYS.mongodb.host,
+            `${KEYS.mongodb.host}/${KEYS.mongodb.database}`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

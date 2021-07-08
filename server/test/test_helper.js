@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+import {KEYS} from '../src/config/keys';
 
-var DATABASE = 'mongodb://localhost:27017/database'
+var DATABASE = `${KEYS.mongodb.host}/${KEYS.mongodb.database}`
 
 mongoose.connect(DATABASE)
 mongoose.connection
