@@ -12,7 +12,6 @@ before_install:
 script:
   - >-
     docker run --network host
-    --publish 5000:$GRAPHQL_PORT
     --env MONGO_HOST=$MONGO_HOST
     $DOCKER_USERNAME/tamashii-test
     npm test -- --coverage
