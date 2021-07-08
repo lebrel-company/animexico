@@ -12,7 +12,7 @@ before_install:
 script:
   - >-
     docker run --network host
-    --env MONGO_HOST=$MONGO_HOST
+    --env MONGO_HOST=$MONGO_HOST CI=true
     $DOCKER_USERNAME/tamashii-test
     npm test -- --coverage
 
