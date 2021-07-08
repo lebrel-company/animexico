@@ -13,8 +13,8 @@ after_success:
   - docker build -t jairanpo/tamashii-nginx ./nginx
   - docker build -t jairanpo/tamashii-server ./server
   # Login into the Docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   # Push to DockerHUB
-  - docker push jairanpo/tamashii-client
-  - docker push jairanpo/tamashii-nginx
-  - docker push jairanpo/tamashii-server
+  - docker push $DOCKER_USERNAME/tamashii-client
+  - docker push $DOCKER_USERNAME/tamashii-nginx
+  - docker push $DOCKER_USERNAME/tamashii-server
