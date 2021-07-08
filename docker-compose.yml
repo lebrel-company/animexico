@@ -46,7 +46,7 @@ services:
     links:
       - tamashii-mongo
     environment:
-      NODE_ENV: dev
+      NODE_ENV: development
       MONGO_HOST: tamashii-mongo
       MONGO_DATABASE: database
       MONGO_USERNAME: root

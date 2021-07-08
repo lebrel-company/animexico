@@ -13,7 +13,7 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 
 var _keys = null
 
-if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'development') {
     _keys = devKeys
 } else {
     _keys = {
