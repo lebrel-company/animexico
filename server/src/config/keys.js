@@ -32,11 +32,16 @@ if (process.env.NODE_ENV === 'development') {
             database: process.env.MONGO_DB,
             port: process.env.MONGO_PORT,
             connection_string: function () {
-                return (
-                    this.host + ':' +
-                    this.port + '/' +
-                    this.database
-                )
+                if (process.env.MONGODB) {
+                    return process.env.MONGODB
+
+                } else {
+                    return (
+                        this.host + ':' +
+                        this.port + '/' +
+                        this.database
+                    )
+                }
             }
         },
         server: {

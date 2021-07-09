@@ -11,11 +11,13 @@ import {KEYS} from './keys';
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
 
+const mongo_host = KEYS.mongodb.connection_string()
+pp(mongo_host)
 
 const connection = async function () {
     try {
         await mongoose.connect(
-            `${KEYS.mongodb.host}:${KEYS.mongodb.port}/${KEYS.mongodb.database}`,
+            `${mongo_host}`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

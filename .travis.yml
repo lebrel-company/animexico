@@ -11,7 +11,6 @@ before_install:
 
 before_script:
   - sleep 15
-  - mongo mydb_test --eval 'db.createUser({user:"travis", pwd:"test", roles: ["readWrite"]})'
 
 script:
   - >-
@@ -21,6 +20,14 @@ script:
     --env MONGO_HOST=$MONGO_HOST
     --env MONGO_PORT=$MONGO_PORT
     --env MONGO_DB=$MONGO_DB
+    --env GRAPHQL_PORT=$GRAPHQL_PORT
+    --env CI=true
+
+  - >-
+    docker run
+    --network host
+    --env NODE_ENV=CI
+    --env MONGODB=$MONGODB
     --env GRAPHQL_PORT=$GRAPHQL_PORT
     --env CI=true
     $DOCKER_USERNAME/tamashii-test

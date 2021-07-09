@@ -5,27 +5,42 @@ up:
 build:
 	docker-compose build
 
-build-server:
+run-mongo:
+	docker run -d -p 27017:27017 mongo
+
+dbs:
 	docker build \
 	-t jairanpo/tamashii-test \
-	-f .\server\Dockerfile.dev \
+	-f .\server\Dockerfile \
 	.\server
 
-run-server:
+GRAPHQL_PORT = 4000
+MONGODB = mongodb://localhost:27017/database
+drs:
 	docker run \
-    --network host \
-    --env NODE_ENV=CI \
-    --env MONGO_HOST=mongodb://localhost \
-    --env MONGO_PORT=27017 \
-    --env MONGO_DB=database \
-    --env GRAPHQL_PORT=4000 \
+    --env MONGODB=$(MONGODB) \
+    --env GRAPHQL_PORT=$(GRAPHQL_PORT) \
     --env CI=true \
+    --publish $(GRAPHQL_PORT):$(GRAPHQL_PORT) \
+    --name jairanpo/tamashii-test \
+    jairanpo/tamashii-test
+
+ci:
+	cls
+	make down
+	make run-mongo
+	make dbs
+	make drs
+	docker run \
+	--name ci-api \
+    --network host \
+    --env MONGODB=$(MONGODB) \
+    --env GRAPHQL_PORT=$(GRAPHQL_PORT) \
+    --env CI=true \
+    --name tamashii-test \
     jairanpo/tamashii-test \
     npm test -- --coverage
 
-ci:
-	make build-server
-	make run-server
 
 
 restart:
