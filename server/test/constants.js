@@ -13,7 +13,7 @@ var _hostname;
 pp(process.env)
 
 if (process.env.CI === 'true') {
-    _hostname = `http://localhost:${process.env.PORT}`
+    _hostname = `http://localhost:${process.env.PORT}/`
 } else {
     _hostname = 'http://localhost:5000/api'
 }
