@@ -12,22 +12,22 @@ before_install:
 
 before_script:
   - sleep 15
-  - >-
-    docker run -d -p
-    $SERVER_PORT:$SERVER_PORT
-    --name server $DOCKER_USERNAME/tamashii-server
+#  - >-
+#    docker run -d -p
+#    $SERVER_PORT:$SERVER_PORT
+#    --name server $DOCKER_USERNAME/tamashii-server
 
 
 script:
   - >-
     docker run
-    --network host
     --env CI=true
     --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY
     --env AWS_BUCKET=$AWS_BUCKET
     --env MONGO=$MONGO
     --env PORT=$SERVER_PORT
-    $DOCKER_USERNAME/tamashii-server-test
+    $DOCKER_USERNAME/tamashii-server
+    npm run test
 
 after_success:
   - docker build -t $DOCKER_USERNAME/tamashii-client ./client
