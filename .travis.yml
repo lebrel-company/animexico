@@ -21,6 +21,10 @@ before_script:
 script:
   - >-
     docker run
+    --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY
+    --env AWS_BUCKET=$AWS_BUCKET
+    --env MONGO=$MONGO
+    --env PORT=$SERVER_PORT
     $DOCKER_USERNAME/tamashii-server-test
 
 after_success:
