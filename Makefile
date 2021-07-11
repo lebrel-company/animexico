@@ -10,27 +10,56 @@ run-mongo:
 
 SERVER_PORT = 4000
 DIR = ${CURDIR}
+DOCKER_USERNAME=jairanpo
+TA_SERVER=tamashii-server
+TA_SERVER_TEST=tamashii-server-test
 
+
+#---------------------------------------------------------------------------
 docker-build-server:
 	docker build \
-	-t jairanpo/tamashii-server \
+	-t $(DOCKER_USERNAME)/$(TA_SERVER) \
 	-f .\server\Dockerfile \
+	.\server
+
+docker-build-server-test:
+	docker build \
+	-t $(DOCKER_USERNAME)/$(TA_SERVER_TEST) \
+	-f .\server\Dockerfile.test \
 	.\server
 
 docker-run-server:
 	docker run \
 	-v $(DIR)/server/.env:/app/.env \
     --publish 4000:$(SERVER_PORT) \
-    jairanpo/tamashii-server
+    $(DOCKER_USERNAME)/tamashii-server
+
+
+#---------------------------------------------------------------------------
+# Continuous integration execution trying to emulate travisCI:
 
 ci:
-	cls
+	make docker-build-server
+	make docker-build-server-test
+	docker run \
+	--rm \
+    -d \
+    -p $SERVER_PORT:$SERVER_PORT \
+	-v $(DIR)/server/.env:/app/.env \
+    --name server $(DOCKER_USERNAME)/$(TA_SERVER) & \
+    docker run \
+    --rm \
+	-v $(DIR)/server/.env:/app/.env \
+    --env CI=true \
+    $(DOCKER_USERNAME)/$(TA_SERVER)
 	docker build \
-	-t jairanpo/tamashii-server \
+	-t $(DOCKER_USERNAME)/$(TA_SERVER_TEST) \
 	-f .\server\Dockerfile.dev \
 	.\server
 	make  docker-run-server
-	yarn --cwd server run test
+
+
+#---------------------------------------------------------------------------
 
 restart:
 	docker-compose restart
@@ -39,10 +68,10 @@ down:
 	docker-compose down
 
 stop:
-	docker container stop $$(docker container ls -aq)
+	docker stop $(docker ps -aq)
 
 delete:
-	docker container rm $$(docker container ls -aq)
+	docker rm $(docker ps -aq)
 
 start-server:
 	yarn --cwd server run build
