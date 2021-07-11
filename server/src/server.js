@@ -8,6 +8,8 @@ import {dateScalar} from './types/cart/date.type';
 // models:
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+import {KEYS} from './config/keys';
+
 const mongoConnection = require('./config/database.js')
 const {loadSchemaType} = require('./utils/schema')
 import {userFromToken} from './utils/auth'
@@ -25,6 +27,7 @@ var pp = (el) => {
 
 
 const types = ['product', 'cart', 'user', 'order', 'address', 'file'];
+
 
 export async function Server() {
     let schemaTypes = await Promise.all(types.map(loadSchemaType));
@@ -63,10 +66,9 @@ export async function Server() {
 
 export default async function start() {
     mongoConnection()
-    let _server = await Server({
-        port: process.env.GRAPHQL_PORT
-    })
-    _server.listen({port: process.env.GRAPHQL_PORT}).then(({url}) => {
+    let _server = await Server()
+
+    _server.listen({port: process.env.PORT}).then(({url}) => {
         console.log(`🚀  Server ready at ${url}`);
     });
 

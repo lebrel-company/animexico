@@ -1,0 +1,9 @@
+FROM node:14.14.0-alpine as base
+WORKDIR /app
+COPY package.json ./
+RUN yarn install
+COPY . .
+
+FROM node:14.14.0-alpine AS production
+WORKDIR /app
+CMD ["yarn", "run", "test"]

@@ -8,12 +8,13 @@ const mongoose = require('mongoose')
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {KEYS} from '../src/config/keys';
-
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
 
 
 console.log('DATABASE: ', KEYS.mongodb.connection_string())
+
+
 mongoose.connect(KEYS.mongodb.connection_string(),
     {
         useNewUrlParser: true,
@@ -30,5 +31,4 @@ mongoose.connection
     .on('error', (_error) => {
         console.warn('Error:', _error.message)
     })
-
 

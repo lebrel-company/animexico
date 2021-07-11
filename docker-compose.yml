@@ -47,8 +47,5 @@ services:
       - tamashii-mongo
     environment:
       NODE_ENV: development
-      MONGO_HOST: tamashii-mongo
-      MONGO_DATABASE: database
-      MONGO_USERNAME: root
-      MONGO_PASSWORD: tamashii
       GRAPHQL_PORT: 4000
+      MONGODB: mongodb://tamashii-mongo:27017/database

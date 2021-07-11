@@ -13,7 +13,6 @@ RUN yarn run build
 
 
 FROM node:14.14.0-alpine AS production
-ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=builder /build/package*.json ./
 COPY --from=builder /build ./

@@ -8,40 +8,29 @@ build:
 run-mongo:
 	docker run -d -p 27017:27017 mongo
 
-dbs:
+SERVER_PORT = 4000
+DIR = ${CURDIR}
+
+docker-build-server:
 	docker build \
-	-t jairanpo/tamashii-test \
+	-t jairanpo/tamashii-server \
 	-f .\server\Dockerfile \
 	.\server
 
-GRAPHQL_PORT = 4000
-MONGODB = mongodb://localhost:27017/database
-drs:
+docker-run-server:
 	docker run \
-    --env MONGODB=$(MONGODB) \
-    --env GRAPHQL_PORT=$(GRAPHQL_PORT) \
-    --env CI=true \
-    --publish $(GRAPHQL_PORT):$(GRAPHQL_PORT) \
-    --name jairanpo/tamashii-test \
-    jairanpo/tamashii-test
+	-v $(DIR)/server/.env:/app/.env \
+    --publish 4000:$(SERVER_PORT) \
+    jairanpo/tamashii-server
 
 ci:
 	cls
-	make down
-	make run-mongo
-	make dbs
-	make drs
-	docker run \
-	--name ci-api \
-    --network host \
-    --env MONGODB=$(MONGODB) \
-    --env GRAPHQL_PORT=$(GRAPHQL_PORT) \
-    --env CI=true \
-    --name tamashii-test \
-    jairanpo/tamashii-test \
-    npm test -- --coverage
-
-
+	docker build \
+	-t jairanpo/tamashii-server \
+	-f .\server\Dockerfile.dev \
+	.\server
+	make  docker-run-server
+	yarn --cwd server run test
 
 restart:
 	docker-compose restart
@@ -55,8 +44,9 @@ stop:
 delete:
 	docker container rm $$(docker container ls -aq)
 
-build-server:
+start-server:
 	yarn --cwd server run build
+	yarn --cwd server run start
 
 tc:
 	cls
