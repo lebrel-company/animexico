@@ -58,6 +58,17 @@ ci:
 	.\server
 	make  docker-run-server
 
+cit:
+	make docker-build-server
+	docker run \
+	--rm \
+    -p $(SERVER_PORT):$(SERVER_PORT) \
+	-v $(DIR)/server/.env:/app/.env \
+	--env CI=true \
+	$(DOCKER_USERNAME)/$(TA_SERVER)
+	yarn run test
+
+
 
 #---------------------------------------------------------------------------
 

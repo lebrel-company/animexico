@@ -6,7 +6,7 @@ services:
   - docker
 
 before_install:
-#  - docker build -t $DOCKER_USERNAME/tamashii-server -f ./server/Dockerfile ./server
+  #  - docker build -t $DOCKER_USERNAME/tamashii-server -f ./server/Dockerfile ./server
   - docker build -t $DOCKER_USERNAME/tamashii-server-test -f ./server/Dockerfile.test ./server
 
 
@@ -26,7 +26,8 @@ script:
     --env AWS_BUCKET=$AWS_BUCKET
     --env MONGO=$MONGO
     --env PORT=$SERVER_PORT
-    $DOCKER_USERNAME/tamashii-server
+    -p $SERVER_PORT:$SERVER_PORT
+    $DOCKER_USERNAME/tamashii-server-test
     npm run test
 
 after_success:
