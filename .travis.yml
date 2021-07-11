@@ -21,6 +21,7 @@ before_script:
 script:
   - >-
     docker run
+    --env CI=true
     --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY
     --env AWS_BUCKET=$AWS_BUCKET
     --env MONGO=$MONGO
