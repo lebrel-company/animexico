@@ -27,7 +27,6 @@ script:
     --env AWS_BUCKET=$AWS_BUCKET
     --env MONGO=$MONGO
     --env PORT=$SERVER_PORT
-    -p $SERVER_PORT:$SERVER_PORT
     $DOCKER_USERNAME/tamashii-server-test
   - docker ps -a
 
