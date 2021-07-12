@@ -14,6 +14,7 @@ before_script:
   - sleep 5
   - >-
     docker run -d -p
+    --network host
     $SERVER_PORT:$SERVER_PORT
     --name tamashii-server
     $DOCKER_USERNAME/tamashii-server
@@ -24,7 +25,6 @@ script:
   - docker inspect tamashii-server
   - >-
     docker run
-    --network host
     --env CI=true
     --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY
     --env AWS_BUCKET=$AWS_BUCKET
