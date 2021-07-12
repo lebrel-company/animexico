@@ -35,16 +35,16 @@ export default function Homepage() {
 
     return (
         <ClientLayout pattern={`bg-clouds`}>
-            <div className={`container mx-auto w-full`}>
+            <div className={`container mx-auto w-full h-full`}>
 
                 {
                     <div>
-                        <div className="relative h-80 flex items-center">
+                        <div className="flex items-center relative">
                             <img
-                                className="z-0 bg-fill rounded absolute z-0"
+                                className="z-0 bg-fill rounded z-0"
                                 src="/banner-test.png">
                             </img>
-                            <div>
+                            <div className="absolute">
                                 <button
                                     className="button-blue m-8
                                 ">Proximos Productos
