@@ -6,7 +6,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t $DOCKER_USERNAME/$API_NAME -f ./server/Dockerfile ./server
+  - docker build -t $DOCKER_USERNAME/$API_HOST -f ./server/Dockerfile ./server
   - docker build -t $DOCKER_USERNAME/$INT_NAME -f ./server/Dockerfile.test ./server
 
 
@@ -25,7 +25,7 @@ before_script:
     --env PAYPAL_CLIENT=$PAYPAL_CLIENT
     --env PAYPAL_SECRET=$PAYPAL_SECRET
     --env PAYPAL_PAYMENT_API=$PAYPAL_PAYMENT_API
-    $DOCKER_USERNAME/$API_NAME
+    $DOCKER_USERNAME/$API_HOST
 
 script:
   - docker ps -a
