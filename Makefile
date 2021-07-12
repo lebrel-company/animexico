@@ -8,23 +8,27 @@ build:
 run-mongo:
 	docker run -d -p 27017:27017 mongo
 
-SERVER_PORT=4000
+API_PORT=4000
 DIR=${CURDIR}
 DOCKER_USERNAME=jairanpo
-TA_SERVER=tamashii-server
-TA_SERVER_TEST=tamashii-server-test
-
+API_NAME=tamashii-api
+TEST_NAME=tamashii-server-test
+NETWORK_NAME=api-network
 
 #---------------------------------------------------------------------------
+
+docker-make-network:
+	docker network create $(NETWORK_NAME)
+
 docker-build-server:
 	docker build \
-	-t $(DOCKER_USERNAME)/$(TA_SERVER) \
+	-t $(DOCKER_USERNAME)/$(API_NAME) \
 	-f .\server\Dockerfile \
 	.\server
 
 docker-build-server-test:
 	docker build \
-	-t $(DOCKER_USERNAME)/$(TA_SERVER_TEST) \
+	-t $(DOCKER_USERNAME)/$(TEST_NAME) \
 	-f .\server\Dockerfile.test \
 	.\server
 
@@ -32,29 +36,35 @@ docker-run-server:
 	docker run \
 	--rm \
 	--detach \
-	--publish $(SERVER_PORT):$(SERVER_PORT) \
+	--network $(NETWORK_NAME) \
+	--name $(API_NAME) \
+	--publish $(API_PORT):$(API_PORT) \
 	--volume $(DIR)/server/.env:/app/.env \
 	--env CI=true \
-	--env PORT=$(SERVER_PORT) \
-	$(DOCKER_USERNAME)/$(TA_SERVER)
+	--env PORT=$(API_PORT) \
+	$(DOCKER_USERNAME)/$(API_NAME)
+
+docker-run-server-test:
+	docker run \
+	--rm \
+	--network $(NETWORK_NAME) \
+	--volume $(DIR)/server/.env:/app/.env \
+	--env CI=true \
+	--env PORT=$(API_PORT) \
+	--env API_HOST=$(API_NAME) \
+	$(DOCKER_USERNAME)/$(TEST_NAME)
+
 
 #---------------------------------------------------------------------------
 # Continuous integration execution trying to emulate travisCI:
 
 ci:
+	docker stop $(API_NAME)
 	make docker-build-server
-	make docker-build-server-test
 	make docker-run-server
-	docker run \
-    --rm \
-	--volume $(DIR)/server/.env:/app/.env \
-    --env CI=true \
-    $(DOCKER_USERNAME)/$(TA_SERVER)
-	docker build \
-	-t $(DOCKER_USERNAME)/$(TA_SERVER_TEST) \
-	-f .\server\Dockerfile.dev \
-	.\server
-	make  docker-run-server
+	make docker-build-server-test
+	make docker-run-server-test
+
 
 #---------------------------------------------------------------------------
 
@@ -65,7 +75,7 @@ down:
 	docker-compose down
 
 stop:
-	docker stop $(docker ps -aq)
+	docker stop $$(docker ps -aq)
 
 delete:
 	docker rm $(docker ps -aq)

@@ -1,16 +1,12 @@
 'use strict';
 // libraries:
-import {authData} from '../auth';
-
 const axios = require('axios')
 const assert = require('assert')
-const mongoose = require('mongoose')
 import {gql} from 'apollo-server'
 import _ from 'lodash'
 import util from 'util'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
-import {UserModel} from '../../src/types/user/user.model'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {mapUserRegister, mapAdminRegister} from '../../seed/user_data';
@@ -60,38 +56,8 @@ delete mapAdminRegister._id
 
 describe('SIGNUP', () => {
 
-    beforeEach(async function () {
-        await dropAll()
-    })
-
-    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-
-    it('NO-AUTH.Signup: Register a user', async () => {
-        var user = mapUserRegister
-        var response;
-        try {
-            response = await axios.post(
-                hostname,
-                {
-                    query: SIGNUP.mutations.signup,
-                    variables: {input: user}
-                },
-                axiosConfig
-            )
-        } catch (_e) {
-            console.log(_e.message)
-        }
-
-        let _d = response.data.data
-
-        assert.strictEqual(_d.signup.userInfo.firstName, 'Jesus')
-        assert.strictEqual(_d.signup.userInfo.middleName, 'Jair')
-        assert.strictEqual(_d.signup.userInfo.lastName, 'Anguiano')
-        assert.strictEqual(_d.signup.userInfo.secondLastName, 'Porras')
-    })
-
-    var _rej = 'Reject a user without'
-    var listOfRequiredFields = [
+    let _rej = 'Reject a user without'
+    let listOfRequiredFields = [
         'firstName', 'lastName', 'cellphone', 'birthday', 'password', 'birthday'
     ]
     listOfRequiredFields.forEach(function (element) {
@@ -100,7 +66,44 @@ describe('SIGNUP', () => {
         })
     })
 
+    beforeEach(async function () {
+        await dropAll()
+    })
+
+    // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
+
+    it('NO-AUTH.Signup: Register a user', async () => {
+        var user = mapUserRegister
+        var res;
+
+        try {
+            res = await axios.post(
+                hostname,
+                {
+                    query: SIGNUP.mutations.signup,
+                    variables: {input: user}
+                },
+                axiosConfig
+            )
+            if (res.data.errors) pp(res.data.errors)
+
+        } catch (_e) {
+            console.log(_e.message)
+        }
+
+        pp(res)
+        let d = res.data.data
+        pp(d)
+
+        assert.strictEqual(d.signup.userInfo.firstName, 'Jesus')
+        assert.strictEqual(d.signup.userInfo.middleName, 'Jair')
+        assert.strictEqual(d.signup.userInfo.lastName, 'Anguiano')
+        assert.strictEqual(d.signup.userInfo.secondLastName, 'Porras')
+    })
+
+
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+
     it('NO-AUTH.Signup: Register not allow for users under 18', async () => {
         let user = _.cloneDeep(mapUserRegister)
         user.birthday = '2019-10-24'
@@ -115,6 +118,8 @@ describe('SIGNUP', () => {
 
         assert.match(_r.data.errors[0].message, /UserInputError/)
     })
+
+    //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
     // it('AD-AUTH.Signup: Create user as admin', async () => {
     //     let ADMIN_AUTH_CONFIG = _.cloneDeep(axiosConfig)
