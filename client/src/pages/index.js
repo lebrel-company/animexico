@@ -14,7 +14,6 @@ import SliderText from '../components/SliderText';
 // project:
 import QUERY_PRODUCTS from '../operations/queryProducts.gql'
 import {aboutUs, sliderTexts} from '../utils/texts/homepage.texts'
-import {useCartTimer} from '../hooks/useCartTimer';
 
 var pp = (el) => console.log(el)
 //==============================================================================
@@ -47,7 +46,7 @@ export default function Homepage() {
                             <div className="absolute">
                                 <button
                                     className="button-blue m-8
-                                ">Proximos Productos
+                                ">Próximos Productos
                                 </button>
                             </div>
                         </div>

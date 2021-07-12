@@ -41,14 +41,16 @@ function missing_env() {
     return listOfErrors
 }
 
-var listOfMissingEnvironmentVariables = missing_env()
-
-if (listOfMissingEnvironmentVariables.length > 0) {
-    throw Error(
-        `Missing Environment Variables: ${listOfMissingEnvironmentVariables.join('\n')}`
-    )
-    process.exit(9)
+if (process.env.NODE_ENV !== 'production') {
+    var listOfMissingEnvironmentVariables = missing_env()
+    if (listOfMissingEnvironmentVariables.length > 0) {
+        throw Error(
+            `Missing Environment Variables: ${listOfMissingEnvironmentVariables.join('\n')}`
+        )
+        process.exit(9)
+    }
 }
+
 
 export const KEYS = {
     aws: {
