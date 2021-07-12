@@ -18,4 +18,4 @@ services:
     image: jairanpo/tamashii-api
     container_name: tamashii-api
     env_file:
-      - /server/env/production.env
+      - ./server/env/production.env
