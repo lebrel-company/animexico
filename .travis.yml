@@ -29,7 +29,7 @@ script:
     --env PORT=$SERVER_PORT
     -p $SERVER_PORT:$SERVER_PORT
     $DOCKER_USERNAME/tamashii-server-test
-    npm run test
+  - docker ps -a
 
 after_success:
   - docker build -t $DOCKER_USERNAME/tamashii-client ./client
