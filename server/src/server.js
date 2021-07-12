@@ -68,7 +68,7 @@ export default async function start() {
     mongoConnection()
     let _server = await Server()
 
-    _server.listen({port: process.env.PORT}).then(({url}) => {
+    _server.listen({port: KEYS.server.port}).then(({url}) => {
         console.log(`🚀  Server ready at ${url}`);
     });
 
