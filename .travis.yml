@@ -47,10 +47,10 @@ script:
 after_success:
   - docker build -t $DOCKER_USERNAME/tamashii-client ./client
   - docker build -t $DOCKER_USERNAME/tamashii-nginx ./nginx
-  - docker build -t $DOCKER_USERNAME/tamashii-server ./server
+  - docker build -t $DOCKER_USERNAME/tamashii-api ./server
   # Login into the Docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   # Push to DockerHUB
   - docker push $DOCKER_USERNAME/tamashii-client
   - docker push $DOCKER_USERNAME/tamashii-nginx
-  - docker push $DOCKER_USERNAME/tamashii-server
+  - docker push $DOCKER_USERNAME/tamashii-api
