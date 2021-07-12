@@ -50,7 +50,7 @@ docker-run-server-test:
 	--network $(NETWORK_NAME) \
 	--volume $(DIR)/server/.env:/app/.env \
 	--env CI=true \
-	--env PORT=$(API_PORT) \
+	--env API_PORT=$(API_PORT) \
 	--env API_HOST=$(API_NAME) \
 	$(DOCKER_USERNAME)/$(INT_NAME)
 
@@ -59,6 +59,7 @@ docker-run-server-test:
 # Continuous integration execution trying to emulate travisCI:
 
 ci:
+	cls
 	make docker-build-server
 	make docker-run-server
 	make docker-build-server-test

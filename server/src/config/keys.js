@@ -68,7 +68,8 @@ export const KEYS = {
         }
     },
     server: {
-        port: parseInt(process.env[__e.apiPort])
+        port: parseInt(process.env[__e.apiPort]),
+        host: process.env.API_HOST || 'tamashii-api'
     }
 }
 
