@@ -16,7 +16,7 @@ before_script:
     docker run -d
     --env PORT=$SERVER_PORT
     --hostname tamashii-server
-    --name server
+    --name tamashii-server
     $DOCKER_USERNAME/tamashii-server
 
 
