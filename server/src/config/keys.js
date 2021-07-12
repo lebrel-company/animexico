@@ -20,7 +20,7 @@ const __e = {
     paypal_secret: 'PAYPAL_SECRET',
     paypal_payment_api: 'PAYPAL_PAYMENT_API',
     mongo: 'MONGO',
-    port: 'PORT'
+    apiPort: 'API_PORT'
 }
 
 
@@ -68,7 +68,7 @@ export const KEYS = {
         }
     },
     server: {
-        port: parseInt(process.env[__e.port])
+        port: parseInt(process.env[__e.apiPort])
     }
 }
 
