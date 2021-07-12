@@ -68,8 +68,8 @@ describe('SIGNUP', () => {
         })
     })
 
-    beforeEach(async function () {
-        await dropAll()
+    beforeEach(function () {
+        dropAll()
     })
 
     // --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -
@@ -77,6 +77,12 @@ describe('SIGNUP', () => {
     it('NO-AUTH.Signup: Register a user', async () => {
         var user = mapUserRegister
         var res;
+
+        try {
+            await UserModel.collection.drop()
+        } catch (_e) {
+            // Handle error here
+        }
 
         try {
             res = await axios.post(
