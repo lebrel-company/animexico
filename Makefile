@@ -12,12 +12,12 @@ API_PORT=4000
 DIR=${CURDIR}
 DOCKER_USERNAME=jairanpo
 API_NAME=tamashii-api
-TEST_NAME=tamashii-server-test
+INT_NAME=tamashii-integrations
 NETWORK_NAME=api-network
 
 #---------------------------------------------------------------------------
 
-docker-make-network:
+docker-create-network:
 	docker network create $(NETWORK_NAME)
 
 docker-build-server:
@@ -28,7 +28,7 @@ docker-build-server:
 
 docker-build-server-test:
 	docker build \
-	-t $(DOCKER_USERNAME)/$(TEST_NAME) \
+	-t $(DOCKER_USERNAME)/$(INT_NAME) \
 	-f .\server\Dockerfile.test \
 	.\server
 
@@ -52,14 +52,13 @@ docker-run-server-test:
 	--env CI=true \
 	--env PORT=$(API_PORT) \
 	--env API_HOST=$(API_NAME) \
-	$(DOCKER_USERNAME)/$(TEST_NAME)
+	$(DOCKER_USERNAME)/$(INT_NAME)
 
 
 #---------------------------------------------------------------------------
 # Continuous integration execution trying to emulate travisCI:
 
 ci:
-	docker stop $(API_NAME)
 	make docker-build-server
 	make docker-run-server
 	make docker-build-server-test

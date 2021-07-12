@@ -1,5 +1,7 @@
 'use strict';
 // libraries:
+import {UserModel} from '../../dist/types/user/user.model';
+
 const axios = require('axios')
 const assert = require('assert')
 import {gql} from 'apollo-server'
@@ -75,7 +77,7 @@ describe('SIGNUP', () => {
     it('NO-AUTH.Signup: Register a user', async () => {
         var user = mapUserRegister
         var res;
-
+        pp(await UserModel.find({}))
         try {
             res = await axios.post(
                 hostname,

@@ -28,7 +28,6 @@ script:
     --network $NETWORK_NAME
     --env API_HOST=$API_NAME
     --env PORT=$API_PORT
-    --env CI=true
     $DOCKER_USERNAME/$INT_NAME
 
 after_success:
