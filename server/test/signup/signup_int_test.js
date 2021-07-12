@@ -91,7 +91,6 @@ describe('SIGNUP', () => {
             console.log(_e.message)
         }
 
-        pp(res)
         let d = res.data.data
         pp(d)
 
