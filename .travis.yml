@@ -17,8 +17,13 @@ before_script:
     docker run -d
     --network $NETWORK_NAME
     --env PORT=$API_PORT
-    --env CI=true
     --name $API_NAME
+    --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    --env AWS_BUCKET=$AWS_BUCKET
+    --env PAYPAL_CLIENT=$PAYPAL_CLIENT
+    --env PAYPAL_SECRET=$PAYPAL_SECRET
+    --env PAYPAL_PAYMENT_API=$PAYPAL_PAYMENT_API
     $DOCKER_USERNAME/$API_NAME
 
 script:
@@ -26,9 +31,16 @@ script:
   - >-
     docker run
     --network $NETWORK_NAME
+    --CI=true
     --env API_HOST=$API_NAME
     --env MONGO=$MONGO
     --env PORT=$API_PORT
+    --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+    --env AWS_BUCKET=$AWS_BUCKET
+    --env PAYPAL_CLIENT=$PAYPAL_CLIENT
+    --env PAYPAL_SECRET=$PAYPAL_SECRET
+    --env PAYPAL_PAYMENT_API=$PAYPAL_PAYMENT_API
     $DOCKER_USERNAME/$INT_NAME
 
 after_success:

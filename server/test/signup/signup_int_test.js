@@ -77,8 +77,6 @@ describe('SIGNUP', () => {
     it('NO-AUTH.Signup: Register a user', async () => {
         var user = mapUserRegister
         var res;
-        let currentUsers = await UserModel.find({})
-        pp(currentUsers)
 
         try {
             res = await axios.post(
@@ -96,7 +94,6 @@ describe('SIGNUP', () => {
         }
 
         let d = res.data.data
-        pp(d)
 
         assert.strictEqual(d.signup.userInfo.firstName, 'Jesus')
         assert.strictEqual(d.signup.userInfo.middleName, 'Jair')
