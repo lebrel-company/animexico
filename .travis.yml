@@ -32,7 +32,7 @@ script:
   - >-
     docker run
     --network $NETWORK_NAME
-    --CI=true
+    --env CI=true
     --env API_HOST=$API_NAME
     --env MONGO=$MONGO
     --env PORT=$API_PORT
