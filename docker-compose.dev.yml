@@ -30,8 +30,6 @@ services:
       - /app/node_modules
       - ./client/:/app
       - /app/.next
-    links:
-      - api
   api:
     container_name: 'tamashii-api'
     depends_on:
@@ -47,5 +45,3 @@ services:
       - tamashii-mongo
     environment:
       NODE_ENV: development
-      GRAPHQL_PORT: 4000
-      MONGODB: mongodb://tamashii-mongo:27017/database

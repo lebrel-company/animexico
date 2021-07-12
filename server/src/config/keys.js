@@ -9,8 +9,12 @@ import _ from 'lodash'
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
+
 var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
+
+
+pp(process.env)
 
 const __e = {
     aws_bucket: 'AWS_BUCKET',

@@ -1,9 +1,9 @@
 up:
 	cls
-	docker-compose up
+	docker-compose -f docker-compose.dev.yml up
 
 build:
-	docker-compose build
+	docker-compose -f docker-compose.dev.yml build
 
 run-mongo:
 	docker run -d -p 27017:27017 mongo
