@@ -1,6 +1,5 @@
 'use strict';
 // libraries:
-import {UserModel} from '../../dist/types/user/user.model';
 
 const axios = require('axios')
 const assert = require('assert')
@@ -9,6 +8,7 @@ import _ from 'lodash'
 import util from 'util'
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // models:
+import {UserModel} from '../../src/types/user/user.model';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
 import {mapUserRegister, mapAdminRegister} from '../../seed/user_data';
@@ -77,7 +77,9 @@ describe('SIGNUP', () => {
     it('NO-AUTH.Signup: Register a user', async () => {
         var user = mapUserRegister
         var res;
-        pp(await UserModel.find({}))
+        let currentUsers = await UserModel.find({})
+        pp(currentUsers)
+
         try {
             res = await axios.post(
                 hostname,
