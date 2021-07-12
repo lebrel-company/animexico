@@ -15,12 +15,13 @@ before_script:
   - >-
     docker run -d
     --env PORT=$SERVER_PORT
+    --env CI=true
     --hostname tamashii-server
     --name tamashii-server
     $DOCKER_USERNAME/tamashii-server
 
-
 script:
+  - docker ps -a
   - docker exec tamashii-server yarn run test
 
 after_success:
