@@ -10,6 +10,7 @@ import {OrdersModel} from '../src/types/order/order.model';
 import {hashPassword} from '../src/utils/auth';
 // -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // project:
+import {KEYS} from '../src/config/keys';
 import {forDatabaseInsertion, listOfProducts} from './product_data';
 import {listOfUsers} from './user_data';
 
@@ -18,10 +19,9 @@ var pp = (el) => {
 }
 //==============================================================================
 
-var DATABASE = 'mongodb://localhost:27017/database'
 
 mongoose.connect(
-    DATABASE,
+    KEYS.mongodb.connection_string(),
     {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -74,9 +74,9 @@ listOfModels.forEach(async function functionName(_m) {
     pp(`Seeding ${_m[0]._name}`)
     await drop(_m[0])
     await seed(_m[0], _m[1])
-    process.exit(0)
 })
 
 
+process.exit(0)
 
 
