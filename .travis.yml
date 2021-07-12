@@ -17,7 +17,7 @@ before_script:
     docker run -d
     --network $NETWORK_NAME
     --name $API_HOST
-    --env PORT=$API_PORT
+    --env API_PORT=$API_PORT
     --env MONGO=$MONGO
     --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
