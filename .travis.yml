@@ -6,12 +6,12 @@ services:
   - docker
 
 before_install:
-  #  - docker build -t $DOCKER_USERNAME/tamashii-server -f ./server/Dockerfile ./server
+    - docker build -t $DOCKER_USERNAME/tamashii-server -f ./server/Dockerfile ./server
   - docker build -t $DOCKER_USERNAME/tamashii-server-test -f ./server/Dockerfile.test ./server
 
 
 before_script:
-  - sleep 15
+  - sleep 5
   - >-
     docker run -d -p
     $SERVER_PORT:$SERVER_PORT
