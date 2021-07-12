@@ -15,12 +15,13 @@ before_script:
   - >-
     docker run -d -p
     $SERVER_PORT:$SERVER_PORT
-    --name server
+    --name tamashii-server
     $DOCKER_USERNAME/tamashii-server
 
 
 script:
   - docker ps -a
+  - docker inspect tamashii-server
   - >-
     docker run
     --network host

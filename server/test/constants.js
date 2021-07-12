@@ -12,7 +12,7 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 var _hostname;
 
 if (process.env.CI === 'true') {
-    _hostname = `http://localhost:${process.env.PORT}/`
+    _hostname = `http://0.0.0.0:${process.env.PORT}/`
 } else {
     _hostname = 'http://localhost:5000/api'
 }
