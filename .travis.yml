@@ -54,3 +54,15 @@ after_success:
   - docker push $DOCKER_USERNAME/tamashii-client
   - docker push $DOCKER_USERNAME/tamashii-nginx
   - docker push $DOCKER_USERNAME/tamashii-api
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: tamashii
+  env: Tamashii-env
+  bucket_name: elasticbeanstalk-us-east-2-681362587379
+  bucket_path: docker-tamashii
+  on:
+    branch: master
+  access_key_id: $AWS_DEPLOYER_ACCESS_KEY
+  secret_access_key: $AWS_DEPLOYER_SECRET_ACCESS_KEY

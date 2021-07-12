@@ -1,51 +1,18 @@
 version: '3.1'
 services:
   nginx:
-    container_name: 'tamashii-nginx'
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
+    container_name: tamashii-nginx
+    image: jairanpo/tamashii-nginx
     ports:
-      - '5000:80'
-    depends_on:
-      - api
+      - '80:80'
+    links:
       - client
-    logging:
-      driver: none
-  tamashii-mongo:
-    image: mongo:latest
-    container_name: 'tamashii-mongo'
-    restart: always
-    ports:
-      - '27017:27017'
-    logging:
-      driver: none
-  client:
-    container_name: 'tamashii-next'
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./client
-    volumes:
-      - /app/node_modules
-      - ./client/:/app
-      - /app/.next
-    links:
       - api
+  client:
+    container_name: tamashii-client
+    image: jairanpo/tamashii-client
   api:
-    container_name: 'tamashii-api'
-    depends_on:
-      - tamashii-mongo
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./server
-    volumes:
-      - /app/node_modules
-      - ./server/:/app
-    links:
-      - tamashii-mongo
-    environment:
-      NODE_ENV: development
-      GRAPHQL_PORT: 4000
-      MONGODB: mongodb://tamashii-mongo:27017/database
+    image: jairanpo/tamashii-api
+    container_name: tamashii-api
+    env_file:
+      - /server/env/production.env

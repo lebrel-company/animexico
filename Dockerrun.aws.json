@@ -1,0 +1,33 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "tamashii-client",
+      "image": "jairanpo/tamashii-client",
+      "hostname": "client",
+      "essential": false
+    },
+    {
+      "name": "tamashii-api",
+      "image": "jairanpo/tamashii-api",
+      "hostname": "api",
+      "essential": false
+    },
+    {
+      "name": "tamashii-nginx",
+      "image": "jairanpo/tamashii-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "tamashii-client",
+        "tamashii-api"
+      ]
+    }
+  ]
+}
