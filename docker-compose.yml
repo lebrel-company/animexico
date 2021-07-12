@@ -3,15 +3,18 @@ services:
   nginx:
     container_name: tamashii-nginx
     image: jairanpo/tamashii-nginx
+    mem_limit: 128m
     ports:
       - '80:80'
     links:
       - client
       - api
   client:
+    mem_limit: 128m
     container_name: tamashii-client
     image: jairanpo/tamashii-client
   api:
+    mem_limit: 128m
     image: jairanpo/tamashii-api
     container_name: tamashii-api
     env_file:
