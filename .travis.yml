@@ -12,13 +12,14 @@ before_install:
 
 before_script:
   - sleep 15
-#  - >-
-#    docker run -d -p
-#    $SERVER_PORT:$SERVER_PORT
-#    --name server $DOCKER_USERNAME/tamashii-server
+  - >-
+    docker run -d -p
+    $SERVER_PORT:$SERVER_PORT
+    --name server $DOCKER_USERNAME/tamashii-server
 
 
 script:
+  - docker ps -a
   - >-
     docker run
     --env CI=true

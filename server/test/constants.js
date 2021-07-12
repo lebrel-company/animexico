@@ -10,7 +10,6 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 
 
 var _hostname;
-pp(process.env)
 
 if (process.env.CI === 'true') {
     _hostname = `http://localhost:${process.env.PORT}/`
