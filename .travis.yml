@@ -14,24 +14,14 @@ before_script:
   - sleep 5
   - >-
     docker run -d
-    --network host
     --env PORT=$SERVER_PORT
     --hostname tamashii-server
+    --name server
     $DOCKER_USERNAME/tamashii-server
 
 
 script:
-  - docker ps -a
-  - docker inspect tamashii-server
-  - >-
-    docker run
-    --env CI=true
-    --env AWS_ACCESS_KEY=$AWS_ACCESS_KEY
-    --env AWS_BUCKET=$AWS_BUCKET
-    --env MONGO=$MONGO
-    --env PORT=$SERVER_PORT
-    $DOCKER_USERNAME/tamashii-server-test
-  - docker ps -a
+  - docker exec tamashii-server yarn run test
 
 after_success:
   - docker build -t $DOCKER_USERNAME/tamashii-client ./client

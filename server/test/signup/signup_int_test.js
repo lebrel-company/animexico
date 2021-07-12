@@ -15,6 +15,7 @@ import {UserModel} from '../../src/types/user/user.model'
 // project:
 import {mapUserRegister, mapAdminRegister} from '../../seed/user_data';
 import {axiosConfig, hostname} from '../constants';
+import {dropAll} from '../cleanup';
 
 var pp = (el) => {
     console.log(util.inspect(el, false, 5, true))
@@ -60,12 +61,7 @@ delete mapAdminRegister._id
 describe('SIGNUP', () => {
 
     beforeEach(async function () {
-        try {
-            await UserModel.collection.drop()
-        } catch (_e) {
-            pp(_e.message)
-        }
-
+        await dropAll()
     })
 
     //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

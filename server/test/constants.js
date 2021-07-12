@@ -17,6 +17,7 @@ if (process.env.CI === 'true') {
     _hostname = 'http://localhost:5000/api'
 }
 
+_hostname = 'http://localhost:4000'
 
 console.log('Axios test connection:', _hostname)
 

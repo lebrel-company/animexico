@@ -8,8 +8,8 @@ build:
 run-mongo:
 	docker run -d -p 27017:27017 mongo
 
-SERVER_PORT = 4000
-DIR = ${CURDIR}
+SERVER_PORT=4000
+DIR=${CURDIR}
 DOCKER_USERNAME=jairanpo
 TA_SERVER=tamashii-server
 TA_SERVER_TEST=tamashii-server-test
@@ -30,10 +30,13 @@ docker-build-server-test:
 
 docker-run-server:
 	docker run \
-	-v $(DIR)/server/.env:/app/.env \
-    --publish 4000:$(SERVER_PORT) \
-    $(DOCKER_USERNAME)/tamashii-server
-
+	--rm \
+	--detach \
+	--publish $(SERVER_PORT):$(SERVER_PORT) \
+	--volume $(DIR)/server/.env:/app/.env \
+	--env CI=true \
+	--env PORT=$(SERVER_PORT) \
+	$(DOCKER_USERNAME)/$(TA_SERVER)
 
 #---------------------------------------------------------------------------
 # Continuous integration execution trying to emulate travisCI:
@@ -41,15 +44,10 @@ docker-run-server:
 ci:
 	make docker-build-server
 	make docker-build-server-test
+	make docker-run-server
 	docker run \
-	--rm \
-    -d \
-    -p $SERVER_PORT:$SERVER_PORT \
-	-v $(DIR)/server/.env:/app/.env \
-    --name server $(DOCKER_USERNAME)/$(TA_SERVER) & \
-    docker run \
     --rm \
-	-v $(DIR)/server/.env:/app/.env \
+	--volume $(DIR)/server/.env:/app/.env \
     --env CI=true \
     $(DOCKER_USERNAME)/$(TA_SERVER)
 	docker build \
@@ -57,18 +55,6 @@ ci:
 	-f .\server\Dockerfile.dev \
 	.\server
 	make  docker-run-server
-
-cit:
-	make docker-build-server
-	docker run \
-	--rm \
-    -p $(SERVER_PORT):$(SERVER_PORT) \
-	-v $(DIR)/server/.env:/app/.env \
-	--env CI=true \
-	$(DOCKER_USERNAME)/$(TA_SERVER)
-	yarn run test
-
-
 
 #---------------------------------------------------------------------------
 
