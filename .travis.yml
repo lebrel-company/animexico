@@ -13,10 +13,10 @@ before_install:
 before_script:
   - sleep 5
   - >-
-    docker run -d -p
+    docker run -d
     --network host
-    $SERVER_PORT:$SERVER_PORT
-    --name tamashii-server
+    --env PORT=$SERVER_PORT
+    --hostname tamashii-server
     $DOCKER_USERNAME/tamashii-server
 
 
