@@ -27,6 +27,10 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+#__next{
+    height:100%;
+}
+
 .admin-sidebar {
     @apply
     bg-dark

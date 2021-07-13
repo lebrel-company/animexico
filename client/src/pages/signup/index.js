@@ -43,7 +43,7 @@ export default function SignupForm(props) {
     return (
         <ClientLayout pattern={`bg-temple`}>
             <div className="
-            md:flex justify-center w-screen relative z-30
+            md:flex justify-center w-screen relative z-30 m-8
             ">
                 <form className="form-dark my-auto container md:w-1/2"
                       onSubmit={formik.handleSubmit}>

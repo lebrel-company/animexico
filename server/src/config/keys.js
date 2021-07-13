@@ -14,8 +14,6 @@ var pp = (el) => console.log(util.inspect(el, false, 5, true))
 //=============================================================================
 
 
-pp(process.env)
-
 const __e = {
     aws_bucket: 'AWS_BUCKET',
     aws_access_key_id: 'AWS_ACCESS_KEY_ID',

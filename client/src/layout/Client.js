@@ -4,12 +4,11 @@ import Footer from '../components/Footer';
 
 export default function ClientLayout(props) {
     return (
-        <div>
+        <>
             <div
                 className={`
-                    h-screen w-screen flex flex-col
-                `}
-            >
+                    h-full w-screen flex flex-col
+                `}>
                 <div className="w-full relative z-30">
                     <Header/>
                 </div>
@@ -34,6 +33,6 @@ export default function ClientLayout(props) {
                 `}
                 />
             </div>
-        </div>
+        </>
     );
 };
